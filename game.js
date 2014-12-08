@@ -38,6 +38,7 @@ Game.prototype = {
     this.player.doubleJumping = false;
     this.player.lastShotTime = 0;
     this.player.shooting = false;
+    this.player.death = false;
 
     this.player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
     this.player.animations.add('left',  [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
@@ -46,7 +47,6 @@ Game.prototype = {
     this.player.body.gravity.y = 1000;
     this.player.body.maxVelocity.y = 500;
     this.player.body.maxVelocity.x = 200;
-    this.player.body.collideWorldBounds = true;
     this.player.body.setSize(22, 45, 8, 7);
     this.game.camera.follow(this.player);
 
@@ -55,6 +55,12 @@ Game.prototype = {
   },
 
   update: function() {
+    if (this.player.death){
+      console.log('death effect');
+      this.player.body.enable = false;
+      return;
+    }
+
     this.game.physics.arcade.collide(this.player, this.layer);
     this.game.physics.arcade.collide(this.bullets, this.layer, this.bulletCollision);
 
@@ -131,6 +137,20 @@ Game.prototype = {
       } else {
         this.player.frame = 16;
       }
+    }
+
+    // Collide with bounds. We only detect the side bounds
+    if (this.player.x >= this.game.world.width - this.player.width) {
+      this.player.x = this.game.world.width - this.player.width;
+    }
+    if (this.player.x <= 0) {
+      this.player.x = 0;
+    }
+
+
+    // Detect death by falling
+    if (this.player.y > this.game.world.height) {
+      this.player.death = true;
     }
   },
 
