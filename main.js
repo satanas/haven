@@ -74,11 +74,12 @@ function Hero(x, y, key){
 */
 
 function preload() {
-  game.load.tilemap('map', 'map.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('map', 'mario.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
   game.load.image('wall', 'assets/box-blue.png');
   game.load.image('mario', 'assets/mario.png');
   game.load.image('bullet', 'assets/bullet.png');
+  game.load.image('bg', 'assets/background.png');
 }
 
 function create() {
@@ -86,6 +87,8 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.arcade.gravity.y = 300;
 
+  var bg = game.add.sprite(0, 0, 'bg');
+  bg.fixedToCamera = true;
   bullets = game.add.group();
   bullets.enableBody = true;
 
@@ -93,11 +96,11 @@ function create() {
   platforms.enableBody = true;
 
   map = game.add.tilemap('map');
-  map.addTilesetImage('mario', 'mario');
+  map.addTilesetImage('MARIO', 'mario');
   layer = map.createLayer('Platforms');
   back_deco = map.createLayer('Back Decorations');
   front_deco = map.createLayer('Front Decorations');
-  map.setCollisionBetween(1, 28, true, 'Platforms');
+  map.setCollisionBetween(1, 120, true, 'Platforms');
   //layer.debug = true;
   layer.resizeWorld();
 
@@ -111,8 +114,8 @@ function create() {
   player.lastShotTime = 0;
   player.shooting = false;
 
-  player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
-  player.animations.add('left',  [8, 9, 10, 11, 12, 13, 14, 15], 16, true);
+  player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
+  player.animations.add('left',  [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
 
   game.physics.arcade.enable(player);
   player.body.gravity.y = 1000;
