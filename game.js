@@ -12,8 +12,8 @@ Game.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
 
-    var bg = game.add.sprite(0, 0, 'bg');
-    bg.fixedToCamera = true;
+    this.bg1 = game.add.tileSprite(0, 0, 640, 480, 'bg');
+    this.bg1.fixedToCamera = true;
     this.bullets = this.game.add.group();
     this.bullets.enableBody = true;
 
@@ -60,6 +60,7 @@ Game.prototype = {
       this.player.body.enable = false;
       return;
     }
+    this.bg1.tilePosition.x -= 0.5;
 
     this.game.physics.arcade.collide(this.player, this.layer);
     this.game.physics.arcade.collide(this.bullets, this.layer, this.bulletCollision);
