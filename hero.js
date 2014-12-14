@@ -44,7 +44,6 @@ Alysa.prototype.update = function() {
     this.body.velocity.x = 0;
   }
 
-  //if (this.cursors.up.isDown && !this.jumping) {
   if (this.cursors.up.justPressed(50) && !this.jumping) {
     this.jumping = true;
     this.body.velocity.y = -800;
@@ -81,7 +80,12 @@ Alysa.prototype.update = function() {
     this.shooting = false;
   }
 
-  // Render
+  this.worldBoundCollisions();
+  this.deathByFalling();
+  this.render();
+};
+
+Alysa.prototype.render = function() {
   if (this.jumping === true) {
     if (this.facing == 'left') {
       this.frame = 19;
@@ -102,22 +106,23 @@ Alysa.prototype.update = function() {
       this.frame = 16;
     }
   }
+};
 
-  // Collide with bounds. We only detect the side bounds
-  if (this.x >= this.game.world.width - this.width) {
-    this.x = this.game.world.width - this.width;
-  }
-  if (this.x <= 0) {
-    this.x = 0;
-  }
-
-
-  // Detect death by falling
+Alysa.prototype.deathByFalling = function() {
   if (this.y > this.game.world.height && !this.death) {
     var self = this;
     this.death = true;
     this.game.plugin.fadeOut(0x000, 750, 0, function() {
       self.game.state.start('gameover');
     });
+  }
+};
+
+Alysa.prototype.worldBoundCollisions = function() {
+  if (this.x >= this.game.world.width - this.width) {
+    this.x = this.game.world.width - this.width;
+  }
+  if (this.x <= 0) {
+    this.x = 0;
   }
 };
