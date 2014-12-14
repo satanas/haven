@@ -8,7 +8,6 @@ Phaser.Plugin.Fade.prototype.constructor = Phaser.Plugin.SamplePlugin;
 // HexColor is a number like 0xff0000
 // Delay is the time to wait before calling the callback
 Phaser.Plugin.Fade.prototype.fadeOut = function(hexColor, time, delay, callback) {
-  console.log('fading', this.game.width, this.game.height);
   delay = delay || 0;
   var bg = this.game.add.graphics(0, 0);
   bg.beginFill(hexColor, 1);
