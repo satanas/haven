@@ -1,8 +1,9 @@
 'use strict';
 
-var Alysa = function(game, cursors, x, y) {
+var Alysa = function(game, x, y, cursors, bullets) {
   Phaser.Sprite.call(this, game, x, y, 'alysa', 0);
 
+  this.bullets = bullets
   this.cursors = cursors;
   this.jumping = false;
   this.facing = 'right';
@@ -66,14 +67,8 @@ Alysa.prototype.update = function() {
 
   if (this.game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot) {
     this.shooting = true;
-    var bullet = this.bullets.create(this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), 'bullet');
-    bullet.body.allowGravity = false;
-    bullet.bringToTop();
-    if (this.facing === 'left') {
-      bullet.body.velocity.x = -1 * this.game.global.maxBulletSpeed;
-    } else {
-      bullet.body.velocity.x = this.game.global.maxBulletSpeed;
-    }
+    var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
+    this.bullets.add(bullet);
   }
 
   if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X)) {

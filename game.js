@@ -31,7 +31,7 @@ Game.prototype = {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    this.player = new Alysa(this.game, this.cursors, 250, 170);
+    this.player = new Alysa(this.game, 250, 170, this.cursors, this.bullets);
     this.game.add.existing(this.player);
 
     this.game.world.bringToTop(this.bullets);
