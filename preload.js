@@ -24,6 +24,7 @@ Preload.prototype = {
     this.load.image('bg', 'assets/background.png');
     this.load.image('menu', 'assets/menu.png');
 
+    this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
   },
 

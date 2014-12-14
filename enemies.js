@@ -1,0 +1,40 @@
+'use strict';
+
+var Gumbon = function(game, x, y, direction) {
+  Phaser.Sprite.call(this, game, x, y, 'gumbon', 0);
+
+  this.facing = 'left';
+  this.x1 = x - 100;
+  this.x2 = x + 100;
+  this.speed = 120;
+  this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
+  this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+
+  this.game.physics.arcade.enableBody(this);
+  this.body.gravity.y = 1000;
+  this.body.setSize(41, 35, 3, 1);
+  this.animations.play('left');
+};
+
+Gumbon.prototype = Object.create(Phaser.Sprite.prototype);
+Gumbon.prototype.constructor = Gumbon;
+
+Gumbon.prototype.update = function() {
+  if (!this.body.onFloor()) return;
+
+  if (this.facing === 'left') {
+    this.body.velocity.x = -this.speed;
+    if (this.x <= this.x1) {
+      this.facing = 'right';
+      this.animations.play('right');
+      this.body.velocity.x = this.speed;
+    }
+  } else if (this.facing === 'right') {
+    this.body.velocity.x = this.speed;
+    if (this.x >= this.x2) {
+      this.facing = 'left';
+      this.animations.play('left');
+      this.body.velocity.x = -this.speed;
+    }
+  }
+};

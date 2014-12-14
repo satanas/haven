@@ -52,6 +52,9 @@ Game.prototype = {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.game.world.bringToTop(this.bullets);
+
+    this.gumbon = new Gumbon(this.game, 100, 100, 0);
+    this.game.add.existing(this.gumbon);
   },
 
   update: function() {
@@ -63,6 +66,7 @@ Game.prototype = {
     this.bg1.tilePosition.x -= 0.5;
 
     this.game.physics.arcade.collide(this.player, this.layer);
+    this.game.physics.arcade.collide(this.gumbon, this.layer);
     this.game.physics.arcade.collide(this.bullets, this.layer, this.bulletCollision);
 
     if (this.player.body.onFloor()) {
@@ -150,9 +154,24 @@ Game.prototype = {
 
 
     // Detect death by falling
-    if (this.player.y > this.game.world.height) {
+    if (this.player.y > this.game.world.height && !this.player.death) {
+      var self = this;
       this.player.death = true;
+      this.game.plugin.fadeOut(0x000, 750, 0, function() {
+        self.game.state.start('gameover');
+      });
     }
+
+    //if (this.player.x > 500) {
+    //  this.player.death = true;
+    //  this.game.plugin.fadeOut(0x000, 2000);
+    //}
+  },
+
+  render: function() {
+    //game.debug.text(game.time.physicsElapsed, 32, 32);
+    //this.game.debug.body(this.gumbon);
+    //game.debug.bodyInfo(player, 16, 24);
   },
 
   bulletCollision: function(bullet, platform) {

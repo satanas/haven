@@ -13,5 +13,6 @@ game.state.add('intro', Intro);
 game.state.add('preload', Preload);
 game.state.add('menu', Menu);
 game.state.add('game', Game);
+game.state.add('gameover', GameOver);
 
 game.state.start('boot');

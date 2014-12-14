@@ -10,6 +10,7 @@ Boot.prototype = {
   },
 
   create: function () {
+    this.game.plugin = this.game.plugins.add(Phaser.Plugin.Fade)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.state.start('preload');
   }
