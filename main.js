@@ -6,6 +6,8 @@ game.global = {
   maxShotDelay: 200,
   maxBulletSpeed: 600
 }
+var groups = {};
+
 //game.stage.backgroundColor = '#fff';
 
 game.state.add('boot', Boot);

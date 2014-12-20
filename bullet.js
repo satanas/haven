@@ -17,4 +17,9 @@ Bullet.prototype = Object.create(Phaser.Sprite.prototype);
 Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
+  this.game.physics.arcade.collide(this, groups.platforms, this.die);
+};
+
+Bullet.prototype.die = function(bullet, platform) {
+  bullet.kill();
 };

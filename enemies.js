@@ -14,12 +14,15 @@ var Gumbon = function(game, x, y, direction) {
   this.body.gravity.y = 1000;
   this.body.setSize(41, 35, 3, 1);
   this.animations.play('left');
+  this.game.add.existing(this);
 };
 
 Gumbon.prototype = Object.create(Phaser.Sprite.prototype);
 Gumbon.prototype.constructor = Gumbon;
 
 Gumbon.prototype.update = function() {
+  this.game.physics.arcade.collide(this, groups.platforms);
+
   if (!this.body.onFloor()) return;
 
   if (this.facing === 'left') {

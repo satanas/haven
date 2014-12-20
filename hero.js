@@ -1,10 +1,8 @@
 'use strict';
 
-var Alysa = function(game, x, y, cursors, bullets) {
+var Alysa = function(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'alysa', 0);
 
-  this.bullets = bullets
-  this.cursors = cursors;
   this.jumping = false;
   this.facing = 'right';
   this.canShoot = true;
@@ -13,6 +11,7 @@ var Alysa = function(game, x, y, cursors, bullets) {
   this.lastShotTime = 0;
   this.shooting = false;
   this.death = false;
+  this.cursors = this.game.input.keyboard.createCursorKeys();
 
   this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
   this.animations.add('left',  [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
@@ -23,12 +22,15 @@ var Alysa = function(game, x, y, cursors, bullets) {
   this.body.maxVelocity.x = 200;
   this.body.setSize(22, 45, 8, 7);
   this.game.camera.follow(this);
+  this.game.add.existing(this);
 };
 
 Alysa.prototype = Object.create(Phaser.Sprite.prototype);
 Alysa.prototype.constructor = Alysa;
 
 Alysa.prototype.update = function() {
+  this.game.physics.arcade.collide(this, groups.platforms);
+
   if (this.body.onFloor()) {
     this.jumping = false;
     this.doubleJumping = false;
@@ -68,7 +70,7 @@ Alysa.prototype.update = function() {
   if (this.game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot) {
     this.shooting = true;
     var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
-    this.bullets.add(bullet);
+    groups.bullets.add(bullet);
   }
 
   if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X)) {
