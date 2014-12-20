@@ -4,7 +4,6 @@ function Game() {}
 
 Game.prototype = {
   create: function() {
-    console.log('game');
     this.map = null;
     this.player = null;
 
@@ -16,6 +15,9 @@ Game.prototype = {
     this.bg1.fixedToCamera = true;
     groups.bullets = this.game.add.group();
     groups.bullets.enableBody = true;
+
+    groups.enemies = this.game.add.group();
+    groups.enemies.enableBody = true;
 
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('MARIO', 'mario');

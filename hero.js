@@ -70,7 +70,6 @@ Alysa.prototype.update = function() {
   if (this.game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot) {
     this.shooting = true;
     var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
-    groups.bullets.add(bullet);
   }
 
   if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X)) {

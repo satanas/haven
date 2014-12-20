@@ -11,6 +11,7 @@ var Bullet = function(game, x, y, direction) {
   } else {
     this.body.velocity.x = this.game.global.maxBulletSpeed;
   }
+  groups.bullets.add(this);
 };
 
 Bullet.prototype = Object.create(Phaser.Sprite.prototype);
@@ -18,8 +19,14 @@ Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.platforms, this.die);
+  this.game.physics.arcade.collide(this, groups.enemies, this.makeDamage);
 };
 
-Bullet.prototype.die = function(bullet, platform) {
-  bullet.kill();
+Bullet.prototype.die = function(self, platform) {
+  self.kill();
+};
+
+Bullet.prototype.makeDamage = function(self, object) {
+  object.takeDamage();
+  self.kill();
 };

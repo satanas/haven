@@ -7,6 +7,7 @@ var Gumbon = function(game, x, y, direction) {
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 120;
+  this.health = 3;
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
 
@@ -14,7 +15,7 @@ var Gumbon = function(game, x, y, direction) {
   this.body.gravity.y = 1000;
   this.body.setSize(41, 35, 3, 1);
   this.animations.play('left');
-  this.game.add.existing(this);
+  groups.enemies.add(this);
 };
 
 Gumbon.prototype = Object.create(Phaser.Sprite.prototype);
@@ -39,5 +40,12 @@ Gumbon.prototype.update = function() {
       this.animations.play('left');
       this.body.velocity.x = -this.speed;
     }
+  }
+};
+
+Gumbon.prototype.takeDamage = function() {
+  this.health -= 1;
+  if (this.health <= 0) {
+    this.kill();
   }
 };
