@@ -3,13 +3,14 @@
 var Bullet = function(game, x, y, direction) {
   Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
 
+  this.speed = 600;
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   this.bringToTop();
   if (direction === 'left') {
-    this.body.velocity.x = -1 * this.game.global.maxBulletSpeed;
+    this.body.velocity.x = -1 * this.speed;
   } else {
-    this.body.velocity.x = this.game.global.maxBulletSpeed;
+    this.body.velocity.x = this.speed;
   }
   groups.bullets.add(this);
 };

@@ -25,8 +25,8 @@ Game.prototype = {
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
     this.map.setCollisionBetween(1, 120, true, 'Platforms');
-    //groups.platforms.debug = true;
     groups.platforms.resizeWorld();
+    //groups.platforms.debug = true;
 
     this.player = new Alysa(this.game, 250, 170);
     this.gumbon = new Gumbon(this.game, 100, 100, 0);

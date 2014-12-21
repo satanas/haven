@@ -10,7 +10,8 @@ var Alysa = function(game, x, y) {
   this.doubleJumping = false;
   this.lastShotTime = 0;
   this.shooting = false;
-  this.death = false;
+  this.dying = false;
+  this.shotDelay = 0.155;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
   this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
@@ -31,6 +32,15 @@ Alysa.prototype.constructor = Alysa;
 Alysa.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.platforms);
 
+  if (!this.dying) {
+    this.movement();
+    this.shoot();
+    this.worldBoundCollisions();
+  }
+  this.render();
+};
+
+Alysa.prototype.movement = function() {
   if (this.body.onFloor()) {
     this.jumping = false;
     this.doubleJumping = false;
@@ -66,19 +76,25 @@ Alysa.prototype.update = function() {
     this.canDoubleJump = false;
     this.body.velocity.y = -500;
   }
+};
 
+Alysa.prototype.shoot = function() {
   if (this.game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot) {
+    this.canShoot = false;
+    this.lastShotTime = game.time.time;
     this.shooting = true;
     var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
   }
 
-  if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X)) {
-    this.shooting = false;
+  if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X) && !this.canShoot) {
+    this.canShoot = true;
   }
 
-  this.worldBoundCollisions();
-  this.deathByFalling();
-  this.render();
+  if (this.canShoot && this.shooting) {
+    if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
+      this.shooting = false;
+    }
+  }
 };
 
 Alysa.prototype.render = function() {
@@ -104,14 +120,13 @@ Alysa.prototype.render = function() {
   }
 };
 
-Alysa.prototype.deathByFalling = function() {
-  if (this.y > this.game.world.height && !this.death) {
-    var self = this;
-    this.death = true;
-    this.game.plugin.fadeOut(0x000, 750, 0, function() {
-      self.game.state.start('gameover');
-    });
-  }
+Alysa.prototype.die = function() {
+  var self = this;
+  this.dying = true;
+  this.game.camera.follow(null);
+  this.game.plugin.fadeOut(0x000, 750, 0, function() {
+    self.game.state.start('gameover');
+  });
 };
 
 Alysa.prototype.worldBoundCollisions = function() {
@@ -120,5 +135,8 @@ Alysa.prototype.worldBoundCollisions = function() {
   }
   if (this.x <= 0) {
     this.x = 0;
+  }
+  if (this.y > this.game.world.height && !this.dying) {
+    this.die();
   }
 };
