@@ -10,12 +10,16 @@ var Alysa = function(game, x, y) {
   this.doubleJumping = false;
   this.lastShotTime = 0;
   this.shooting = false;
-  this.dying = false;
+  this.status = 'alive'; // dying, dead
+  this.deadTime = 0;
+  this.dyingDelay = 0.9;
   this.shotDelay = 0.155;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
   this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
-  this.animations.add('left',  [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
+  this.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
+  this.animations.add('dying-left', [20, 21, 22, 23], 12, false);
+  this.animations.add('dying-right', [24, 25, 26, 27], 12, false);
 
   this.game.physics.arcade.enable(this);
   this.body.gravity.y = 1000;
@@ -32,11 +36,22 @@ Alysa.prototype.constructor = Alysa;
 Alysa.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.platforms);
 
-  if (!this.dying) {
+  if (this.status === 'alive') {
+    this.game.physics.arcade.overlap(this, groups.enemies, this.takeDamage);
+
     this.movement();
     this.shoot();
     this.worldBoundCollisions();
+  } else {
+    this.body.velocity.x = 0;
+    if (this.game.time.elapsedSecondsSince(this.deadTime) >= this.dyingDelay) {
+      var self = this;
+      this.game.plugin.fadeOut(0x000, 750, 0, function() {
+        self.game.state.start('gameover');
+      });
+    }
   }
+
   this.render();
 };
 
@@ -98,6 +113,8 @@ Alysa.prototype.shoot = function() {
 };
 
 Alysa.prototype.render = function() {
+  if (this.status !== 'alive') return;
+
   if (this.jumping === true) {
     if (this.facing == 'left') {
       this.frame = 19;
@@ -120,13 +137,21 @@ Alysa.prototype.render = function() {
   }
 };
 
+Alysa.prototype.takeDamage = function(self, object) {
+  if (self.status === 'alive') {
+    self.die();
+  }
+};
+
 Alysa.prototype.die = function() {
-  var self = this;
-  this.dying = true;
+  this.deadTime = this.game.time.time;
+  this.status = 'dying';
   this.game.camera.follow(null);
-  this.game.plugin.fadeOut(0x000, 750, 0, function() {
-    self.game.state.start('gameover');
-  });
+  if (this.facing === 'left') {
+    this.animations.play('dying-left');
+  } else {
+    this.animations.play('dying-right');
+  }
 };
 
 Alysa.prototype.worldBoundCollisions = function() {
@@ -136,7 +161,8 @@ Alysa.prototype.worldBoundCollisions = function() {
   if (this.x <= 0) {
     this.x = 0;
   }
-  if (this.y > this.game.world.height && !this.dying) {
+  if (this.y > this.game.world.height && (this.status === 'alive')) {
+    this.dyingDelay = 0.2;
     this.die();
   }
 };
