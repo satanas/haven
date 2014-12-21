@@ -6,6 +6,7 @@ var Bullet = function(game, x, y, direction) {
   this.speed = 600;
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
+  this.body.sensort = true;
   this.bringToTop();
   if (direction === 'left') {
     this.body.velocity.x = -1 * this.speed;
@@ -20,7 +21,7 @@ Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.platforms, this.die);
-  this.game.physics.arcade.collide(this, groups.enemies, this.makeDamage);
+  this.game.physics.arcade.overlap(this, groups.enemies, this.makeDamage);
 };
 
 Bullet.prototype.die = function(self, platform) {

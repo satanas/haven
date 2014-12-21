@@ -7,7 +7,7 @@ var Gumbon = function(game, x, y, direction) {
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 120;
-  this.health = 3;
+  this.health = 100;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -34,23 +34,31 @@ Gumbon.prototype.update = function() {
     }
   }
 
+  this.render();
+
   if (!this.body.onFloor()) return;
 
+  this.move();
+};
+
+Gumbon.prototype.move = function() {
   if (this.facing === 'left') {
     this.body.velocity.x = -this.speed;
     if (this.x <= this.x1) {
       this.facing = 'right';
-      this.animations.play('right');
       this.body.velocity.x = this.speed;
     }
   } else if (this.facing === 'right') {
     this.body.velocity.x = this.speed;
     if (this.x >= this.x2) {
       this.facing = 'left';
-      this.animations.play('left');
       this.body.velocity.x = -this.speed;
     }
   }
+};
+
+Gumbon.prototype.render = function() {
+  this.animations.play(this.facing);
 };
 
 Gumbon.prototype.takeDamage = function() {
