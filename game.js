@@ -6,6 +6,7 @@ Game.prototype = {
   create: function() {
     this.map = null;
     this.player = null;
+    this.boss = null;
 
     this.game.stage.backgroundColor = '#3498db';
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -29,7 +30,8 @@ Game.prototype = {
     //groups.platforms.debug = true;
 
     this.player = new Alysa(this.game, 250, 170);
-    this.gumbon = new Gumbon(this.game, 100, 100, 0);
+    //this.gumbon = new Gumbon(this.game, 100, 100, 0);
+    this.boss = new Acerbus(this.game, 544, 364);
 
     this.game.world.bringToTop(groups.bullets);
   },
