@@ -6,7 +6,7 @@ var Bullet = function(game, x, y, direction) {
   this.speed = 600;
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
-  this.body.sensort = true;
+  this.body.sensor = true;
   this.bringToTop();
   if (direction === 'left') {
     this.body.velocity.x = -1 * this.speed;
