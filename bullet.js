@@ -25,10 +25,10 @@ Bullet.prototype.update = function() {
 };
 
 Bullet.prototype.die = function(self, platform) {
-  self.kill();
+  self.destroy();
 };
 
 Bullet.prototype.makeDamage = function(self, object) {
   object.takeDamage();
-  self.kill();
+  self.destroy();
 };
