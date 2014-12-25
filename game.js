@@ -30,8 +30,8 @@ Game.prototype = {
     //groups.platforms.debug = true;
 
     this.player = new Alysa(this.game, 250, 170);
-    //this.gumbon = new Gumbon(this.game, 100, 100, 0);
-    this.boss = new Acerbus(this.game, this.player, 544, 364);
+    this.gumbon = new Gumbon(this.game, 100, 100, 0);
+    //this.boss = new Acerbus(this.game, this.player, 544, 364);
 
     this.game.world.bringToTop(groups.bullets);
   },

@@ -8,21 +8,27 @@ var Acerbus = function(game, player, x, y, fight) {
   this.health = 100;
   this.hurt = false;
   this.hurtTime = 0;
-  this.dashSpeed = 350;
-  this.phase = 0;
-  this.startingDelay = 2.5;
-  this.startingTime = this.game.time.time;
+  this.dashSpeed = 380;
+  this.walkingSpeed = 90;
+  this.phase = 3;
   this.invincibilityTime = 0.100;
+  this.chaseDelay = 0.25;
+  this.chasing = false;
+  this.chaseStart = 0;
+
   this.phases = [
     new DashPhase(this, game),
     new LaughPhase(this, game),
-    new TeleportPhase(this, game, player)
+    new TeleportPhase(this, game, player),
+    new WavePhase(this, game, player)
   ];
+
+  this.pattern = [1, 0, 2, 0, 3];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
   groups.enemies.add(this);
-  this.currPhase = this.phases[this.phase % 3];
+  this.currPhase = this.phases[this.pattern[this.phase % 5]];
   this.currPhase.start();
 };
 
@@ -34,14 +40,40 @@ Acerbus.prototype.update = function() {
   this.currPhase.update();
   if (this.currPhase.ended) {
     this.phase += 1;
-    this.currPhase = this.phases[this.phase % 3];
+    this.currPhase = this.phases[this.pattern[this.phase % 5]];
     this.currPhase.start();
-    console.log('ended', this.phase, this.currPhase);
   }
 };
 
 Acerbus.prototype.takeDamage = function() {
   console.log('hit');
+};
+
+Acerbus.prototype.chaseCharacter = function(player) {
+  if (this.chasing) {
+    console.log('chasing', player.x);
+    if (this.facing === 'left') {
+      this.body.velocity.x = -1 * this.walkingSpeed;
+    } else {
+      this.body.velocity.x = this.walkingSpeed;
+    }
+    if (this.game.time.elapsedSecondsSince(this.chaseStart) > this.chaseDelay) {
+      this.chasing = false;
+    }
+  } else {
+    if (this.x > player.x) {
+      this.facing = 'left';
+    } else {
+      this.facing = 'right';
+    }
+    this.chasing = true;
+    this.chaseStart = this.game.time.time;
+    console.log('recalculating', this.facing);
+  }
+};
+
+Acerbus.prototype.stopChasing = function(player) {
+  this.body.velocity.x = 0;
 };
 
 var Phase = function(game, cycles, idle, preparation, warning, execution) {
@@ -86,7 +118,6 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
         this.currStep = this.steps.idle;
         this.currCycles -= 1;
       } else {
-        console.log('ended');
         this.end();
       }
     }
@@ -109,7 +140,7 @@ var DashPhase = function(parent, game) {
       callback: this.preparation
     },
     {
-      duration: 1.5,
+      duration: 1.1,
       callback: this.warning
     },
     {
@@ -174,20 +205,6 @@ DashPhase.prototype.execution = function(self) {
 
   self.checkRightLimit();
   self.checkLeftLimit();
-
-  //if (self.parent.x > 544) {
-  //  self.parent.body.velocity.x = 0;
-  //  self.parent.facing = 'left';
-  //  self.parent.x = 544;
-  //  self.next();
-  //}
-
-  //if (self.parent.x < 32) {
-  //  self.parent.body.velocity.x = 0;
-  //  self.parent.facing = 'right';
-  //  self.parent.x = 32;
-  //  self.next();
-  //}
 };
 
 var LaughPhase = function(parent, game) {
@@ -262,5 +279,79 @@ TeleportPhase.prototype.warning = function(self) {
 
 TeleportPhase.prototype.execution = function(self) {
   self.parent.x = self.shadow.x;
-  self.shadow.kill();
+  self.shadow.destroy();
+};
+
+var Wave = function(game, x, y, direction) {
+  Phaser.Sprite.call(this, game, x, y, 'wave', 0);
+
+  this.speed = 560;
+  this.game.physics.arcade.enable(this);
+  this.body.allowGravity = false;
+  if (direction === 'left') {
+    this.body.velocity.x = -1 * this.speed;
+  } else {
+    this.body.velocity.x = this.speed;
+  }
+  groups.enemies.add(this);
+  this.game.add.existing(this);
+  //self.wave.animations.add('main');
+  //self.wave.animations.play('main', 17, true);
+};
+
+Wave.prototype = Object.create(Phaser.Sprite.prototype);
+Wave.prototype.constructor = Wave;
+
+Wave.prototype.update = function() {
+  if ((this.x + this.width < 0) || (this.x > this.game.world.width)) {
+    this.destroy();
+  }
+};
+
+var WavePhase = function(parent, game, player) {
+  Phase.call(this, game, 3,
+    {
+      duration: 0.5,
+      callback: function(self){}
+    },
+    {
+      duration: 2,
+      callback: this.preparation
+    },
+    {
+      duration: 0.5,
+      callback: this.warning
+    },
+    {
+      duration: 0.9,
+      callback: this.execution
+    }
+  );
+  this.player = player;
+  this.game = game;
+  this.parent = parent;
+  this.wave = null;
+};
+
+WavePhase.prototype = Object.create(Phase.prototype);
+WavePhase.prototype.constructor = WavePhase;
+
+WavePhase.prototype.preparation = function(self) {
+  self.wave = null;
+  self.parent.chaseCharacter(self.player);
+  //self.parent.tint = 0xffe09f;
+  //self.next();
+};
+
+WavePhase.prototype.warning = function(self) {
+  self.parent.tint = 0x000000;
+  self.parent.stopChasing();
+};
+
+WavePhase.prototype.execution = function(self) {
+  console.log('exec', self.parent.facing);
+  self.parent.tint = 0xffffff;
+  if (self.wave === null) {
+    self.wave = new Wave(self.game, self.parent.x, self.parent.y + 60, self.parent.facing);
+  }
 };

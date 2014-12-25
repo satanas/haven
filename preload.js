@@ -16,7 +16,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.progressbar);
 
-    this.load.tilemap('map', 'boss.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('map', 'mario.json', null, Phaser.Tilemap.TILED_JSON);
 
     this.load.image('wall', 'assets/box-blue.png');
     this.load.image('mario', 'assets/mario.png');
@@ -26,6 +26,7 @@ Preload.prototype = {
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
+    this.load.image('wave', 'assets/wave.png');
 
     this.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
     this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
