@@ -2,7 +2,9 @@
 
 var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'game');
 game.global = {
-  sceneDelay: 200
+  sceneDelay: 200,
+  diamonds: 0,
+  lives: 3
 }
 var groups = {};
 

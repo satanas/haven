@@ -23,6 +23,9 @@ Preload.prototype = {
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('bg', 'assets/background.png');
     this.load.image('menu', 'assets/menu.png');
+    this.load.image('diamond', 'assets/diamond.png');
+    this.load.image('extralife', 'assets/extra-life.png');
+    this.load.image('spikes', 'assets/spikes.png');
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
@@ -30,6 +33,7 @@ Preload.prototype = {
 
     this.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
     this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
+    this.load.spritesheet('snailbot', 'assets/snailbot.png', 84, 67);
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
   },
 

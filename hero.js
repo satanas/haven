@@ -38,6 +38,7 @@ Alysa.prototype.update = function() {
 
   if (this.status === 'alive') {
     this.game.physics.arcade.overlap(this, groups.enemies, this.takeDamage);
+    this.game.physics.arcade.overlap(this, groups.items, this.pickItem);
 
     this.movement();
     this.shoot();
@@ -141,6 +142,17 @@ Alysa.prototype.takeDamage = function(self, object) {
   if (self.status === 'alive') {
     self.die();
   }
+};
+
+Alysa.prototype.pickItem = function(self, object) {
+  if (object.type === 'diamond') {
+    self.game.global.diamonds += 1;
+    console.log('picking diamonds', self.game.global.diamonds);
+  } else if (object.type === 'extralife') {
+    self.game.global.lives += 1;
+    console.log('picking extralife', self.game.global.lives);
+  }
+  object.destroy();
 };
 
 Alysa.prototype.die = function() {
