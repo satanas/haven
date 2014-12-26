@@ -41,21 +41,7 @@ Gumbon.prototype.update = function() {
   this.move();
 };
 
-Gumbon.prototype.move = function() {
-  if (this.facing === 'left') {
-    this.body.velocity.x = -this.speed;
-    if (this.x <= this.x1) {
-      this.facing = 'right';
-      this.body.velocity.x = this.speed;
-    }
-  } else if (this.facing === 'right') {
-    this.body.velocity.x = this.speed;
-    if (this.x >= this.x2) {
-      this.facing = 'left';
-      this.body.velocity.x = -this.speed;
-    }
-  }
-};
+Gumbon.prototype.move = AI.simpleMove;
 
 Gumbon.prototype.render = function() {
   this.animations.play(this.facing);
@@ -99,7 +85,7 @@ Snailbot.prototype = Object.create(Phaser.Sprite.prototype);
 Snailbot.prototype.constructor = Snailbot;
 
 Snailbot.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms); //, this.onCollision);
+  this.game.physics.arcade.collide(this, groups.platforms);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
@@ -115,32 +101,7 @@ Snailbot.prototype.update = function() {
   this.move();
 };
 
-Snailbot.prototype.move = function() {
-  if (this.body.onWall()) {
-    this.body.velocity.x = 0;
-    if (this.facing === 'right') {
-      this.x -= 1;
-      this.facing = 'left';
-    } else {
-      this.x += 1;
-      this.facing = 'right';
-    }
-  } else {
-    if (this.facing === 'left') {
-      this.body.velocity.x = -this.speed;
-      if (this.x <= this.x1) {
-        this.facing = 'right';
-        this.body.velocity.x = this.speed;
-      }
-    } else if (this.facing === 'right') {
-      this.body.velocity.x = this.speed;
-      if (this.x >= this.x2) {
-        this.facing = 'left';
-        this.body.velocity.x = -this.speed;
-      }
-    }
-  }
-};
+Snailbot.prototype.move = AI.simpleMove;
 
 Snailbot.prototype.render = function() {
   this.animations.play(this.facing);
