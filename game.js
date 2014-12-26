@@ -54,10 +54,14 @@ Game.prototype = {
         var item = new Gumbon(self.game, e.x, y);
       } else if (e.properties.type === 'snailbot') {
         var item = new Snailbot(self.game, e.x, y);
+      } else if (e.properties.type === 'porktaicho') {
+        var item = new Porktaicho(self.game, self.player, e.x, y);
       }
     });
 
-    //groups.platforms.debug = true;
+    if (debug) {
+      groups.platforms.debug = true;
+    }
 
     this.player = new Alysa(this.game, 250, 170);
     //this.boss = new Acerbus(this.game, this.player, 544, 364);
@@ -84,8 +88,17 @@ Game.prototype = {
   },
 
   render: function() {
-    //game.debug.text(game.time.physicsElapsed, 32, 32);
-    //this.game.debug.body(this.gumbon);
-    //game.debug.bodyInfo(player, 16, 24);
+    if (debug) {
+      //this.game.debug.text(game.time.physicsElapsed, 32, 32);
+      this.game.debug.bodyInfo(this.player, 10, 20);
+      this.game.debug.body(this.player);
+      var self = this;
+      groups.enemies.forEach(function(e) {
+        self.game.debug.body(e);
+      });
+      groups.items.forEach(function(e) {
+        self.game.debug.body(e);
+      });
+    }
   }
 };

@@ -185,6 +185,20 @@
                  "width":0,
                  "x":768,
                  "y":541
+                }, 
+                {
+                 "gid":86,
+                 "height":0,
+                 "name":"Porktaicho",
+                 "properties":
+                    {
+                     "type":"porktaicho"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1952,
+                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",

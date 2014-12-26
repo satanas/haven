@@ -142,6 +142,9 @@ Alysa.prototype.takeDamage = function(self, object) {
   if (self.status === 'alive') {
     self.die();
   }
+  if (object.type !== undefined && object.type === 'bullet') {
+    object.kill();
+  }
 };
 
 Alysa.prototype.pickItem = function(self, object) {
