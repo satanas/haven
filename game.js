@@ -58,22 +58,20 @@ Game.prototype = {
     });
 
     //groups.platforms.debug = true;
-    groups.items.debug = true;
 
     this.player = new Alysa(this.game, 250, 170);
-    //this.gumbon = new Gumbon(this.game, 100, 100, 0);
     //this.boss = new Acerbus(this.game, this.player, 544, 364);
 
     this.clock = new Clock(120, this.game);
     this.clock.start();
 
+    this.game.world.bringToTop(groups.enemies);
     this.game.world.bringToTop(groups.items);
     this.game.world.bringToTop(groups.bullets);
   },
 
   update: function() {
     if (this.clock.ended && this.player.status !== 'dying') {
-      console.log('aklsjdajd');
       this.player.die();
     }
 
