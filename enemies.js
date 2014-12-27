@@ -228,7 +228,7 @@ var SuperFlowah = function(game, x, y, direction) {
   this.invincibilityTime = 0.100;
   this.animations.add('rise', [7, 8, 9, 10, 11, 12, 13], 12, false);
   this.animations.add('fall',  [14, 15, 16, 17, 18, 19, 20], 12, false);
-  this.animations.add('shoot',  [0, 1, 2, 3, 4, 5, 6], 12, true);
+  this.animations.add('shoot',  [0, 1, 2, 3, 4, 5], 12, true);
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -270,7 +270,7 @@ SuperFlowah.prototype.update = function() {
   } else if (this.status === 'shooting') {
     if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.shotDelay) {
       this.shots += 1;
-      var bullet = new EnemyBullet(this.game, this.body.x + 15, this.body.y + 50, 'left');
+      var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
       this.lastActionTime = this.game.time.time;
       this.animations.play('shoot');
       if (this.shots > 2) {
