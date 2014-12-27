@@ -199,6 +199,34 @@
                  "width":0,
                  "x":1952,
                  "y":512
+                }, 
+                {
+                 "gid":89,
+                 "height":0,
+                 "name":"SuperFlowah",
+                 "properties":
+                    {
+                     "type":"superflowah"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":736,
+                 "y":384
+                }, 
+                {
+                 "gid":57,
+                 "height":0,
+                 "name":"Ladybug",
+                 "properties":
+                    {
+                     "type":"ladybug"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1696,
+                 "y":540
                 }],
          "opacity":1,
          "type":"objectgroup",
