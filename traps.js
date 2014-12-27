@@ -5,6 +5,7 @@ var Spike = function(game, x, y) {
 
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
+  this.body.setSize(32, 24, 0, 8);
   groups.enemies.add(this);
 };
 
