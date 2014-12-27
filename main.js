@@ -6,7 +6,7 @@ game.global = {
   diamonds: 0,
   lives: 3
 }
-var debug = true;
+var debug = false;
 var groups = {};
 
 //game.stage.backgroundColor = '#fff';

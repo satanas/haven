@@ -34,8 +34,9 @@ Preload.prototype = {
     this.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
     this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
     this.load.spritesheet('snailbot', 'assets/snailbot.png', 84, 67);
-    // FIX this shit (GIF to PNG)
-    this.load.spritesheet('porktaicho', 'assets/porktaicho.gif', 63, 51);
+    this.load.spritesheet('superflowah', 'assets/superflowah.png', 93, 68);
+    this.load.spritesheet('ladybug', 'assets/ladybug.png', 47, 36);
+    this.load.spritesheet('porktaicho', 'assets/porktaicho.png', 63, 51);
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
   },
 

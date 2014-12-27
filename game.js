@@ -56,6 +56,10 @@ Game.prototype = {
         var item = new Snailbot(self.game, e.x, y);
       } else if (e.properties.type === 'porktaicho') {
         var item = new Porktaicho(self.game, self.player, e.x, y);
+      } else if (e.properties.type === 'superflowah') {
+        var item = new SuperFlowah(self.game, e.x, y);
+      } else if (e.properties.type === 'ladybug') {
+        var item = new Ladybug(self.game, e.x, y);
       }
     });
 
@@ -90,7 +94,7 @@ Game.prototype = {
   render: function() {
     if (debug) {
       //this.game.debug.text(game.time.physicsElapsed, 32, 32);
-      this.game.debug.bodyInfo(this.player, 10, 20);
+      //this.game.debug.bodyInfo(this.player, 10, 20);
       this.game.debug.body(this.player);
       var self = this;
       groups.enemies.forEach(function(e) {
