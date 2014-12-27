@@ -13,6 +13,7 @@ var Alysa = function(game, x, y) {
   this.status = 'alive'; // dying, dead
   this.deadTime = 0;
   this.dyingDelay = 0.9;
+  this.reasonOfDeath = null;
   this.shotDelay = 0.155;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -158,10 +159,13 @@ Alysa.prototype.pickItem = function(self, object) {
   object.destroy();
 };
 
-Alysa.prototype.die = function() {
+Alysa.prototype.die = function(reason) {
   this.deadTime = this.game.time.time;
   this.status = 'dying';
   this.game.camera.follow(null);
+  if (reason !== undefined) {
+    reasonOfDeath = reason;
+  }
   if (this.facing === 'left') {
     this.animations.play('dying-left');
   } else {

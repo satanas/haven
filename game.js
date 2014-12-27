@@ -80,7 +80,7 @@ Game.prototype = {
 
   update: function() {
     if (this.clock.ended && this.player.status !== 'dying') {
-      this.player.die();
+      this.player.die('timeout');
     }
 
     if (this.player.death){

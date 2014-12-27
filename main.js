@@ -8,6 +8,7 @@ game.global = {
 }
 var debug = false;
 var groups = {};
+var reasonOfDeath = null;
 
 //game.stage.backgroundColor = '#fff';
 
