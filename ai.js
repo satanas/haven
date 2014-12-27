@@ -3,22 +3,25 @@
 var AI = {
   simpleMove: function() {
     var onWall = this.body.onWall();
-    var onLimits = (this.x <= this.x1) || (this.x >= this.x2);
-    var onWorldBounds = (this.x >= this.game.world.width - this.width) || (this.x <= 0);
+    var onLimits = (this.body.x <= this.x1) || (this.body.x >= this.x2);
+    var onWorldBounds = (this.body.x >= this.game.world.width - this.width) || (this.body.x <= 0);
 
     if (onWall || onLimits || onWorldBounds) {
       this.body.velocity.x = 0;
-      if (this.x < 0) this.x = 0;
-      if (this.x < this.x1) this.x = this.x1;
-      if (this.x > this.x2) this.x = this.x2;
-      if (this.x >= this.game.world.width - this.width) this.x = this.game.world.width - this.width;
+      if (this.body.x < 0) this.body.x = 0;
+      if (this.body.x < this.x1) this.body.x = this.x1;
+      if (this.body.x > this.x2) this.body.x = this.x2;
+      if (this.body.x >= this.game.world.width - this.width) this.body.x = this.game.world.width - this.width;
+      var x = this.body.x;
 
       if (this.facing === 'right') {
-        this.x -= 1;
         this.facing = 'left';
+        this.adjustHitBox();
+        this.x = x - this.body.offset.x - 1;
       } else {
-        this.x += 1;
         this.facing = 'right';
+        this.adjustHitBox();
+        this.x = x + this.body.offset.x + 1;
       }
     } else {
       if (this.facing === 'right') {
