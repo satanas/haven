@@ -52,6 +52,7 @@ Gumbon.prototype.render = function() {
 
 Gumbon.prototype.takeDamage = function() {
   if (!this.hurt) {
+    var blood = new BloodParticles(this.game, this.x, this.y);
     this.tint = 0xcd0937;
     this.hurt = true;
     this.hurtTime = game.time.time;
