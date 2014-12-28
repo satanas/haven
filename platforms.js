@@ -69,12 +69,12 @@ MovingPlatform.prototype.preUpdate = function() {
   }
 };
 
-var FallingPlatform = function(game, player, x, y) {
+var FallingPlatform = function(game, player, x, y, lifetime) {
   Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
 
   this.player = player;
   this.playerOnTop = false;
-  this.lifetime = 1500;
+  this.lifetime = lifetime;
   this.checkWorldBounds = true;
   this.outOfBoundsKill = true;
   this.game.physics.arcade.enable(this);

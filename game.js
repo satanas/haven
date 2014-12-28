@@ -28,10 +28,10 @@ Game.prototype = {
 
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('MARIO', 'mario');
-    groups.tiles = this.map.createLayer('Platforms');
+    groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
-    this.map.setCollisionBetween(1, 120, true, 'Platforms');
+    this.map.setCollisionBetween(1, 120, true, 'Tiles');
     groups.tiles.resizeWorld();
 
     this.player = new Alysa(this.game, 250, 170);
@@ -43,34 +43,43 @@ Game.prototype = {
         var item = new Diamond(self.game, e.x, y);
       } else if (e.properties.type === 'extralife') {
         var item = new ExtraLife(self.game, e.x, y);
-      } else if (e.properties.type === 'platform') {
-        if (e.properties.action === 'move') {
-          var item = new MovingPlatform(self.game, self.player, e.x, y, e.properties.direction);
-        } else if (e.properties.action === 'fall') {
-          var item = new FallingPlatform(self.game, self.player, e.x, y);
-        }
       }
     });
 
-    this.map.objects['Traps'].forEach(function(e) {
+    this.map.objects['Platforms'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
-      if (e.properties.type === 'spike') {
-        var item = new Spike(self.game, e.x, y);
+      if (e.properties.type === 'platform') {
+        if (e.properties.action === 'move') {
+          var direction = e.properties.direction;
+          var min = e.properties.min || 100;
+          var max = e.properties.max || 100;
+          var item = new MovingPlatform(self.game, self.player, e.x, y, direction, min, max);
+        } else if (e.properties.action === 'fall') {
+          var lifetime = e.properties.lifetime || 1500
+          var item = new FallingPlatform(self.game, self.player, e.x, y, lifetime);
+        }
       }
     });
 
     this.map.objects['Enemies'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
-      if (e.properties.type === 'gumbon') {
-        var item = new Gumbon(self.game, e.x, y);
+      var facing = e.properties.facing || 'left';
+      if (e.properties.type === 'acerbus') {
+        self.boss = new Acerbus(self.game, self.player, e.x, y);
+      } else if (e.properties.type === 'gumbon') {
+        var item = new Gumbon(self.game, e.x, y, facing);
       } else if (e.properties.type === 'snailbot') {
-        var item = new Snailbot(self.game, e.x, y);
+        var item = new Snailbot(self.game, e.x, y, facing);
       } else if (e.properties.type === 'porktaicho') {
-        var item = new Porktaicho(self.game, self.player, e.x, y, null, e.properties.position);
+        var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action);
       } else if (e.properties.type === 'superflowah') {
         var item = new SuperFlowah(self.game, e.x, y);
       } else if (e.properties.type === 'ladybug') {
-        var item = new Ladybug(self.game, e.x, y);
+        var item = new Ladybug(self.game, e.x, y, facing);
+      } else if (e.properties.type === 'medusa') {
+        var item = new Medusa(self.game, e.x, y, facing);
+      } else if (e.properties.type === 'spike') {
+        var item = new Spike(self.game, e.x, y);
       }
     });
 
@@ -78,11 +87,10 @@ Game.prototype = {
       groups.tiles.debug = true;
     }
 
-    //this.boss = new Acerbus(this.game, this.player, 544, 364);
-
     this.clock = new Clock(120, this.game);
     this.clock.start();
 
+    this.game.world.bringToTop(groups.platforms);
     this.game.world.bringToTop(groups.enemies);
     this.game.world.bringToTop(groups.items);
     this.game.world.bringToTop(groups.bullets);
