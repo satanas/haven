@@ -55,7 +55,7 @@ var EnemyBullet = function(game, x, y, direction) {
   } else {
     this.body.velocity.x = this.speed;
   }
-  groups.bullets.add(this);
+  groups.enemies.add(this);
 };
 
 EnemyBullet.prototype = Object.create(Phaser.Sprite.prototype);
@@ -71,3 +71,5 @@ EnemyBullet.prototype.update = function() {
 EnemyBullet.prototype.die = function(self, platform) {
   self.kill();
 };
+
+EnemyBullet.prototype.takeDamage = function() {};
