@@ -17,6 +17,7 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.progressbar);
 
     this.load.tilemap('map', 'mario.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('boss', 'boss.json', null, Phaser.Tilemap.TILED_JSON);
 
     this.load.image('wall', 'assets/box-blue.png');
     this.load.image('mario', 'assets/mario.png');
