@@ -40,13 +40,14 @@ Game.prototype = {
     this.map.objects['Objects'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
       if (e.properties.type === 'diamond') {
-        var diamond = new Diamond(self.game, e.x, y);
+        var item = new Diamond(self.game, e.x, y);
       } else if (e.properties.type === 'extralife') {
-        var life = new ExtraLife(self.game, e.x, y);
+        var item = new ExtraLife(self.game, e.x, y);
       } else if (e.properties.type === 'platform') {
-        if (e.properties.mode === 'moving') {
-          var life = new MovingPlatform(self.game, self.player, e.x, y, e.properties.direction);
-        } else if (e.properties.mode === 'falling') {
+        if (e.properties.action === 'move') {
+          var item = new MovingPlatform(self.game, self.player, e.x, y, e.properties.direction);
+        } else if (e.properties.action === 'fall') {
+          var item = new FallingPlatform(self.game, self.player, e.x, y);
         }
       }
     });

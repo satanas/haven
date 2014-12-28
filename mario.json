@@ -100,14 +100,30 @@
                  "name":"MovingPlatform",
                  "properties":
                     {
+                     "action":"move",
                      "direction":"vertical",
-                     "type":"movingplatform"
+                     "type":"platform"
                     },
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":480,
                  "y":448
+                }, 
+                {
+                 "gid":117,
+                 "height":0,
+                 "name":"FallingPlatform",
+                 "properties":
+                    {
+                     "action":"fall",
+                     "type":"platform"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":640,
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",

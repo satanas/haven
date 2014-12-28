@@ -9,7 +9,6 @@ var MovingPlatform = function(game, player, x, y, movement, min, max) {
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   this.body.immovable = true;
-  //this.body.setSize(64, 16, 0, 0);
   this.body.checkCollision.down = false;
   if (this.movement === 'vertical') {
     this.direction = 'up';
@@ -67,5 +66,53 @@ MovingPlatform.prototype.preUpdate = function() {
   if (playerOnTop) {
     this.player.body.touching.down = true;
     this.player.body.blocked.down = true;
+  }
+};
+
+var FallingPlatform = function(game, player, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
+
+  this.player = player;
+  this.playerOnTop = false;
+  this.lifetime = 1500;
+  this.checkWorldBounds = true;
+  this.outOfBoundsKill = true;
+  this.game.physics.arcade.enable(this);
+  this.body.gravity.y = 1000;
+  this.body.allowGravity = false;
+  this.body.immovable = true;
+  groups.platforms.add(this);
+};
+
+FallingPlatform.prototype = Object.create(Phaser.Sprite.prototype);
+FallingPlatform.prototype.constructor = FallingPlatform;
+
+FallingPlatform.prototype.update = function() {
+  this.playerOnTop = false;
+  var playerCenterX = this.player.x + (this.player.width / 2);
+  if (this.player.y + this.player.height === this.y && playerCenterX < this.x + this.width && playerCenterX >= this.x) {
+    this.playerOnTop = true;
+    this.lifetime -= this.game.time.elapsed;
+    if (this.lifetime <= 0) {
+      this.body.immovable = false;
+      this.body.allowGravity = true;
+    }
+  }
+
+  if (!this.alive) {
+    this.destroy();
+  }
+  this.render();
+};
+
+FallingPlatform.prototype.render = function() {
+  if (this.lifetime > 0) {
+    if (this.playerOnTop) {
+      this.tint = 0xcfe002;
+    } else {
+      this.tint = 0xffffff;
+    }
+  } else {
+    this.tint = 0xff0000;
   }
 };
