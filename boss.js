@@ -36,7 +36,7 @@ Acerbus.prototype = Object.create(Phaser.Sprite.prototype);
 Acerbus.prototype.constructor = Acerbus;
 
 Acerbus.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
   this.currPhase.update();
   if (this.currPhase.ended) {
     this.phase += 1;

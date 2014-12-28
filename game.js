@@ -23,13 +23,18 @@ Game.prototype = {
     groups.items = this.game.add.group();
     groups.items.enableBody = true;
 
+    groups.blocks = this.game.add.group();
+    groups.blocks.enableBody = true;
+
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('MARIO', 'mario');
-    groups.platforms = this.map.createLayer('Platforms');
+    groups.tiles = this.map.createLayer('Platforms');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
     this.map.setCollisionBetween(1, 120, true, 'Platforms');
-    groups.platforms.resizeWorld();
+    groups.tiles.resizeWorld();
+
+    this.player = new Alysa(this.game, 250, 170);
 
     var self = this;
     this.map.objects['Objects'].forEach(function(e) {
@@ -38,6 +43,11 @@ Game.prototype = {
         var diamond = new Diamond(self.game, e.x, y);
       } else if (e.properties.type === 'extralife') {
         var life = new ExtraLife(self.game, e.x, y);
+      } else if (e.properties.type === 'platform') {
+        if (e.properties.mode === 'moving') {
+          var life = new MovingPlatform(self.game, self.player, e.x, y, e.properties.direction);
+        } else if (e.properties.mode === 'falling') {
+        }
       }
     });
 
@@ -55,7 +65,7 @@ Game.prototype = {
       } else if (e.properties.type === 'snailbot') {
         var item = new Snailbot(self.game, e.x, y);
       } else if (e.properties.type === 'porktaicho') {
-        var item = new Porktaicho(self.game, self.player, e.x, y);
+        var item = new Porktaicho(self.game, self.player, e.x, y, null, e.properties.position);
       } else if (e.properties.type === 'superflowah') {
         var item = new SuperFlowah(self.game, e.x, y);
       } else if (e.properties.type === 'ladybug') {
@@ -64,10 +74,9 @@ Game.prototype = {
     });
 
     if (debug) {
-      groups.platforms.debug = true;
+      groups.tiles.debug = true;
     }
 
-    this.player = new Alysa(this.game, 250, 170);
     //this.boss = new Acerbus(this.game, this.player, 544, 364);
 
     this.clock = new Clock(120, this.game);
@@ -101,6 +110,9 @@ Game.prototype = {
         self.game.debug.body(e);
       });
       groups.items.forEach(function(e) {
+        self.game.debug.body(e);
+      });
+      groups.blocks.forEach(function(e) {
         self.game.debug.body(e);
       });
     }

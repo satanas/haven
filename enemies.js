@@ -28,7 +28,7 @@ Gumbon.prototype.adjustHitBox = function() {
 };
 
 Gumbon.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
@@ -89,7 +89,7 @@ Snailbot.prototype = Object.create(Phaser.Sprite.prototype);
 Snailbot.prototype.constructor = Snailbot;
 
 Snailbot.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
@@ -128,7 +128,7 @@ Snailbot.prototype.takeDamage = function() {
   }
 };
 
-var Porktaicho = function(game, player, x, y, direction) {
+var Porktaicho = function(game, player, x, y, direction, position) {
   Phaser.Sprite.call(this, game, x, y, 'porktaicho', 0);
 
   this.player = player;
@@ -142,6 +142,7 @@ var Porktaicho = function(game, player, x, y, direction) {
   this.shooting = false;
   this.lastShotTime = 0;
   this.shotDelay = 1.5;
+  this.mode = position;
   this.invincibilityTime = 0.100;
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 16, true);
@@ -165,7 +166,7 @@ Porktaicho.prototype.adjustHitBox = function() {
 };
 
 Porktaicho.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
@@ -178,7 +179,9 @@ Porktaicho.prototype.update = function() {
 
   if (!this.body.onFloor()) return;
 
-  this.move();
+  if (this.mode === 'movement') {
+    this.move();
+  };
   this.shoot();
 };
 
@@ -197,7 +200,15 @@ Porktaicho.prototype.shoot = function() {
 };
 
 Porktaicho.prototype.render = function() {
-  this.animations.play(this.facing);
+  if (this.mode === 'fixed') {
+    if (this.facing === 'left') {
+      this.frame = 0;
+    } else {
+      this.frame = 15;
+    }
+  } else {
+    this.animations.play(this.facing);
+  }
 };
 
 Porktaicho.prototype.takeDamage = function() {
@@ -242,7 +253,7 @@ SuperFlowah.prototype = Object.create(Phaser.Sprite.prototype);
 SuperFlowah.prototype.constructor = SuperFlowah;
 
 SuperFlowah.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
@@ -335,7 +346,7 @@ Ladybug.prototype.adjustHitBox = function() {
 };
 
 Ladybug.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
     if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {

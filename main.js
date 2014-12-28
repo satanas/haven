@@ -6,7 +6,7 @@ game.global = {
   diamonds: 0,
   lives: 3
 }
-var debug = false;
+var debug = true;
 var groups = {};
 var reasonOfDeath = null;
 

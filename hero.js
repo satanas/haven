@@ -35,7 +35,8 @@ Alysa.prototype = Object.create(Phaser.Sprite.prototype);
 Alysa.prototype.constructor = Alysa;
 
 Alysa.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms);
+  this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
+  this.game.physics.arcade.collide(this, groups.blocks, this.onCollision);
 
   if (this.status === 'alive') {
     this.game.physics.arcade.overlap(this, groups.enemies, this.takeDamage);
@@ -57,13 +58,13 @@ Alysa.prototype.update = function() {
   this.render();
 };
 
-Alysa.prototype.movement = function() {
-  if (this.body.onFloor()) {
-    this.jumping = false;
-    this.doubleJumping = false;
-    this.canDoubleJump = false;
+Alysa.prototype.onCollision = function(self, block) {
+  if (self.body.touching.down === true) {
+    self.body.blocked.down = true;
   }
+};
 
+Alysa.prototype.movement = function() {
   if (this.cursors.left.isDown) {
     this.facing = 'left';
     this.body.velocity.x = -200;
@@ -79,9 +80,15 @@ Alysa.prototype.movement = function() {
     this.body.velocity.y = -800;
   }
   // Free fall
-  if (this.body.velocity.y !== 0 && !this.jumping) {
+  if (this.body.velocity.y !== 0 && !this.jumping && !this.body.onFloor()) {
     this.jumping = true;
     this.canDoubleJump = true;
+  }
+
+  if (this.body.onFloor()) {
+    this.jumping = false;
+    this.doubleJumping = false;
+    this.canDoubleJump = false;
   }
 
   if (this.cursors.up.justReleased(50) && this.jumping && !this.doubleJumping) {
@@ -123,7 +130,7 @@ Alysa.prototype.render = function() {
     } else {
       this.frame = 18;
     }
-  } else if (this.body.velocity.x !== 0 && this.body.velocity.y === 0) {
+  } else if (this.body.velocity.x !== 0 && this.body.onFloor()) {
     if (this.facing == 'left') {
       this.animations.play('left');
     } else if (this.facing == 'right') {

@@ -22,7 +22,7 @@ Bullet.prototype = Object.create(Phaser.Sprite.prototype);
 Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.platforms, this.die);
+  this.game.physics.arcade.collide(this, groups.tiles, this.die);
   this.game.physics.arcade.overlap(this, groups.enemies, this.makeDamage);
   if (!this.alive) {
     this.destroy();
@@ -62,7 +62,7 @@ EnemyBullet.prototype = Object.create(Phaser.Sprite.prototype);
 EnemyBullet.prototype.constructor = EnemyBullet;
 
 EnemyBullet.prototype.update = function() {
-  this.game.physics.arcade.overlap(this, groups.platforms, this.die);
+  this.game.physics.arcade.overlap(this, groups.tiles, this.die);
   if (!this.alive) {
     this.destroy();
   }

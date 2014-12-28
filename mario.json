@@ -93,6 +93,21 @@
                  "width":0,
                  "x":800,
                  "y":448
+                }, 
+                {
+                 "gid":118,
+                 "height":0,
+                 "name":"MovingPlatform",
+                 "properties":
+                    {
+                     "direction":"vertical",
+                     "type":"movingplatform"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":480,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -192,6 +207,7 @@
                  "name":"Porktaicho",
                  "properties":
                     {
+                     "position":"movement",
                      "type":"porktaicho"
                     },
                  "type":"",
@@ -227,6 +243,21 @@
                  "width":0,
                  "x":1696,
                  "y":540
+                }, 
+                {
+                 "gid":86,
+                 "height":0,
+                 "name":"Porktaicho",
+                 "properties":
+                    {
+                     "position":"fixed",
+                     "type":"porktaicho"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2048,
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",
