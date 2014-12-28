@@ -380,14 +380,22 @@ Ladybug.prototype.takeDamage = function() {
   }
 };
 
-var Medusa = function(game, x, y, facing) {
-  Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
+var Medusa = function(game, x, y, facing, xrange, yrange) {
+  Phaser.Sprite.call(this, game, x, y, 'medusa', 0);
 
+  this.origY = y;
   this.facing = facing;
   this.speed = 120;
+  this.minX = this.x - xrange;
+  this.maxX = this.x + xrange;
+  this.maxCycles = 4;
+  this.cycles = 0;
+  this.yrange = 40;
   this.health = 5;
   this.hurt = false;
   this.hurtTime = 0;
+  this.maxTime = 1000;
+  this.elapsedTime = 0;
   this.invincibilityTime = 0.100;
   //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
@@ -396,7 +404,6 @@ var Medusa = function(game, x, y, facing) {
   this.body.allowGravity = false;
   //this.animations.play('left');
   groups.enemies.add(this);
-  console.log('medusa');
 };
 
 Medusa.prototype = Object.create(Phaser.Sprite.prototype);
@@ -415,25 +422,29 @@ Medusa.prototype.update = function() {
     }
   }
 
-  this.render();
+  //this.render();
 
   this.move();
-  console.log('move');
 };
 
 Medusa.prototype.move = function() {
   if (this.facing === 'left') {
     this.body.velocity.x = -1 * this.speed;
-    if (this.x <= this.x1) {
+    if (this.x <= this.minX) {
       this.facing = 'right';
     }
   } else {
     this.body.velocity.x = this.speed;
-    if (this.x <= this.x1) {
-      this.facing = 'right';
+    if (this.x >= this.maxX) {
+      this.facing = 'left';
     }
   }
-  this.y = Math.sin(this.x);
+  this.elapsedTime += this.game.time.elapsed;
+  if (this.elapsedTime >= this.maxTime) {
+    this.elapsedTime = 0;
+  }
+  var deltaY = this.yrange * Math.sin(this.elapsedTime * (2 * Math.PI) / this.maxTime);
+  this.y = this.origY + deltaY;
 };
 
 Medusa.prototype.render = function() {

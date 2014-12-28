@@ -77,7 +77,8 @@ Game.prototype = {
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing);
       } else if (e.properties.type === 'medusa') {
-        var item = new Medusa(self.game, e.x, y, facing);
+        var xrange = e.properties.xrange || 140;
+        var item = new Medusa(self.game, e.x, y, facing, xrange);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       }
