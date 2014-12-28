@@ -1,13 +1,13 @@
 'use strict';
 
-var Gumbon = function(game, x, y, direction) {
+var Gumbon = function(game, x, y, facing) {
   Phaser.Sprite.call(this, game, x, y, 'gumbon', 0);
 
-  this.facing = 'left';
+  this.facing = facing;
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 120;
-  this.health = 20;
+  this.health = 5;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -63,14 +63,14 @@ Gumbon.prototype.takeDamage = function() {
   }
 };
 
-var Snailbot = function(game, x, y, direction) {
+var Snailbot = function(game, x, y, facing) {
   Phaser.Sprite.call(this, game, x, y, 'snailbot', 0);
 
-  this.facing = 'left';
+  this.facing = facing;
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 100;
-  this.health = 20;
+  this.health = 5;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -128,21 +128,21 @@ Snailbot.prototype.takeDamage = function() {
   }
 };
 
-var Porktaicho = function(game, player, x, y, direction, position) {
+var Porktaicho = function(game, player, x, y, facing, action) {
   Phaser.Sprite.call(this, game, x, y, 'porktaicho', 0);
 
   this.player = player;
-  this.facing = 'left';
+  this.facing = facing;
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 130;
-  this.health = 20;
+  this.health = 5;
   this.hurt = false;
   this.hurtTime = 0;
   this.shooting = false;
   this.lastShotTime = 0;
   this.shotDelay = 1.5;
-  this.mode = position;
+  this.action = action;
   this.invincibilityTime = 0.100;
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 16, true);
@@ -179,7 +179,7 @@ Porktaicho.prototype.update = function() {
 
   if (!this.body.onFloor()) return;
 
-  if (this.mode === 'movement') {
+  if (this.action === 'move') {
     this.move();
   };
   this.shoot();
@@ -200,7 +200,7 @@ Porktaicho.prototype.shoot = function() {
 };
 
 Porktaicho.prototype.render = function() {
-  if (this.mode === 'fixed') {
+  if (this.action === 'stand') {
     if (this.facing === 'left') {
       this.frame = 0;
     } else {
@@ -223,10 +223,10 @@ Porktaicho.prototype.takeDamage = function() {
   }
 };
 
-var SuperFlowah = function(game, x, y, direction) {
+var SuperFlowah = function(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'superflowah', 0);
 
-  this.health = 20;
+  this.health = 5;
   this.hurt = false;
   this.shotDelay = 0.7;
   this.maxShots = 3;
@@ -318,14 +318,14 @@ SuperFlowah.prototype.takeDamage = function() {
   }
 };
 
-var Ladybug = function(game, x, y, direction) {
+var Ladybug = function(game, x, y, facing) {
   Phaser.Sprite.call(this, game, x, y, 'ladybug', 0);
 
-  this.facing = 'left';
+  this.facing = facing;
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 180;
-  this.health = 20;
+  this.health = 5;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -369,6 +369,78 @@ Ladybug.prototype.render = function() {
 };
 
 Ladybug.prototype.takeDamage = function() {
+  if (!this.hurt) {
+    this.tint = 0xcd0937;
+    this.hurt = true;
+    this.hurtTime = game.time.time;
+    this.health -= 1;
+    if (this.health <= 0) {
+      this.destroy();
+    }
+  }
+};
+
+var Medusa = function(game, x, y, facing) {
+  Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
+
+  this.facing = facing;
+  this.speed = 120;
+  this.health = 5;
+  this.hurt = false;
+  this.hurtTime = 0;
+  this.invincibilityTime = 0.100;
+  //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
+  //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+
+  this.game.physics.arcade.enableBody(this);
+  this.body.allowGravity = false;
+  //this.animations.play('left');
+  groups.enemies.add(this);
+  console.log('medusa');
+};
+
+Medusa.prototype = Object.create(Phaser.Sprite.prototype);
+Medusa.prototype.constructor = Medusa;
+
+Medusa.prototype.adjustHitBox = function() {
+};
+
+Medusa.prototype.update = function() {
+  //this.game.physics.arcade.collide(this, groups.tiles);
+
+  if (this.hurt) {
+    if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
+      this.hurt = false;
+      this.tint = 0xffffff;
+    }
+  }
+
+  this.render();
+
+  this.move();
+  console.log('move');
+};
+
+Medusa.prototype.move = function() {
+  if (this.facing === 'left') {
+    this.body.velocity.x = -1 * this.speed;
+    if (this.x <= this.x1) {
+      this.facing = 'right';
+    }
+  } else {
+    this.body.velocity.x = this.speed;
+    if (this.x <= this.x1) {
+      this.facing = 'right';
+    }
+  }
+  this.y = Math.sin(this.x);
+};
+
+Medusa.prototype.render = function() {
+  //this.animations.play(this.facing);
+};
+
+Medusa.prototype.takeDamage = function() {
   if (!this.hurt) {
     this.tint = 0xcd0937;
     this.hurt = true;
