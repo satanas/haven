@@ -24,7 +24,7 @@ var MovingPlatform = function(game, player, x, y, movement, min, max) {
   }
   this.origX = this.x;
   this.origY = this.y;
-  groups.blocks.add(this);
+  groups.platforms.add(this);
 };
 
 MovingPlatform.prototype = Object.create(Phaser.Sprite.prototype);

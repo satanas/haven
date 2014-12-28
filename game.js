@@ -23,8 +23,8 @@ Game.prototype = {
     groups.items = this.game.add.group();
     groups.items.enableBody = true;
 
-    groups.blocks = this.game.add.group();
-    groups.blocks.enableBody = true;
+    groups.platforms = this.game.add.group();
+    groups.platforms.enableBody = true;
 
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('MARIO', 'mario');
@@ -112,7 +112,7 @@ Game.prototype = {
       groups.items.forEach(function(e) {
         self.game.debug.body(e);
       });
-      groups.blocks.forEach(function(e) {
+      groups.platforms.forEach(function(e) {
         self.game.debug.body(e);
       });
     }
