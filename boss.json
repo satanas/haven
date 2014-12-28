@@ -10,6 +10,53 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "height":15,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "gid":85,
+                 "height":0,
+                 "name":"Acerbus",
+                 "properties":
+                    {
+                     "type":"acerbus"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":544,
+                 "y":384
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":15,
+         "name":"Traps",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":15,
+         "name":"Objects",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":
@@ -20,7 +67,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"mario.png",
+         "image":"assets\/mario.png",
          "imageheight":544,
          "imagewidth":512,
          "margin":0,
