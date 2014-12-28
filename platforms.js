@@ -90,9 +90,7 @@ FallingPlatform.prototype.constructor = FallingPlatform;
 FallingPlatform.prototype.update = function() {
   this.playerOnTop = false;
   var playerCenterX = this.player.x + (this.player.width / 2);
-  var x1 = this.player.x + this.player.width;
-  var p1 = this.x + this.width;
-  if ((this.player.y + this.player.height === this.y) && (x1 >= this.x && this.player.x <= p1)) {
+  if ((this.player.y + this.player.height === this.y) && (this.player.x + this.player.width >= this.x && this.player.x <= this.x + this.width)) {
     this.playerOnTop = true;
     this.lifetime -= this.game.time.elapsed;
     if (this.lifetime <= 0) {
