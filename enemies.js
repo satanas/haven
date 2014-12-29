@@ -9,6 +9,7 @@ var Gumbon = function(game, x, y, facing) {
   this.speed = 120;
   this.health = 5;
   this.hurt = false;
+  this.harm = 1;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
@@ -71,6 +72,7 @@ var Snailbot = function(game, x, y, facing) {
   this.x2 = x + 100;
   this.speed = 100;
   this.health = 5;
+  this.harm = 1;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -137,6 +139,7 @@ var Porktaicho = function(game, player, x, y, facing, action) {
   this.x2 = x + 100;
   this.speed = 130;
   this.health = 5;
+  this.harm = 1;
   this.hurt = false;
   this.hurtTime = 0;
   this.shooting = false;
@@ -188,11 +191,12 @@ Porktaicho.prototype.update = function() {
 Porktaicho.prototype.move = AI.simpleMove;
 
 Porktaicho.prototype.shoot = function() {
+  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
   if (this.shooting) {
     if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
       this.shooting = false;
     }
-  } else {
+  } else if (playerIsNear) {
     this.shooting = true;
     this.lastShotTime = this.game.time.time;
     var bullet = new EnemyBullet(this.game, this.body.x + (this.body.width / 2), this.body.y + 17, this.facing);
@@ -223,14 +227,16 @@ Porktaicho.prototype.takeDamage = function() {
   }
 };
 
-var SuperFlowah = function(game, x, y) {
+var SuperFlowah = function(game, player, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'superflowah', 0);
 
+  this.player = player;
   this.health = 5;
   this.hurt = false;
   this.shotDelay = 0.7;
   this.maxShots = 3;
   this.shots = 0;
+  this.harm = 1;
   this.hiddenDelay = 1.5;
   this.waitingDelay = 1.1;
   this.status = 'hidden';
@@ -253,6 +259,8 @@ SuperFlowah.prototype = Object.create(Phaser.Sprite.prototype);
 SuperFlowah.prototype.constructor = SuperFlowah;
 
 SuperFlowah.prototype.update = function() {
+  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
+
   this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
@@ -280,16 +288,18 @@ SuperFlowah.prototype.update = function() {
       this.lastActionTime = this.game.time.time;
     }
   } else if (this.status === 'shooting') {
-    if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.shotDelay) {
-      this.shots += 1;
-      var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
-      this.lastActionTime = this.game.time.time;
-      this.animations.play('shoot');
-      if (this.shots > 2) {
-        this.animations.stop();
-        this.frame = 14;
-        this.status = 'done';
+    if (playerIsNear) {
+      if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.shotDelay) {
+        this.shots += 1;
+        var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
         this.lastActionTime = this.game.time.time;
+        this.animations.play('shoot');
+        if (this.shots > 2) {
+          this.animations.stop();
+          this.frame = 14;
+          this.status = 'done';
+          this.lastActionTime = this.game.time.time;
+        }
       }
     }
   } else if (this.status === 'done') {
@@ -326,6 +336,7 @@ var Ladybug = function(game, x, y, facing) {
   this.x2 = x + 100;
   this.speed = 180;
   this.health = 5;
+  this.harm = 1;
   this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
@@ -392,6 +403,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
   this.cycles = 0;
   this.yrange = 40;
   this.health = 5;
+  this.harm = 1;
   this.hurt = false;
   this.hurtTime = 0;
   this.maxTime = 1000;
