@@ -43,6 +43,8 @@ Game.prototype = {
         var item = new Diamond(self.game, e.x, y);
       } else if (e.properties.type === 'extralife') {
         var item = new ExtraLife(self.game, e.x, y);
+      } else if (e.properties.type === 'checkpoint') {
+        //var item = new Checkpoint(self.game, e.x, y);
       }
     });
 
@@ -73,7 +75,7 @@ Game.prototype = {
       } else if (e.properties.type === 'porktaicho') {
         var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action);
       } else if (e.properties.type === 'superflowah') {
-        var item = new SuperFlowah(self.game, e.x, y);
+        var item = new SuperFlowah(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing);
       } else if (e.properties.type === 'medusa') {
@@ -81,6 +83,8 @@ Game.prototype = {
         var item = new Medusa(self.game, e.x, y, facing, xrange);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
+      } else if (e.properties.type === 'lava') {
+        var item = new Lava(self.game, e.x, y);
       }
     });
 
@@ -88,7 +92,7 @@ Game.prototype = {
       groups.tiles.debug = true;
     }
 
-    this.clock = new Clock(120, this.game);
+    this.clock = new Clock(300, this.game);
     this.clock.start();
 
     this.game.world.bringToTop(groups.platforms);
