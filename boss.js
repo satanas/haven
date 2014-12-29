@@ -8,8 +8,8 @@ var Acerbus = function(game, player, x, y, fight) {
   this.health = 100;
   this.hurt = false;
   this.hurtTime = 0;
-  this.dashSpeed = 380;
-  this.walkingSpeed = 90;
+  this.dashSpeed = 550;
+  this.walkingSpeed = 160;
   this.phase = 3;
   this.invincibilityTime = 0.100;
   this.chaseDelay = 0.25;
@@ -140,7 +140,7 @@ var DashPhase = function(parent, game) {
       callback: this.preparation
     },
     {
-      duration: 1.1,
+      duration: 0.6,
       callback: this.warning
     },
     {
