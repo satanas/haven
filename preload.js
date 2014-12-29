@@ -17,6 +17,7 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.progressbar);
 
     this.load.tilemap('map', 'mario.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('mario2', 'mario2.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.tilemap('boss', 'boss.json', null, Phaser.Tilemap.TILED_JSON);
 
     this.load.image('wall', 'assets/box-blue.png');
@@ -30,6 +31,7 @@ Preload.prototype = {
     this.load.image('blood', 'assets/blood.png');
     this.load.image('moving-platform', 'assets/moving-platform.png');
     this.load.image('box-blue', 'assets/box-blue.png');
+    this.load.image('medusa', 'assets/medusa.png');
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
