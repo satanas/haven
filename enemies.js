@@ -184,11 +184,21 @@ Porktaicho.prototype.update = function() {
 
   if (this.action === 'move') {
     this.move();
-  };
+  } else if (this.action === 'stand') {
+    this.turn();
+  }
   this.shoot();
 };
 
 Porktaicho.prototype.move = AI.simpleMove;
+
+Porktaicho.prototype.turn = function() {
+  if (this.player.x - this.x <= 0) {
+    this.facing = 'left';
+  } else {
+    this.facing = 'right';
+  }
+};
 
 Porktaicho.prototype.shoot = function() {
   var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
