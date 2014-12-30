@@ -29,6 +29,10 @@ var MovingPlatform = function(game, player, x, y, movement, min, max) {
 MovingPlatform.prototype = Object.create(Phaser.Sprite.prototype);
 MovingPlatform.prototype.constructor = MovingPlatform;
 
+MovingPlatform.prototype.canCollide = function() {
+  return true;
+};
+
 MovingPlatform.prototype.update = function() {
   this.origX = this.x;
   this.origY = this.y;
@@ -87,6 +91,10 @@ var FallingPlatform = function(game, player, x, y, lifetime) {
 FallingPlatform.prototype = Object.create(Phaser.Sprite.prototype);
 FallingPlatform.prototype.constructor = FallingPlatform;
 
+FallingPlatform.prototype.canCollide = function() {
+  return true;
+};
+
 FallingPlatform.prototype.update = function() {
   this.playerOnTop = false;
   var playerCenterX = this.player.x + (this.player.width / 2);
@@ -114,5 +122,50 @@ FallingPlatform.prototype.render = function() {
     }
   } else {
     this.tint = 0xff0000;
+  }
+};
+
+var GhostPlatform = function(game, x, y, starting, showing) {
+  Phaser.Sprite.call(this, game, x, y, 'box-green', 0);
+
+  this.showing = false;
+  this.startingLapse = starting || 1000;
+  this.showingLapse = showing || 1500;
+  this.game.physics.arcade.enable(this);
+  this.body.allowGravity = false;
+  this.body.immovable = true;
+  this.elapsedTime = 0;
+  groups.platforms.add(this);
+};
+
+GhostPlatform.prototype = Object.create(Phaser.Sprite.prototype);
+GhostPlatform.prototype.constructor = GhostPlatform;
+
+GhostPlatform.prototype.canCollide = function() {
+  return this.showing;
+};
+
+GhostPlatform.prototype.update = function() {
+  if (this.showing) {
+    this.elapsedTime += this.game.time.elapsed;
+    if (this.elapsedTime >= this.showingLapse) {
+      this.elapsedTime = 0;
+      this.showing = false;
+    }
+  } else {
+    this.elapsedTime += this.game.time.elapsed;
+    if (this.elapsedTime >= this.startingLapse) {
+      this.elapsedTime = 0;
+      this.showing = true;
+    }
+  }
+  this.render();
+};
+
+GhostPlatform.prototype.render = function() {
+  if (this.showing) {
+    this.alpha = 1;
+  } else {
+    this.alpha = 0;
   }
 };

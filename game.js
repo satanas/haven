@@ -59,6 +59,8 @@ Game.prototype = {
         } else if (e.properties.action === 'fall') {
           var lifetime = e.properties.lifetime || 1500
           var item = new FallingPlatform(self.game, self.player, e.x, y, lifetime);
+        } else if (e.properties.action === 'ghost') {
+          var item = new GhostPlatform(self.game, e.x, y);
         }
       }
     });
