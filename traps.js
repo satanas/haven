@@ -30,7 +30,7 @@ Lava.prototype.constructor = Lava;
 var BearTrap = function(game, player, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
 
-  this.deadType = 'decapitation';
+  this.deadType = deadType.DECAPITATION;
   this.player = player;
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = true;

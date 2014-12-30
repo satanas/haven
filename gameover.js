@@ -10,7 +10,7 @@ GameOver.prototype = {
     this.game.input.keyboard.start();
     this.game.stage.backgroundColor = '#000';
     var label = game.add.text(250, 200, "Game Over", {fill: 'white'});
-    if (reasonOfDeath === 'timeout') {
+    if (this.game.global.causeOfDeath === deadType.TIMEOUT) {
       var reason = game.add.text(150, 250, "Acerbus escaped with the king", {fill: 'white'});
     } else {
       var reason = game.add.text(250, 250, "You died", {fill: 'white'});

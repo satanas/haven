@@ -4,11 +4,11 @@ var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'game');
 game.global = {
   sceneDelay: 200,
   diamonds: 0,
-  lives: 3
+  lives: 3,
+  causeOfDeath: null
 }
 var debug = false;
 var groups = {};
-var reasonOfDeath = null;
 
 //game.stage.backgroundColor = '#fff';
 
