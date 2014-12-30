@@ -85,6 +85,8 @@ Game.prototype = {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {
         var item = new Lava(self.game, e.x, y);
+      } else if (e.properties.type === 'beartrap') {
+        var item = new BearTrap(self.game, self.player, e.x, y);
       }
     });
 

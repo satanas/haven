@@ -178,7 +178,8 @@ Alysa.prototype.takeDamage = function(self, object) {
     self.health -= harm;
     console.log('mierda', self.health);
     if (self.health <= 0) {
-      self.die();
+      var reason = object.deadType || 'dead';
+      self.die(reason);
     } else {
       self.body.velocity.x = 220 * (self.facing === 'left' ? 1 : -1)
       self.body.velocity.y = -220;
@@ -210,6 +211,7 @@ Alysa.prototype.die = function(reason) {
   this.status = 'dying';
   this.game.camera.follow(null);
   reasonOfDeath = reason || 'dead';
+  console.log('Dying for', reasonOfDeath);
   if (this.facing === 'left') {
     this.animations.play('dying-left');
   } else {
