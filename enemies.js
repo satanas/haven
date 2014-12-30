@@ -1,47 +1,76 @@
 'use strict';
 
-var Gumbon = function(game, x, y, facing) {
-  Phaser.Sprite.call(this, game, x, y, 'gumbon', 0);
+// Parent class for all enemies
+var Enemy = function(game, x, y, type, facing, health) {
+  Phaser.Sprite.call(this, game, x, y, type, 0);
 
   this.facing = facing;
-  this.x1 = x - 100;
-  this.x2 = x + 100;
-  this.speed = 120;
-  this.health = 5;
   this.hurt = false;
   this.harm = 1;
+  this.health = health;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
-  this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
-  this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
-
   this.game.physics.arcade.enableBody(this);
-  this.body.gravity.y = 1000;
-  this.body.setSize(41, 35, 3, 1);
-  this.animations.play('left');
   groups.enemies.add(this);
 };
 
-Gumbon.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.takeDamage = function() {
+  if (!this.hurt) {
+    var blood = new BloodParticles(this.game, this.x, this.y);
+    this.alpha = 0.5;
+    this.hurt = true;
+    this.hurtTime = game.time.time;
+    this.health -= 1;
+    if (this.health <= 0) {
+      this.destroy();
+    }
+  }
+};
+
+Enemy.prototype.recover = function() {
+  if (this.hurt) {
+    if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
+      this.hurt = false;
+      this.alpha = 1.0;
+    }
+  }
+};
+
+Enemy.prototype.tileCollisions = function() {
+  this.game.physics.arcade.collide(this, groups.tiles);
+};
+
+//////////////////
+
+
+var Gumbon = function(game, x, y, facing) {
+  Enemy.call(this, game, x, y, 'gumbon', facing, 5);
+
+  this.x1 = x - 100;
+  this.x2 = x + 100;
+  this.speed = 120;
+  this.body.gravity.y = 1000;
+  this.body.setSize(41, 35, 3, 1);
+
+  this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
+  this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+  this.animations.play('left');
+};
+
+Gumbon.prototype = Object.create(Enemy.prototype);
 Gumbon.prototype.constructor = Gumbon;
 
 Gumbon.prototype.adjustHitBox = function() {
 };
 
 Gumbon.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles);
-
-  if (this.hurt) {
-    if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
-      this.hurt = false;
-      this.tint = 0xffffff;
-    }
-  }
-
+  this.tileCollisions();
+  this.recover();
   this.render();
-
   if (!this.body.onFloor()) return;
-
   this.move();
 };
 
@@ -51,18 +80,6 @@ Gumbon.prototype.render = function() {
   this.animations.play(this.facing);
 };
 
-Gumbon.prototype.takeDamage = function() {
-  if (!this.hurt) {
-    var blood = new BloodParticles(this.game, this.x, this.y);
-    this.tint = 0xcd0937;
-    this.hurt = true;
-    this.hurtTime = game.time.time;
-    this.health -= 1;
-    if (this.health <= 0) {
-      this.destroy();
-    }
-  }
-};
 
 var Snailbot = function(game, x, y, facing) {
   Phaser.Sprite.call(this, game, x, y, 'snailbot', 0);
