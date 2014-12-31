@@ -215,7 +215,7 @@ Alysa.prototype.die = function(reason) {
   this.status = 'dying';
   this.game.camera.follow(null);
   this.game.global.causeOfDeath = reason || deadType.BLEEDING;
-  console.log('Dying for', reasonOfDeath);
+  console.log('Dying for', this.game.global.causeOfDeath);
   if (this.facing === 'left') {
     this.animations.play('dying-left');
   } else {
