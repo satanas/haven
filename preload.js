@@ -34,6 +34,7 @@ Preload.prototype = {
     this.load.image('box-green', 'assets/box-green.png');
     this.load.image('medusa', 'assets/medusa.png');
     this.load.image('lava', 'assets/lava.png');
+    this.load.image('checkpoint', 'assets/checkpoint.png');
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');

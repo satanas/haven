@@ -23,6 +23,9 @@ Game.prototype = {
     groups.items = this.game.add.group();
     groups.items.enableBody = true;
 
+    groups.checkpoints = this.game.add.group();
+    groups.checkpoints.enableBody = true;
+
     groups.platforms = this.game.add.group();
     groups.platforms.enableBody = true;
 
@@ -34,7 +37,11 @@ Game.prototype = {
     this.map.setCollisionBetween(1, 120, true, 'Tiles');
     groups.tiles.resizeWorld();
 
-    this.player = new Alysa(this.game, 250, 170);
+    if (this.game.global.checkpoint) {
+      this.player = new Alysa(this.game, this.game.global.checkpoint.x, this.game.global.checkpoint.y);
+    } else {
+      this.player = new Alysa(this.game, 250, 170);
+    }
 
     var self = this;
     this.map.objects['Objects'].forEach(function(e) {
@@ -44,7 +51,7 @@ Game.prototype = {
       } else if (e.properties.type === 'extralife') {
         var item = new ExtraLife(self.game, e.x, y);
       } else if (e.properties.type === 'checkpoint') {
-        //var item = new Checkpoint(self.game, e.x, y);
+        var item = new Checkpoint(self.game, e.x, y);
       }
     });
 
@@ -113,7 +120,6 @@ Game.prototype = {
     }
 
     if (this.player.death){
-      console.log('death effect');
       this.player.body.enable = false;
       return;
     }
