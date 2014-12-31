@@ -37,8 +37,8 @@ Game.prototype = {
     this.map.setCollisionBetween(1, 120, true, 'Tiles');
     groups.tiles.resizeWorld();
 
-    if (this.game.global.checkpoint) {
-      this.player = new Alysa(this.game, this.game.global.checkpoint.x, this.game.global.checkpoint.y);
+    if (this.game.global.lastCheckpoint) {
+      this.player = new Alysa(this.game, this.game.global.lastCheckpoint.origX, this.game.global.lastCheckpoint.origY);
     } else {
       this.player = new Alysa(this.game, 250, 170);
     }
@@ -51,7 +51,9 @@ Game.prototype = {
       } else if (e.properties.type === 'extralife') {
         var item = new ExtraLife(self.game, e.x, y);
       } else if (e.properties.type === 'checkpoint') {
-        var item = new Checkpoint(self.game, e.x, y);
+        var origX = parseInt(e.properties.orig_x);
+        var origY = parseInt(e.properties.orig_y);
+        var item = new Checkpoint(self.game, e.x, y, origX, origY);
       }
     });
 

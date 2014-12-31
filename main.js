@@ -5,7 +5,7 @@ game.global = {
   sceneDelay: 200,
   diamonds: 0,
   lives: 3,
-  checkout: null,
+  lastCheckpoint: null,
   causeOfDeath: null
 }
 var debug = false;
