@@ -3,7 +3,7 @@
 var AI = {
   simpleMove: function() {
     var onWall = this.body.onWall();
-    var onLimits = (this.body.x <= this.x1) || (this.body.x >= this.x2);
+    var onLimits = this.onWalkingLimits();
     var onWorldBounds = (this.body.x >= this.game.world.width - this.width) || (this.body.x <= 0);
 
     if (onWall || onLimits || onWorldBounds) {
