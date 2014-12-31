@@ -80,7 +80,8 @@ Game.prototype = {
       if (e.properties.type === 'acerbus') {
         self.boss = new Acerbus(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'gumbon') {
-        var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie);
+        var range = (e.properties.range !== undefined) ? parseInt(e.properties.range) : 100;
+        var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range);
       } else if (e.properties.type === 'snailbot') {
         var item = new Snailbot(self.game, e.x, y, facing);
       } else if (e.properties.type === 'porktaicho') {

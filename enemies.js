@@ -90,6 +90,14 @@ Enemy.prototype.shoot = function(withAngle) {
   }
 };
 
+Enemy.prototype.onWalkingLimits = function() {
+  if (this.x1 !== undefined && this.x2 !== undefined && (this.x1 >= 0 && this.x2 >= 0)) {
+    return this.body.x <= this.x1 || this.body.x >= this.x2;
+  } else {
+    return false;
+  }
+};
+
 Enemy.prototype.adjustHitBox = function() {};
 Enemy.prototype.onShooting = function() {};
 
@@ -97,7 +105,7 @@ Enemy.prototype.onShooting = function() {};
 //////////////////
 
 
-var Gumbon = function(game, x, y, facing, zombie) {
+var Gumbon = function(game, x, y, facing, zombie, range) {
   if (zombie && zombie === 'true') {
     Enemy.call(this, game, x, y, 'gumbon-zombie', facing, 6);
     this.speed = 60;
@@ -106,8 +114,12 @@ var Gumbon = function(game, x, y, facing, zombie) {
     this.speed = 120;
   }
 
-  this.x1 = x - 100;
-  this.x2 = x + 100;
+  if (range === -1) {
+    this.x1 = this.x2 = -1;
+  } else {
+    this.x1 = x - range;
+    this.x2 = x + range;
+  }
   this.body.setSize(41, 35, 3, 1);
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
