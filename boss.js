@@ -10,7 +10,7 @@ var Acerbus = function(game, player, x, y, fight) {
   this.hurtTime = 0;
   this.dashSpeed = 550;
   this.walkingSpeed = 160;
-  this.phase = 3;
+  this.phase = 0;
   this.invincibilityTime = 0.100;
   this.chaseDelay = 0.25;
   this.chasing = false;
@@ -23,7 +23,7 @@ var Acerbus = function(game, player, x, y, fight) {
     new WavePhase(this, game, player)
   ];
 
-  this.pattern = [1, 0, 2, 0, 3];
+  this.pattern = [2, 0, 2, 0, 3];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -249,11 +249,11 @@ var TeleportPhase = function(parent, game, player) {
       callback: this.preparation
     },
     {
-      duration: 1,
+      duration: 0.6,
       callback: this.warning
     },
     {
-      duration: 0.5,
+      duration: 1.3,
       callback: this.execution
     }
   );
@@ -261,16 +261,19 @@ var TeleportPhase = function(parent, game, player) {
   this.game = game;
   this.parent = parent;
   this.shadow = null;
+  this.shoryuken = false;
 };
 
 TeleportPhase.prototype = Object.create(Phase.prototype);
 TeleportPhase.prototype.constructor = TeleportPhase;
 
 TeleportPhase.prototype.preparation = function(self) {
+  self.shoryuken = false;
   self.parent.tint = 0xffffff;
   self.shadow = self.game.add.sprite(self.player.x, self.parent.y, 'shadow');
   self.shadow.animations.add('main');
   self.shadow.animations.play('main', 17, true);
+  self.alpha = 0;
   self.next();
 };
 
@@ -278,8 +281,12 @@ TeleportPhase.prototype.warning = function(self) {
 };
 
 TeleportPhase.prototype.execution = function(self) {
-  self.parent.x = self.shadow.x;
-  self.shadow.destroy();
+  if (!self.shoryuken) {
+    self.parent.x = self.shadow.x;
+    self.parent.body.velocity.y = -900;
+    self.shadow.destroy();
+    self.shoryuken = true;
+  }
 };
 
 var Wave = function(game, x, y, direction) {
