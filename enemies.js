@@ -7,6 +7,7 @@ var Enemy = function(game, x, y, type, facing, health) {
   this.facing = facing;
   this.harm = 1;
   this.health = health;
+  this.bloodType = 'blood';
 
   // Hurt variables
   this.hurt = false;
@@ -30,7 +31,7 @@ Enemy.prototype.isPlayerNear = AI.isPlayerNear;
 
 Enemy.prototype.takeDamage = function() {
   if (!this.hurt) {
-    var blood = new BloodParticles(this.game, this.x, this.y);
+    var blood = new BloodParticles(this.game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
     this.alpha = 0.5;
     this.hurt = true;
     this.hurtTime = game.time.time;
@@ -146,6 +147,7 @@ Gumbon.prototype.update = function() {
 var Snailbot = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'snailbot', facing, 8);
 
+  this.bloodType = 'oil';
   this.calculateWalkingRange(x, range);
   this.speed = 100;
   this.body.setSize(79, 50, 5, 14);
@@ -171,7 +173,6 @@ var Porktaicho = function(game, player, x, y, facing, action, range) {
   Enemy.call(this, game, x, y, 'porktaicho', facing, 3);
 
   this.player = player;
-
   this.calculateWalkingRange(x, range);
   this.speed = 130;
   this.shootingDelay = 1500;
@@ -231,6 +232,7 @@ var SuperFlowah = function(game, player, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'superflowah', 0);
 
   this.player = player;
+  this.bloodType = 'pieces';
   this.health = 5;
   this.hurt = false;
   this.shotDelay = 0.7;
@@ -329,6 +331,7 @@ var Ladybug = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'ladybug', facing, 1);
 
   this.speed = 80;
+  this.bloodType = 'oil';
   this.calculateWalkingRange(x, range);
   this.body.setSize(47, 30, 0, 6);
 
@@ -353,6 +356,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
   Enemy.call(this, game, x, y, 'medusa', facing, 3);
 
   this.origY = y;
+  this.bloodType = 'acid';
   this.speed = 120;
   this.calculateWalkingRange(x, xrange);
   this.maxCycles = 4;
@@ -399,6 +403,7 @@ Medusa.prototype.move = function() {
 var Cannon = function(game, player, x, y, facing) {
   Enemy.call(this, game, x, y, 'cannon', facing, 3);
 
+  this.bloodType = 'pieces';
   this.player = player;
   this.shootingLapse = 0;
   this.shootingDelay = 1500;
@@ -442,6 +447,7 @@ var Wasp = function(game, player, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'wasp', facing, 3);
 
   this.player = player;
+  this.bloodType = 'oil';
   this.speed = 160;
   this.shootingLapse = 800;
   this.shootingDelay = 2000;

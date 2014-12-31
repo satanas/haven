@@ -1,9 +1,9 @@
 'use strict';
 
-var BloodParticles = function(game, x, y) {
+var BloodParticles = function(game, x, y, type) {
   this.game = game;
   this.emitter = this.game.add.emitter(x, y, 15);
-  this.emitter.makeParticles('blood');
+  this.emitter.makeParticles(type);
   this.emitter.gravity = 500;
   this.emitter.minParticleSpeed.setTo(-100, -200);
   this.emitter.maxParticleSpeed.setTo(50, 100);

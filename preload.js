@@ -28,7 +28,10 @@ Preload.prototype = {
     this.load.image('diamond', 'assets/diamond.png');
     this.load.image('extralife', 'assets/extra-life.png');
     this.load.image('spikes', 'assets/spikes.png');
-    this.load.image('blood', 'assets/blood.png');
+    this.load.image('blood', 'assets/blood-red.png');
+    this.load.image('acid', 'assets/blood-acid.png');
+    this.load.image('oil', 'assets/blood-oil.png');
+    this.load.image('pieces', 'assets/blood-pieces.png');
     this.load.image('moving-platform', 'assets/moving-platform.png');
     this.load.image('box-blue', 'assets/box-blue.png');
     this.load.image('box-green', 'assets/box-green.png');
