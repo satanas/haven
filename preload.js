@@ -47,6 +47,7 @@ Preload.prototype = {
     this.load.spritesheet('superflowah', 'assets/superflowah.png', 93, 68);
     this.load.spritesheet('ladybug', 'assets/ladybug.png', 47, 36);
     this.load.spritesheet('cannon', 'assets/cannon.png', 93, 33);
+    this.load.spritesheet('wasp', 'assets/wasp.png', 82, 85);
     this.load.spritesheet('porktaicho', 'assets/porktaicho.png', 63, 51);
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
   },

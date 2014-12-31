@@ -94,6 +94,9 @@ Game.prototype = {
         var item = new Medusa(self.game, e.x, y, facing, xrange);
       } else if (e.properties.type === 'cannon') {
         var item = new Cannon(self.game, self.player, e.x, y);
+      } else if (e.properties.type === 'wasp') {
+        var xrange = e.properties.xrange || 140;
+        var item = new Wasp(self.game, self.player, e.x, y, facing, xrange);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {

@@ -48,6 +48,14 @@ Enemy.prototype.render = function() {
   this.animations.play(this.facing);
 };
 
+Enemy.prototype.turn = function() {
+  if (this.player.x - this.x <= 0) {
+    this.facing = 'left';
+  } else {
+    this.facing = 'right';
+  }
+};
+
 Enemy.prototype.adjustHitBox = function() {};
 
 //////////////////
@@ -68,7 +76,6 @@ var Gumbon = function(game, x, y, facing, zombie) {
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
-  this.animations.play('left');
 };
 
 Gumbon.prototype = Object.create(Enemy.prototype);
@@ -95,7 +102,6 @@ var Snailbot = function(game, x, y, facing) {
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 12, true);
-  this.animations.play('left');
 };
 
 Snailbot.prototype = Object.create(Enemy.prototype);
@@ -127,7 +133,6 @@ var Porktaicho = function(game, player, x, y, facing, action) {
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 16, true);
-  this.animations.play('left');
 };
 
 Porktaicho.prototype = Object.create(Enemy.prototype);
@@ -157,14 +162,6 @@ Porktaicho.prototype.update = function() {
 };
 
 Porktaicho.prototype.move = AI.simpleMove;
-
-Porktaicho.prototype.turn = function() {
-  if (this.player.x - this.x <= 0) {
-    this.facing = 'left';
-  } else {
-    this.facing = 'right';
-  }
-};
 
 Porktaicho.prototype.shoot = function() {
   var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
@@ -297,12 +294,11 @@ var Ladybug = function(game, x, y, facing) {
 
   this.x1 = x - 100;
   this.x2 = x + 100;
-  this.speed = 180;
+  this.speed = 80;
   this.body.setSize(47, 30, 0, 6);
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
-  this.animations.play('left');
 };
 
 Ladybug.prototype = Object.create(Enemy.prototype);
@@ -335,7 +331,6 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
 
   //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
-  //this.animations.play('left');
 };
 
 Medusa.prototype = Object.create(Enemy.prototype);
@@ -394,14 +389,6 @@ Cannon.prototype.update = function() {
   this.shoot();
 };
 
-Cannon.prototype.turn = function() {
-  if (this.player.x - this.x <= 0) {
-    this.facing = 'left';
-  } else {
-    this.facing = 'right';
-  }
-};
-
 Cannon.prototype.shoot = function() {
   var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
   if (this.shooting) {
@@ -422,5 +409,85 @@ Cannon.prototype.render = function(self) {
     self.frame = 3;
   } else {
     self.frame = 4;
+  }
+};
+
+var Wasp = function(game, player, x, y, facing, xrange, yrange) {
+  Enemy.call(this, game, x, y, 'wasp', facing, 3);
+
+  this.player = player;
+  this.speed = 160;
+  this.shooting = false;
+  this.elapsedTime = 0;
+  this.shootingLapse = 800;
+  this.shootingDelay = 2000;
+  this.minX = this.x - xrange;
+  this.maxX = this.x + xrange;
+  this.maxTime = 1000;
+  this.body.allowGravity = false;
+
+  this.animations.add('left', [1, 4], 6, true);
+  this.animations.add('right',  [7, 10], 6, true);
+  this.animations.add('shoot-left', [2, 3, 4], 16, false);
+  this.animations.add('shoot-right', [9, 8, 7], 16, false);
+};
+
+Wasp.prototype = Object.create(Enemy.prototype);
+Wasp.prototype.constructor = Wasp;
+
+Wasp.prototype.update = function() {
+  this.recover();
+  this.render();
+  this.move();
+  this.shoot();
+};
+
+Wasp.prototype.move = function() {
+  if (this.shooting) {
+    this.body.velocity.x = 0;
+  } else {
+    var playerIsNear = Math.abs(this.player.x - this.x) <= 100;
+    if (playerIsNear) {
+      this.body.velocity.x = 0;
+      this.turn();
+    } else {
+      if (this.facing === 'left') {
+        this.body.velocity.x = -1 * this.speed;
+        if (this.x <= this.minX) {
+          this.facing = 'right';
+        }
+      } else {
+        this.body.velocity.x = this.speed;
+        if (this.x >= this.maxX) {
+          this.facing = 'left';
+        }
+      }
+    }
+  }
+};
+
+Wasp.prototype.render = function() {
+  if (!this.shooting) {
+    this.animations.play(this.facing);
+  }
+};
+
+Wasp.prototype.shoot = function() {
+  this.elapsedTime += this.game.time.elapsed;
+  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
+
+  if (this.shooting) {
+    if (this.elapsedTime >= this.shootingLapse) {
+      this.shooting = false;
+      this.elapsedTime = 0;
+    }
+  } else {
+    if (this.elapsedTime >= this.shootingDelay && playerIsNear) {
+      this.animations.play('shoot-' + this.facing);
+      this.shooting = true;
+      this.elapsedTime = 0;
+      var y = this.body.y + (this.facing === 'left' ? 48 : 54);
+      var bullet = new EnemyBullet(this.game, this.body.x + 48, y, this.facing, true);
+    }
   }
 };

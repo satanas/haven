@@ -38,10 +38,11 @@ Bullet.prototype.makeDamage = function(self, object) {
   self.kill();
 };
 
-var EnemyBullet = function(game, x, y, direction) {
+var EnemyBullet = function(game, x, y, direction, withAngle) {
   Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
 
   //this.type = 'bullet';
+  this.withAngle = withAngle || false;
   this.tint = 0xcd0937;
   this.speed = 600;
   this.game.physics.arcade.enable(this);
@@ -50,6 +51,10 @@ var EnemyBullet = function(game, x, y, direction) {
   this.outOfBoundsKill = true;
   this.body.sensor = true;
   this.bringToTop();
+  if (this.withAngle) {
+    this.speed /= 2;
+    this.body.velocity.y = this.speed;
+  }
   if (direction === 'left') {
     this.body.velocity.x = -1 * this.speed;
   } else {
