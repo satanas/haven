@@ -56,13 +56,14 @@ Enemy.prototype.adjustHitBox = function() {};
 var Gumbon = function(game, x, y, facing, zombie) {
   if (zombie && zombie === 'true') {
     Enemy.call(this, game, x, y, 'gumbon-zombie', facing, 6);
+    this.speed = 60;
   } else {
     Enemy.call(this, game, x, y, 'gumbon', facing, 3);
+    this.speed = 120;
   }
 
   this.x1 = x - 100;
   this.x2 = x + 100;
-  this.speed = 120;
   this.body.setSize(41, 35, 3, 1);
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
@@ -210,7 +211,7 @@ var SuperFlowah = function(game, player, x, y) {
   this.invincibilityTime = 0.100;
   this.animations.add('rise', [7, 8, 9, 10, 11, 12, 13], 12, false);
   this.animations.add('fall',  [14, 15, 16, 17, 18, 19, 20], 12, false);
-  this.animations.add('shoot',  [0, 1, 2, 3, 4, 5], 12, true);
+  this.animations.add('shoot',  [0, 1, 2, 3, 4, 5], 16, true);
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -364,4 +365,62 @@ Medusa.prototype.move = function() {
   }
   var deltaY = this.yrange * Math.sin(this.elapsedTime * (2 * Math.PI) / this.maxTime);
   this.y = this.origY + deltaY;
+};
+
+var Cannon = function(game, player, x, y, facing) {
+  Enemy.call(this, game, x, y, 'cannon', facing, 3);
+
+  this.player = player;
+  this.shooting = false;
+  this.lastShotTime = 0;
+  this.shotDelay = 1.5;
+
+  this.shotLeft = this.animations.add('left', [0, 1, 2], 13, false);
+  this.shotLeft.onComplete.add(this.render);
+  this.shotRight = this.animations.add('right',  [5, 6, 7], 13, false);
+  this.shotRight.onComplete.add(this.render);
+};
+
+Cannon.prototype = Object.create(Enemy.prototype);
+Cannon.prototype.constructor = Cannon;
+
+Cannon.prototype.adjustHitBox = function() {
+};
+
+Cannon.prototype.update = function() {
+  this.tileCollisions();
+  this.recover();
+  this.turn();
+  this.shoot();
+};
+
+Cannon.prototype.turn = function() {
+  if (this.player.x - this.x <= 0) {
+    this.facing = 'left';
+  } else {
+    this.facing = 'right';
+  }
+};
+
+Cannon.prototype.shoot = function() {
+  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
+  if (this.shooting) {
+    if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
+      this.shooting = false;
+    }
+  } else if (playerIsNear) {
+    this.shooting = true;
+    this.animations.play(this.facing);
+    this.lastShotTime = this.game.time.time;
+    var bullet = new EnemyBullet(this.game, this.body.x + (this.body.width / 2), this.body.y + 17, this.facing);
+  }
+};
+
+Cannon.prototype.render = function(self) {
+  self.animations.stop();
+  if (self.facing === 'left') {
+    self.frame = 3;
+  } else {
+    self.frame = 4;
+  }
 };
