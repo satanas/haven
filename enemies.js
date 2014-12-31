@@ -31,7 +31,9 @@ Enemy.prototype.isPlayerNear = AI.isPlayerNear;
 
 Enemy.prototype.takeDamage = function() {
   if (!this.hurt) {
-    var blood = new BloodParticles(this.game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
+    if (this.bloodType) {
+      var blood = new BloodParticles(this.game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
+    }
     this.alpha = 0.5;
     this.hurt = true;
     this.hurtTime = game.time.time;
@@ -506,4 +508,28 @@ Wasp.prototype.render = function() {
   if (!this.shooting) {
     this.animations.play(this.facing);
   }
+};
+
+var Skeleton = function(game, x, y, facing, zombie, range) {
+  Enemy.call(this, game, x, y, 'skeleton', facing, 2);
+
+  this.speed = 80;
+  this.bloodType = null;
+  this.calculateWalkingRange(x, range);
+  this.body.setSize(41, 35, 3, 1);
+
+  //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
+  //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+};
+
+Skeleton.prototype = Object.create(Enemy.prototype);
+Skeleton.prototype.constructor = Skeleton;
+Skeleton.prototype.move = AI.simpleMove;
+
+Skeleton.prototype.update = function() {
+  this.tileCollisions();
+  this.recover();
+  //this.render();
+  if (!this.body.onFloor()) return;
+  this.move();
 };

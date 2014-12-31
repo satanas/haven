@@ -99,6 +99,8 @@ Game.prototype = {
         var xrange = (e.properties.xrange) ? parseInt(e.properties.xrange) : 140;
         var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
         var item = new Wasp(self.game, self.player, e.x, y, facing, xrange, yrange);
+      } else if (e.properties.type === 'skeleton') {
+        var item = new Skeleton(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {

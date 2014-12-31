@@ -42,6 +42,7 @@ Preload.prototype = {
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
     this.load.image('wave', 'assets/wave.png');
+    this.load.image('skeleton', 'assets/player-red.png');
 
     this.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
     this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
