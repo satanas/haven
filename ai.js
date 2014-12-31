@@ -30,5 +30,9 @@ var AI = {
         this.body.velocity.x = -this.speed;
       }
     }
+  },
+
+  isPlayerNear: function(range) {
+    return Math.abs(this.player.x - this.x) <= range;
   }
 };

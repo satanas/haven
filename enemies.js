@@ -5,11 +5,20 @@ var Enemy = function(game, x, y, type, facing, health) {
   Phaser.Sprite.call(this, game, x, y, type, 0);
 
   this.facing = facing;
-  this.hurt = false;
   this.harm = 1;
   this.health = health;
+
+  // Hurt variables
+  this.hurt = false;
   this.hurtTime = 0;
   this.invincibilityTime = 0.100;
+
+  // Shooting variables
+  this.shooting = false;
+  this.shootingDelay = 1000;
+  this.shootingLapse = 1000;
+  this.elapsedTimeAfterShot = 0;
+
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
   groups.enemies.add(this);
@@ -17,6 +26,7 @@ var Enemy = function(game, x, y, type, facing, health) {
 
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
+Enemy.prototype.isPlayerNear = AI.isPlayerNear;
 
 Enemy.prototype.takeDamage = function() {
   if (!this.hurt) {
@@ -56,7 +66,33 @@ Enemy.prototype.turn = function() {
   }
 };
 
+Enemy.prototype.calculateBulletCoords = function() {
+  return {x: this.body.x, y: this.body.y};
+};
+
+Enemy.prototype.shoot = function(withAngle) {
+  var withAngle = withAngle || false;
+  this.elapsedTimeAfterShot += this.game.time.elapsed;
+
+  if (this.shooting) {
+    if (this.elapsedTimeAfterShot >= this.shootingLapse) {
+      this.shooting = false;
+      this.elapsedTimeAfterShot = 0;
+    }
+  } else {
+    if (this.elapsedTimeAfterShot >= this.shootingDelay && this.isPlayerNear(500)) {
+      this.shooting = true;
+      this.elapsedTimeAfterShot = 0;
+      var p = this.calculateBulletCoords();
+      var bullet = new EnemyBullet(this.game, p.x, p.y, this.facing, withAngle);
+      this.onShooting();
+    }
+  }
+};
+
 Enemy.prototype.adjustHitBox = function() {};
+Enemy.prototype.onShooting = function() {};
+
 
 //////////////////
 
@@ -80,6 +116,7 @@ var Gumbon = function(game, x, y, facing, zombie) {
 
 Gumbon.prototype = Object.create(Enemy.prototype);
 Gumbon.prototype.constructor = Gumbon;
+Gumbon.prototype.move = AI.simpleMove;
 
 Gumbon.prototype.update = function() {
   this.tileCollisions();
@@ -88,8 +125,6 @@ Gumbon.prototype.update = function() {
   if (!this.body.onFloor()) return;
   this.move();
 };
-
-Gumbon.prototype.move = AI.simpleMove;
 
 
 var Snailbot = function(game, x, y, facing) {
@@ -106,6 +141,7 @@ var Snailbot = function(game, x, y, facing) {
 
 Snailbot.prototype = Object.create(Enemy.prototype);
 Snailbot.prototype.constructor = Snailbot;
+Snailbot.prototype.move = AI.simpleMove;
 
 Snailbot.prototype.update = function() {
   this.tileCollisions();
@@ -115,8 +151,6 @@ Snailbot.prototype.update = function() {
   this.move();
 };
 
-Snailbot.prototype.move = AI.simpleMove;
-
 
 var Porktaicho = function(game, player, x, y, facing, action) {
   Enemy.call(this, game, x, y, 'porktaicho', facing, 3);
@@ -125,9 +159,8 @@ var Porktaicho = function(game, player, x, y, facing, action) {
   this.x1 = x - 100;
   this.x2 = x + 100;
   this.speed = 130;
-  this.shooting = false;
-  this.lastShotTime = 0;
-  this.shotDelay = 1.5;
+  this.shootingDelay = 1500;
+  this.shootingLapse = 0;
   this.action = action;
   this.body.setSize(30, 51, 26, 0);
 
@@ -137,6 +170,7 @@ var Porktaicho = function(game, player, x, y, facing, action) {
 
 Porktaicho.prototype = Object.create(Enemy.prototype);
 Porktaicho.prototype.constructor = Porktaicho;
+Porktaicho.prototype.move = AI.simpleMove;
 
 Porktaicho.prototype.adjustHitBox = function() {
   if (this.facing === 'left') {
@@ -161,19 +195,8 @@ Porktaicho.prototype.update = function() {
   this.shoot();
 };
 
-Porktaicho.prototype.move = AI.simpleMove;
-
-Porktaicho.prototype.shoot = function() {
-  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
-  if (this.shooting) {
-    if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
-      this.shooting = false;
-    }
-  } else if (playerIsNear) {
-    this.shooting = true;
-    this.lastShotTime = this.game.time.time;
-    var bullet = new EnemyBullet(this.game, this.body.x + (this.body.width / 2), this.body.y + 17, this.facing);
-  }
+Porktaicho.prototype.calculateBulletCoords = function() {
+  return {x: this.body.x + (this.body.width / 2), y: this.body.y + 17};
 };
 
 Porktaicho.prototype.render = function() {
@@ -219,10 +242,10 @@ var SuperFlowah = function(game, player, x, y) {
 
 SuperFlowah.prototype = Object.create(Phaser.Sprite.prototype);
 SuperFlowah.prototype.constructor = SuperFlowah;
+SuperFlowah.prototype.isPlayerNear = AI.isPlayerNear;
+SuperFlowah.prototype.render = function() {};
 
 SuperFlowah.prototype.update = function() {
-  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
-
   this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.hurt) {
@@ -250,7 +273,7 @@ SuperFlowah.prototype.update = function() {
       this.lastActionTime = this.game.time.time;
     }
   } else if (this.status === 'shooting') {
-    if (playerIsNear) {
+    if (this.isPlayerNear(500)) {
       if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.shotDelay) {
         this.shots += 1;
         var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
@@ -274,9 +297,6 @@ SuperFlowah.prototype.update = function() {
   }
 };
 
-
-SuperFlowah.prototype.render = function() {};
-
 SuperFlowah.prototype.takeDamage = function() {
   if (!this.hurt) {
     this.tint = 0xcd0937;
@@ -288,6 +308,7 @@ SuperFlowah.prototype.takeDamage = function() {
     }
   }
 };
+
 
 var Ladybug = function(game, x, y, facing) {
   Enemy.call(this, game, x, y, 'ladybug', facing, 1);
@@ -303,6 +324,7 @@ var Ladybug = function(game, x, y, facing) {
 
 Ladybug.prototype = Object.create(Enemy.prototype);
 Ladybug.prototype.constructor = Ladybug;
+Ladybug.prototype.move = AI.simpleMove;
 
 Ladybug.prototype.update = function() {
   this.tileCollisions();
@@ -311,8 +333,6 @@ Ladybug.prototype.update = function() {
   if (!this.body.onFloor()) return;
   this.move();
 };
-
-Ladybug.prototype.move = AI.simpleMove;
 
 
 var Medusa = function(game, x, y, facing, xrange, yrange) {
@@ -362,13 +382,13 @@ Medusa.prototype.move = function() {
   this.y = this.origY + deltaY;
 };
 
+
 var Cannon = function(game, player, x, y, facing) {
   Enemy.call(this, game, x, y, 'cannon', facing, 3);
 
   this.player = player;
-  this.shooting = false;
-  this.lastShotTime = 0;
-  this.shotDelay = 1.5;
+  this.shootingLapse = 0;
+  this.shootingDelay = 1500;
 
   this.shotLeft = this.animations.add('left', [0, 1, 2], 13, false);
   this.shotLeft.onComplete.add(this.render);
@@ -378,8 +398,10 @@ var Cannon = function(game, player, x, y, facing) {
 
 Cannon.prototype = Object.create(Enemy.prototype);
 Cannon.prototype.constructor = Cannon;
+Cannon.prototype.adjustHitBox = function() {};
 
-Cannon.prototype.adjustHitBox = function() {
+Cannon.prototype.onShooting = function() {
+  this.animations.play(this.facing);
 };
 
 Cannon.prototype.update = function() {
@@ -389,18 +411,8 @@ Cannon.prototype.update = function() {
   this.shoot();
 };
 
-Cannon.prototype.shoot = function() {
-  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
-  if (this.shooting) {
-    if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
-      this.shooting = false;
-    }
-  } else if (playerIsNear) {
-    this.shooting = true;
-    this.animations.play(this.facing);
-    this.lastShotTime = this.game.time.time;
-    var bullet = new EnemyBullet(this.game, this.body.x + (this.body.width / 2), this.body.y + 17, this.facing);
-  }
+Cannon.prototype.calculateBulletCoords = function() {
+  return {x: this.body.x + (this.body.width / 2), y: this.body.y + 17};
 };
 
 Cannon.prototype.render = function(self) {
@@ -412,13 +424,12 @@ Cannon.prototype.render = function(self) {
   }
 };
 
+
 var Wasp = function(game, player, x, y, facing, xrange, yrange) {
   Enemy.call(this, game, x, y, 'wasp', facing, 3);
 
   this.player = player;
   this.speed = 160;
-  this.shooting = false;
-  this.elapsedTime = 0;
   this.shootingLapse = 800;
   this.shootingDelay = 2000;
   this.minX = this.x - xrange;
@@ -439,15 +450,14 @@ Wasp.prototype.update = function() {
   this.recover();
   this.render();
   this.move();
-  this.shoot();
+  this.shoot(true);
 };
 
 Wasp.prototype.move = function() {
   if (this.shooting) {
     this.body.velocity.x = 0;
   } else {
-    var playerIsNear = Math.abs(this.player.x - this.x) <= 100;
-    if (playerIsNear) {
+    if (this.isPlayerNear(90)) {
       this.body.velocity.x = 0;
       this.turn();
     } else {
@@ -466,28 +476,16 @@ Wasp.prototype.move = function() {
   }
 };
 
+Wasp.prototype.calculateBulletCoords = function() {
+  return {x: this.body.x + 48, y: this.body.y + (this.facing === 'left' ? 48 : 54)};
+};
+
+Wasp.prototype.onShooting = function() {
+  this.animations.play('shoot-' + this.facing);
+};
+
 Wasp.prototype.render = function() {
   if (!this.shooting) {
     this.animations.play(this.facing);
-  }
-};
-
-Wasp.prototype.shoot = function() {
-  this.elapsedTime += this.game.time.elapsed;
-  var playerIsNear = Math.abs(this.player.x - this.x) <= 500;
-
-  if (this.shooting) {
-    if (this.elapsedTime >= this.shootingLapse) {
-      this.shooting = false;
-      this.elapsedTime = 0;
-    }
-  } else {
-    if (this.elapsedTime >= this.shootingDelay && playerIsNear) {
-      this.animations.play('shoot-' + this.facing);
-      this.shooting = true;
-      this.elapsedTime = 0;
-      var y = this.body.y + (this.facing === 'left' ? 48 : 54);
-      var bullet = new EnemyBullet(this.game, this.body.x + 48, y, this.facing, true);
-    }
   }
 };
