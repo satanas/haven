@@ -9,8 +9,8 @@ var AI = {
     if (onWall || onLimits || onWorldBounds) {
       this.body.velocity.x = 0;
       if (this.body.x < 0) this.body.x = 0;
-      if (this.body.x < this.x1) this.body.x = this.x1;
-      if (this.body.x > this.x2) this.body.x = this.x2;
+      if (this.body.x < this.minX) this.body.x = this.minX;
+      if (this.body.x > this.maxX) this.body.x = this.maxX;
       if (this.body.x >= this.game.world.width - this.width) this.body.x = this.game.world.width - this.width;
       var x = this.body.x;
 

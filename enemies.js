@@ -66,6 +66,15 @@ Enemy.prototype.turn = function() {
   }
 };
 
+Enemy.prototype.calculateWalkingRange = function(x, range) {
+  if (range === -1) {
+    this.minX = this.maxX = -1;
+  } else {
+    this.minX = x - range;
+    this.maxX = x + range;
+  }
+};
+
 Enemy.prototype.calculateBulletCoords = function() {
   return {x: this.body.x, y: this.body.y};
 };
@@ -91,8 +100,8 @@ Enemy.prototype.shoot = function(withAngle) {
 };
 
 Enemy.prototype.onWalkingLimits = function() {
-  if (this.x1 !== undefined && this.x2 !== undefined && (this.x1 >= 0 && this.x2 >= 0)) {
-    return this.body.x <= this.x1 || this.body.x >= this.x2;
+  if (this.minX !== undefined && this.maxX !== undefined && (this.minX >= 0 && this.maxX >= 0)) {
+    return this.body.x <= this.minX || this.body.x >= this.maxX;
   } else {
     return false;
   }
@@ -114,12 +123,7 @@ var Gumbon = function(game, x, y, facing, zombie, range) {
     this.speed = 120;
   }
 
-  if (range === -1) {
-    this.x1 = this.x2 = -1;
-  } else {
-    this.x1 = x - range;
-    this.x2 = x + range;
-  }
+  this.calculateWalkingRange(x, range);
   this.body.setSize(41, 35, 3, 1);
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
@@ -139,11 +143,10 @@ Gumbon.prototype.update = function() {
 };
 
 
-var Snailbot = function(game, x, y, facing) {
+var Snailbot = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'snailbot', facing, 8);
 
-  this.x1 = x - 100;
-  this.x2 = x + 100;
+  this.calculateWalkingRange(x, range);
   this.speed = 100;
   this.body.setSize(79, 50, 5, 14);
 
@@ -164,12 +167,12 @@ Snailbot.prototype.update = function() {
 };
 
 
-var Porktaicho = function(game, player, x, y, facing, action) {
+var Porktaicho = function(game, player, x, y, facing, action, range) {
   Enemy.call(this, game, x, y, 'porktaicho', facing, 3);
 
   this.player = player;
-  this.x1 = x - 100;
-  this.x2 = x + 100;
+
+  this.calculateWalkingRange(x, range);
   this.speed = 130;
   this.shootingDelay = 1500;
   this.shootingLapse = 0;
@@ -322,12 +325,11 @@ SuperFlowah.prototype.takeDamage = function() {
 };
 
 
-var Ladybug = function(game, x, y, facing) {
+var Ladybug = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'ladybug', facing, 1);
 
-  this.x1 = x - 100;
-  this.x2 = x + 100;
   this.speed = 80;
+  this.calculateWalkingRange(x, range);
   this.body.setSize(47, 30, 0, 6);
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
@@ -352,8 +354,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
 
   this.origY = y;
   this.speed = 120;
-  this.minX = this.x - xrange;
-  this.maxX = this.x + xrange;
+  this.calculateWalkingRange(x, xrange);
   this.maxCycles = 4;
   this.cycles = 0;
   this.yrange = 40;
@@ -437,15 +438,14 @@ Cannon.prototype.render = function(self) {
 };
 
 
-var Wasp = function(game, player, x, y, facing, xrange, yrange) {
+var Wasp = function(game, player, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'wasp', facing, 3);
 
   this.player = player;
   this.speed = 160;
   this.shootingLapse = 800;
   this.shootingDelay = 2000;
-  this.minX = this.x - xrange;
-  this.maxX = this.x + xrange;
+  this.calculateWalkingRange(x, range);
   this.maxTime = 1000;
   this.body.allowGravity = false;
 

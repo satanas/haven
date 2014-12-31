@@ -77,27 +77,28 @@ Game.prototype = {
     this.map.objects['Enemies'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
       var facing = e.properties.facing || 'left';
+      var range = (e.properties.range !== undefined) ? parseInt(e.properties.range) : 100;
+
       if (e.properties.type === 'acerbus') {
         self.boss = new Acerbus(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'gumbon') {
-        var range = (e.properties.range !== undefined) ? parseInt(e.properties.range) : 100;
         var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range);
       } else if (e.properties.type === 'snailbot') {
-        var item = new Snailbot(self.game, e.x, y, facing);
+        var item = new Snailbot(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'porktaicho') {
-        var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action);
+        var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action, range);
       } else if (e.properties.type === 'superflowah') {
         var item = new SuperFlowah(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'ladybug') {
-        var item = new Ladybug(self.game, e.x, y, facing);
+        var item = new Ladybug(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'medusa') {
-        var xrange = e.properties.xrange || 140;
-        var item = new Medusa(self.game, e.x, y, facing, xrange);
+        var item = new Medusa(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'cannon') {
         var item = new Cannon(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'wasp') {
-        var xrange = e.properties.xrange || 140;
-        var item = new Wasp(self.game, self.player, e.x, y, facing, xrange);
+        var xrange = (e.properties.xrange) ? parseInt(e.properties.xrange) : 140;
+        var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
+        var item = new Wasp(self.game, self.player, e.x, y, facing, xrange, yrange);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {
