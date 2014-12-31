@@ -53,8 +53,12 @@ Enemy.prototype.adjustHitBox = function() {};
 //////////////////
 
 
-var Gumbon = function(game, x, y, facing) {
-  Enemy.call(this, game, x, y, 'gumbon', facing, 3);
+var Gumbon = function(game, x, y, facing, zombie) {
+  if (zombie && zombie === 'true') {
+    Enemy.call(this, game, x, y, 'gumbon-zombie', facing, 6);
+  } else {
+    Enemy.call(this, game, x, y, 'gumbon', facing, 3);
+  }
 
   this.x1 = x - 100;
   this.x2 = x + 100;
