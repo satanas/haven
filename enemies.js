@@ -231,7 +231,7 @@ Porktaicho.prototype.render = function() {
 
 
 var SuperFlowah = function(game, player, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'superflowah', 0);
+  Enemy.call(this, game, x, y, 'superflowah', 'left', 1);
 
   this.player = player;
   this.bloodType = 'pieces';
@@ -256,7 +256,7 @@ var SuperFlowah = function(game, player, x, y) {
   groups.enemies.add(this);
 };
 
-SuperFlowah.prototype = Object.create(Phaser.Sprite.prototype);
+SuperFlowah.prototype = Object.create(Enemy.prototype);
 SuperFlowah.prototype.constructor = SuperFlowah;
 SuperFlowah.prototype.isPlayerNear = AI.isPlayerNear;
 SuperFlowah.prototype.render = function() {};
