@@ -121,9 +121,6 @@ Game.prototype = {
     this.game.world.bringToTop(groups.enemies);
     this.game.world.bringToTop(groups.items);
     this.game.world.bringToTop(groups.bullets);
-
-
-    this.game.plugin.fadeIn(0x000, 750, 0);
   },
 
   update: function() {
@@ -135,6 +132,7 @@ Game.prototype = {
       this.player.body.enable = false;
       var self = this;
       this.game.plugin.fadeOut(0x000, 750, 0, function() {
+        console.log('dead, rest', this.game.global.lives);
         if (this.game.global.lives <= 0) {
           this.game.state.start('gameover');
         } else {

@@ -16,6 +16,12 @@ GameOver.prototype = {
       var reason = game.add.text(250, 250, "You died", {fill: 'white'});
     }
     var subLabel = game.add.text(170, 450, "Press Enter to restart", {fill: 'white'});
+
+    // Reset variables
+    this.game.global.diamonds = 0;
+    this.game.global.lives = 3;
+    this.game.global.lastCheckpoint = null;
+    this.game.global.causeOfDeath = null;
   },
 
   update: function() {
