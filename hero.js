@@ -12,15 +12,15 @@ var Alysa = function(game, x, y) {
   this.lastShotTime = 0;
   this.hurt = false;
   this.hurtTime = 0;
-  this.hurtDelay = 0.400;
+  this.hurtDelay = 400;
   this.shooting = false;
   this.invincible = false;
-  this.invincibilityDelay = 1.000;
+  this.invincibilityDelay = 1000;
   this.status = 'alive'; // dying, dead
   this.deadTime = 0;
-  this.dyingDelay = 0.9;
+  this.dyingDelay = 900;
   this.reasonOfDeath = null;
-  this.shotDelay = 0.155;
+  this.shotDelay = 155;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
   this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
@@ -50,14 +50,14 @@ Alysa.prototype.update = function() {
     this.game.physics.arcade.overlap(this, groups.items, this.pickItem);
 
     if (this.hurt) {
-      if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.hurtDelay) {
+      if (this.game.time.elapsedSince(this.hurtTime) >= this.hurtDelay) {
         this.hurt = false;
         this.body.velocity.x = 0;
       }
     }
 
     if (this.invincible) {
-      if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityDelay) {
+      if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay) {
         this.invincible = false;
         this.alpha = 1.0;
       }
@@ -68,7 +68,7 @@ Alysa.prototype.update = function() {
     this.worldBoundCollisions();
   } else {
     this.body.velocity.x = 0;
-    if (this.game.time.elapsedSecondsSince(this.deadTime) >= this.dyingDelay) {
+    if (this.game.time.elapsedSince(this.deadTime) >= this.dyingDelay) {
       var self = this;
       this.game.plugin.fadeOut(0x000, 750, 0, function() {
         self.game.state.start('gameover');
@@ -149,7 +149,7 @@ Alysa.prototype.shoot = function() {
   }
 
   if (this.canShoot && this.shooting) {
-    if (this.game.time.elapsedSecondsSince(this.lastShotTime) >= this.shotDelay) {
+    if (this.game.time.elapsedSince(this.lastShotTime) >= this.shotDelay) {
       this.shooting = false;
     }
   }

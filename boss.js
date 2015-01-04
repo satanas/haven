@@ -12,7 +12,7 @@ var Acerbus = function(game, player, x, y, fight) {
   this.walkingSpeed = 160;
   this.phase = 0;
   this.invincibilityTime = 0.100;
-  this.chaseDelay = 0.25;
+  this.chaseDelay = 250;
   this.chasing = false;
   this.chaseStart = 0;
 
@@ -57,7 +57,7 @@ Acerbus.prototype.chaseCharacter = function(player) {
     } else {
       this.body.velocity.x = this.walkingSpeed;
     }
-    if (this.game.time.elapsedSecondsSince(this.chaseStart) > this.chaseDelay) {
+    if (this.game.time.elapsedSince(this.chaseStart) > this.chaseDelay) {
       this.chasing = false;
     }
   } else {
@@ -101,7 +101,7 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
     if (this.ended) return;
 
     this.currStep.callback(this);
-    if ((this.currStep.duration > 0) && (this.game.time.elapsedSecondsSince(this.stepStart) >= this.currStep.duration)) {
+    if ((this.currStep.duration > 0) && (this.game.time.elapsedSince(this.stepStart) >= this.currStep.duration)) {
       this.next();
     }
   };
@@ -132,7 +132,7 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
 var DashPhase = function(parent, game) {
   Phase.call(this, game, 2,
     {
-      duration: 0.5,
+      duration: 500,
       callback: function(self){}
     },
     {
@@ -140,7 +140,7 @@ var DashPhase = function(parent, game) {
       callback: this.preparation
     },
     {
-      duration: 0.6,
+      duration: 600,
       callback: this.warning
     },
     {
@@ -210,7 +210,7 @@ DashPhase.prototype.execution = function(self) {
 var LaughPhase = function(parent, game) {
   Phase.call(this, game, 1,
     {
-      duration: 0.5,
+      duration: 500,
       callback: function(self){}
     },
     {
@@ -222,7 +222,7 @@ var LaughPhase = function(parent, game) {
       callback: function(self) { self.next(); }
     },
     {
-      duration: 2,
+      duration: 2000,
       callback: this.execution
     }
   );
@@ -241,7 +241,7 @@ LaughPhase.prototype.execution = function(self) {
 var TeleportPhase = function(parent, game, player) {
   Phase.call(this, game, 3,
     {
-      duration: 0.5,
+      duration: 500,
       callback: function(self){}
     },
     {
@@ -249,11 +249,11 @@ var TeleportPhase = function(parent, game, player) {
       callback: this.preparation
     },
     {
-      duration: 0.6,
+      duration: 600,
       callback: this.warning
     },
     {
-      duration: 1.3,
+      duration: 1300,
       callback: this.execution
     }
   );
@@ -318,19 +318,19 @@ Wave.prototype.update = function() {
 var WavePhase = function(parent, game, player) {
   Phase.call(this, game, 3,
     {
-      duration: 0.5,
+      duration: 500,
       callback: function(self){}
     },
     {
-      duration: 2,
+      duration: 2000,
       callback: this.preparation
     },
     {
-      duration: 0.5,
+      duration: 500,
       callback: this.warning
     },
     {
-      duration: 0.9,
+      duration: 900,
       callback: this.execution
     }
   );

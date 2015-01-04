@@ -12,7 +12,7 @@ var Enemy = function(game, x, y, type, facing, health) {
   // Hurt variables
   this.hurt = false;
   this.hurtTime = 0;
-  this.invincibilityTime = 0.100;
+  this.invincibilityTime = 100;
 
   // Shooting variables
   this.shooting = false;
@@ -46,7 +46,7 @@ Enemy.prototype.takeDamage = function() {
 
 Enemy.prototype.recover = function() {
   if (this.hurt) {
-    if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
+    if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityTime) {
       this.hurt = false;
       this.alpha = 1.0;
     }
@@ -236,18 +236,15 @@ var SuperFlowah = function(game, player, x, y) {
   this.player = player;
   this.bloodType = 'pieces';
   this.health = 5;
-  this.hurt = false;
-  this.shotDelay = 0.7;
+  this.shotDelay = 700;
   this.maxShots = 3;
   this.shots = 0;
   this.harm = 1;
-  this.hiddenDelay = 1.5;
-  this.waitingDelay = 1.1;
+  this.hiddenDelay = 1500;
+  this.waitingDelay = 1100;
   this.status = 'hidden';
-  this.hurtTime = 0;
   this.shooting = false;
   this.lastActionTime = this.game.time.time;
-  this.invincibilityTime = 0.100;
   this.animations.add('rise', [7, 8, 9, 10, 11, 12, 13], 12, false);
   this.animations.add('fall',  [14, 15, 16, 17, 18, 19, 20], 12, false);
   this.animations.add('shoot',  [0, 1, 2, 3, 4, 5], 16, true);
@@ -267,19 +264,13 @@ SuperFlowah.prototype.render = function() {};
 SuperFlowah.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles);
 
-  if (this.hurt) {
-    if (this.game.time.elapsedSecondsSince(this.hurtTime) >= this.invincibilityTime) {
-      this.hurt = false;
-      this.tint = 0xffffff;
-    }
-  }
-
+  this.recover();
   this.render();
 
   if (!this.body.onFloor()) return;
 
   if (this.status === 'hidden') {
-    if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.hiddenDelay) {
+    if (this.game.time.elapsedSince(this.lastActionTime) >= this.hiddenDelay) {
       this.shots = 0;
       this.status = 'prepare';
       this.body.setSize(60, 62, 35, 6);
@@ -287,13 +278,13 @@ SuperFlowah.prototype.update = function() {
       this.lastActionTime = this.game.time.time;
     }
   } else if (this.status === 'prepare') {
-    if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.waitingDelay) {
+    if (this.game.time.elapsedSince(this.lastActionTime) >= this.waitingDelay) {
       this.status = 'shooting';
       this.lastActionTime = this.game.time.time;
     }
   } else if (this.status === 'shooting') {
     if (this.isPlayerNear(500)) {
-      if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.shotDelay) {
+      if (this.game.time.elapsedSince(this.lastActionTime) >= this.shotDelay) {
         this.shots += 1;
         var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
         this.lastActionTime = this.game.time.time;
@@ -307,7 +298,7 @@ SuperFlowah.prototype.update = function() {
       }
     }
   } else if (this.status === 'done') {
-    if (this.game.time.elapsedSecondsSince(this.lastActionTime) >= this.waitingDelay) {
+    if (this.game.time.elapsedSince(this.lastActionTime) >= this.waitingDelay) {
       this.status = 'hidden';
       this.body.setSize(30, 35, 50, 34);
       this.animations.play('fall');
