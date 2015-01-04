@@ -5,7 +5,8 @@ game.global = {
   diamonds: 0,
   lives: 3,
   lastCheckpoint: null,
-  causeOfDeath: null
+  causeOfDeath: null,
+  killedEnemies: 0
 }
 var debug = false;
 var groups = {};

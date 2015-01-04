@@ -39,7 +39,9 @@ Enemy.prototype.takeDamage = function() {
     this.hurtTime = game.time.time;
     this.health -= 1;
     if (this.health <= 0) {
+      this.game.global.killedEnemies += 1;
       this.destroy();
+      console.log('killed enemies', this.game.global.killedEnemies);
     }
   }
 };
