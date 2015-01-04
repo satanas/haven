@@ -36,12 +36,12 @@ Enemy.prototype.takeDamage = function() {
     }
     this.alpha = 0.5;
     this.hurt = true;
-    this.hurtTime = game.time.time;
+    this.hurtTime = this.game.time.time;
     this.health -= 1;
     if (this.health <= 0) {
       this.game.global.killedEnemies += 1;
-      this.destroy();
       console.log('killed enemies', this.game.global.killedEnemies);
+      this.destroy();
     }
   }
 };
@@ -308,19 +308,6 @@ SuperFlowah.prototype.update = function() {
     }
   }
 };
-
-SuperFlowah.prototype.takeDamage = function() {
-  if (!this.hurt) {
-    this.tint = 0xcd0937;
-    this.hurt = true;
-    this.hurtTime = game.time.time;
-    this.health -= 1;
-    if (this.health <= 0) {
-      this.destroy();
-    }
-  }
-};
-
 
 var Ladybug = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'ladybug', facing, 1);
