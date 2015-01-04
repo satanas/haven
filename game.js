@@ -130,6 +130,14 @@ Game.prototype = {
 
     if (this.player.death){
       this.player.body.enable = false;
+      var self = this;
+      this.game.plugin.fadeOut(0x000, 750, 0, function() {
+        if (this.game.global.lives <= 0) {
+          this.game.state.start('gameover');
+        } else {
+          this.game.state.start('game');
+        }
+      });
       return;
     }
     this.bg1.tilePosition.x -= 0.5;

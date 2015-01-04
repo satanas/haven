@@ -4,6 +4,7 @@ var Alysa = function(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'alysa', 0);
 
   this.health = 10;
+  this.death = false;
   this.jumping = false;
   this.facing = 'right';
   this.canShoot = true;
@@ -19,7 +20,6 @@ var Alysa = function(game, x, y) {
   this.status = 'alive'; // dying, dead
   this.deadTime = 0;
   this.dyingDelay = 900;
-  this.reasonOfDeath = null;
   this.shotDelay = 155;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -68,11 +68,9 @@ Alysa.prototype.update = function() {
     this.worldBoundCollisions();
   } else {
     this.body.velocity.x = 0;
-    if (this.game.time.elapsedSince(this.deadTime) >= this.dyingDelay) {
-      var self = this;
-      this.game.plugin.fadeOut(0x000, 750, 0, function() {
-        self.game.state.start('gameover');
-      });
+    if (this.game.time.elapsedSince(this.deadTime) >= this.dyingDelay && !this.death) {
+      this.death = true;
+      this.game.global.lives -= 1;
     }
   }
 
