@@ -4,6 +4,7 @@ function Menu() {}
 
 Menu.prototype = {
   create: function() {
+    this.delay = 200;
     this.startTime = this.game.time.time;
     console.log('menu', this.startTime);
     this.game.input.keyboard.clearCaptures();
@@ -13,7 +14,7 @@ Menu.prototype = {
   },
 
   update: function() {
-    if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
+    if (this.game.time.time < this.startTime + this.delay) return;
 
     if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
       this.game.input.keyboard.stop();
