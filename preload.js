@@ -24,7 +24,7 @@ Preload.prototype = {
     this.load.image('mario', 'assets/mario.png');
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('bg', 'assets/background.png');
-    this.load.image('menu', 'assets/menu.png');
+    this.load.image('menu', 'assets/menu.jpg');
     this.load.image('diamond', 'assets/diamond.png');
     this.load.image('extralife', 'assets/extra-life.png');
     this.load.image('spikes', 'assets/spikes.png');
