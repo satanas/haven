@@ -12,6 +12,7 @@ var Enemy = function(game, x, y, type, facing, health) {
   // Hurt variables
   this.hurt = false;
   this.hurtTime = 0;
+  this.invincible = false;
   this.invincibilityTime = 100;
 
   // Shooting variables
@@ -30,7 +31,7 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.isPlayerNear = AI.isPlayerNear;
 
 Enemy.prototype.takeDamage = function() {
-  if (!this.hurt) {
+  if (!this.hurt && !this.invincible) {
     if (this.bloodType) {
       var blood = new BloodParticles(this.game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
     }
@@ -84,8 +85,11 @@ Enemy.prototype.calculateBulletCoords = function() {
   return {x: this.body.x, y: this.body.y};
 };
 
-Enemy.prototype.shoot = function(withAngle) {
-  var withAngle = withAngle || false;
+Enemy.prototype.shoot = function(angle) {
+  if (angle === undefined){
+    angle = this.facing === 'left' ? 180 : 0;
+  }
+
   this.elapsedTimeAfterShot += this.game.time.elapsed;
 
   if (this.shooting) {
@@ -98,7 +102,7 @@ Enemy.prototype.shoot = function(withAngle) {
       this.shooting = true;
       this.elapsedTimeAfterShot = 0;
       var p = this.calculateBulletCoords();
-      var bullet = new EnemyBullet(this.game, p.x, p.y, this.facing, withAngle);
+      var bullet = new EnemyBullet(this.game, p.x, p.y, angle);
       this.onShooting();
     }
   }
@@ -112,6 +116,10 @@ Enemy.prototype.onWalkingLimits = function() {
   }
 };
 
+Enemy.prototype.isVulnerable = function(object) {
+  return !this.invincible;
+};
+
 Enemy.prototype.adjustHitBox = function() {};
 Enemy.prototype.onShooting = function() {};
 
@@ -119,7 +127,7 @@ Enemy.prototype.onShooting = function() {};
 //////////////////
 
 
-var Gumbon = function(game, x, y, facing, zombie, range) {
+var Gumbon = function(game, x, y, facing, zombie, range, map) {
   if (zombie && zombie === 'true') {
     Enemy.call(this, game, x, y, 'gumbon-zombie', facing, 6);
     this.speed = 60;
@@ -128,6 +136,7 @@ var Gumbon = function(game, x, y, facing, zombie, range) {
     this.speed = 120;
   }
 
+  this.map = map;
   this.calculateWalkingRange(x, range);
   this.body.setSize(41, 35, 3, 1);
 
@@ -145,6 +154,20 @@ Gumbon.prototype.update = function() {
   this.render();
   if (!this.body.onFloor()) return;
   this.move();
+  if (this.facing === 'left')
+    var x = Math.ceil((this.x) / 32) - 1;
+  else
+    var x = Math.ceil((this.x) / 32);
+  if (x < 0) x = 0;
+
+  var y = Math.ceil((this.y + this.height) / 32);
+  //console.log('hasTile', this.facing, x, y, this.map.hasTile(x, y, 'Tiles'));
+  if (!this.map.hasTile(x, y, 'Tiles')) {
+    if (this.facing === 'left')
+      this.facing = 'right';
+    else
+      this.facing = 'left';
+  }
 };
 
 
@@ -170,6 +193,14 @@ Snailbot.prototype.update = function() {
   this.render();
   if (!this.body.onFloor()) return;
   this.move();
+};
+
+Snailbot.prototype.isVulnerable = function(object) {
+  if (object.facing === this.facing) {
+    return false
+  }
+  console.log(object.body.x, object.body.y, this.body.x, this.body.y, this.facing, object.direction);
+  return true;
 };
 
 
@@ -288,7 +319,8 @@ SuperFlowah.prototype.update = function() {
     if (this.isPlayerNear(500)) {
       if (this.game.time.elapsedSince(this.lastActionTime) >= this.shotDelay) {
         this.shots += 1;
-        var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, 'left');
+        var angle = this.facing === 'left' ? 180 : 0;
+        var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, angle);
         this.lastActionTime = this.game.time.time;
         this.animations.play('shoot');
         if (this.shots > 2) {
@@ -383,17 +415,24 @@ Medusa.prototype.move = function() {
 
 
 var Cannon = function(game, player, x, y, facing) {
-  Enemy.call(this, game, x, y, 'cannon', facing, 3);
+  Enemy.call(this, game, x, y, 'medusa', facing, 1);
 
   this.bloodType = 'pieces';
   this.player = player;
   this.shootingLapse = 0;
-  this.shootingDelay = 1500;
+  this.shootingDelay = 500;
+  this.angles = (this.facing === 'left') ? [210, 180, 150] : [-45, 0, 45];
+  this.index = 0;
+  this.hiddenLapse = 2500;
+  this.hiddenTime = 0;
+  this.hidden = true;
+  this.body.allowGravity = false;
+  this.tint = 0x01fc01;
 
-  this.shotLeft = this.animations.add('left', [0, 1, 2], 13, false);
-  this.shotLeft.onComplete.add(this.render);
-  this.shotRight = this.animations.add('right',  [5, 6, 7], 13, false);
-  this.shotRight.onComplete.add(this.render);
+  //this.shotLeft = this.animations.add('left', [0, 1, 2], 13, false);
+  //this.shotLeft.onComplete.add(this.render);
+  //this.shotRight = this.animations.add('right',  [5, 6, 7], 13, false);
+  //this.shotRight.onComplete.add(this.render);
 };
 
 Cannon.prototype = Object.create(Enemy.prototype);
@@ -401,14 +440,32 @@ Cannon.prototype.constructor = Cannon;
 Cannon.prototype.adjustHitBox = function() {};
 
 Cannon.prototype.onShooting = function() {
-  this.animations.play(this.facing);
+  this.index += 1;
+  if (this.index > 2) {
+    this.tint = 0x01fc01;
+    this.hidden = true;
+    this.invincible = true;
+    this.index = 0;
+  }
+  //this.animations.play(this.facing);
 };
 
 Cannon.prototype.update = function() {
   this.tileCollisions();
   this.recover();
   this.turn();
-  this.shoot();
+
+  if (this.hidden) {
+    this.hiddenTime += this.game.time.elapsed;
+    if (this.hiddenTime >= this.hiddenLapse) {
+      this.tint = 0xffffff;
+      this.hidden = false;
+      this.invincible = false;
+      this.hiddenTime = 0;
+    }
+  } else {
+    this.shoot(this.angles[this.index]);
+  }
 };
 
 Cannon.prototype.calculateBulletCoords = function() {
@@ -450,7 +507,8 @@ Wasp.prototype.update = function() {
   this.recover();
   this.render();
   this.move();
-  this.shoot(true);
+  var angle = (this.facing === 'left') ? 135 : 45;
+  this.shoot(angle);
 };
 
 Wasp.prototype.move = function() {

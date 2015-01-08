@@ -4,6 +4,7 @@ var Bullet = function(game, x, y, direction) {
   Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
 
   this.speed = 600;
+  this.facing = direction;
   this.game.physics.arcade.enable(this);
   this.checkWorldBounds = true;
   this.outOfBoundsKill = true;
@@ -34,15 +35,20 @@ Bullet.prototype.die = function(self, platform) {
 };
 
 Bullet.prototype.makeDamage = function(self, object) {
-  object.takeDamage();
+  if (object.isVulnerable(self)) {
+    object.takeDamage();
+  }
   self.kill();
 };
 
-var EnemyBullet = function(game, x, y, direction, withAngle) {
+Bullet.prototype.checkVulnerability = function(self, object) {
+  return object.isVulnerable(self);
+};
+
+var EnemyBullet = function(game, x, y, angle) {
   Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
 
-  //this.type = 'bullet';
-  this.withAngle = withAngle || false;
+  this.angle = angle;
   this.tint = 0xcd0937;
   this.speed = 600;
   this.game.physics.arcade.enable(this);
@@ -51,15 +57,10 @@ var EnemyBullet = function(game, x, y, direction, withAngle) {
   this.outOfBoundsKill = true;
   this.body.sensor = true;
   this.bringToTop();
-  if (this.withAngle) {
-    this.speed /= 2;
-    this.body.velocity.y = this.speed;
-  }
-  if (direction === 'left') {
-    this.body.velocity.x = -1 * this.speed;
-  } else {
-    this.body.velocity.x = this.speed;
-  }
+  var radAngle = Math.PI / 180 * angle;
+  this.body.velocity.x = Math.cos(radAngle) * this.speed;
+  this.body.velocity.y = Math.sin(radAngle) * this.speed;
+
   groups.enemies.add(this);
 };
 

@@ -82,7 +82,7 @@ Game.prototype = {
       if (e.properties.type === 'acerbus') {
         self.boss = new Acerbus(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'gumbon') {
-        var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range);
+        var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range, self.map);
       } else if (e.properties.type === 'snailbot') {
         var item = new Snailbot(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'porktaicho') {
@@ -94,7 +94,7 @@ Game.prototype = {
       } else if (e.properties.type === 'medusa') {
         var item = new Medusa(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'cannon') {
-        var item = new Cannon(self.game, self.player, e.x, y);
+        var item = new Cannon(self.game, self.player, e.x, y, facing);
       } else if (e.properties.type === 'wasp') {
         var xrange = (e.properties.xrange) ? parseInt(e.properties.xrange) : 140;
         var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
