@@ -197,9 +197,15 @@ Snailbot.prototype.update = function() {
 
 Snailbot.prototype.isVulnerable = function(object) {
   if (object.facing === this.facing) {
-    return false
+    return false;
+  } else {
+    var y1 = this.y + 32;
+    var y2 = this.y + 62;
+    console.log(y1, '<=', object.body.y, '<=', y2, object.facing);
+    if (object.y >= y1 && object.y <= y2) {
+      return true;
+    }
   }
-  console.log(object.body.x, object.body.y, this.body.x, this.body.y, this.facing, object.direction);
   return true;
 };
 
