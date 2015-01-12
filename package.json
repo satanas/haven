@@ -1,18 +1,31 @@
 {
   "name": "Haven",
-  "main": "src/index.html",
+  "main": "app://host/src/index.html",
   "version": "1.0.0",
   "author": "Ludus Pactum",
   "nodejs": true,
   "window": {
     "title": "Haven",
     "width": 640,
+    "min_width": 640,
+    "max_width": 640,
     "height": 480,
+    "min_height": 480,
+    "max_height": 480,
     "toolbar": false,
     "position": "center"
   },
   "devDependencies": {
     "gulp": "^3.8.10",
-    "gulp-zip": "^2.0.2"
+    "gulp-zip": "^2.0.2",
+    "gulp-unzip": "^0.1.2",
+    "gulp-clipboard": "^0.1.1",
+    "gulp-rename": "^1.2.0",
+    "del": "^1.1.1",
+    "node-zip": "^1.1.0",
+    "jszip": "^2.4.0",
+    "mv": "^2.0.3",
+    "gulp-exec": "^2.1.1",
+    "shelljs": "^0.3.0"
   }
 }
