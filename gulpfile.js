@@ -9,7 +9,9 @@ gulp.task('build:nw', ['clean'], function() {
 gulp.task('build:mac', ['build:nw'], function() {
   shell.exec('unzip dist/node-webkit-v0.11.5-osx-x64.zip -d dist');
   shell.mv('dist/haven.nw', 'dist/node-webkit-v0.11.5-osx-x64/node-webkit.app/Contents/Resources/app.nw');
-  shell.cp('-r', 'dist/Info.plist', 'dist/node-webkit-v0.11.5-osx-x64/node-webkit.app/Contents/Info.plist');
+  shell.cp('-f', 'dist/Info.plist', 'dist/node-webkit-v0.11.5-osx-x64/node-webkit.app/Contents/Info.plist');
+  shell.cp('-f', 'dist/haven.icns', 'dist/node-webkit-v0.11.5-osx-x64/node-webkit.app/Contents/Resources/nw.icns');
+  shell.cp('-f', 'dist/Credits.html', 'dist/node-webkit-v0.11.5-osx-x64/node-webkit.app/Contents/Resources/Credits.html');
   shell.mv('dist/node-webkit-v0.11.5-osx-x64/node-webkit.app', 'dist/Haven.app');
   // Clean up
   shell.rm('-r', 'dist/node-webkit-v0.11.5-osx-x64/');
