@@ -53,6 +53,21 @@ gulp.task('build:linux64', ['build:nw'], function() {
   });
 });
 
+gulp.task('build:linux32', ['build:nw'], function() {
+  shell.exec('tar -xvzf dist/node-webkit-v0.11.5-linux-ia32.tar.gz -C dist');
+  shell.cp('-f', 'dist/haven.nw', 'dist/node-webkit-v0.11.5-linux-ia32/');
+  exec('cd dist/node-webkit-v0.11.5-linux-ia32 && cat nw haven.nw > haven', function() {
+    shell.chmod('+x', 'dist/node-webkit-v0.11.5-linux-ia32/haven');
+    shell.rm('dist/node-webkit-v0.11.5-linux-ia32/haven.nw');
+    shell.mkdir('dist/haven-linux-ia32');
+    shell.mv('dist/node-webkit-v0.11.5-linux-ia32/*', 'dist/haven-linux-ia32/');
+    shell.rm('-r', 'dist/node-webkit-v0.11.5-linux-ia32');
+    shell.exec('cd dist && zip -r haven-linux-ia32.zip haven-linux-ia32');
+    // Clean up
+    shell.rm('-r', 'dist/haven-linux-ia32', 'dist/haven.nw');
+  });
+});
+
 gulp.task('clean', function() {
   shell.rm('-r', [
     'dist/haven.nw',
