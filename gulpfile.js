@@ -1,6 +1,7 @@
 var fs = require('fs');
 var gulp = require('gulp');
 var shell = require('shelljs');
+var exec = require('child_process').exec;
 
 gulp.task('build:nw', ['clean'], function() {
   shell.exec('zip -r dist/haven.nw package.json src/*');
@@ -40,15 +41,16 @@ gulp.task('build:win32', ['build:nw'], function() {
 gulp.task('build:linux64', ['build:nw'], function() {
   shell.exec('tar -xvzf dist/node-webkit-v0.11.5-linux-x64.tar.gz -C dist');
   shell.cp('-f', 'dist/haven.nw', 'dist/node-webkit-v0.11.5-linux-x64/');
-  var output = shell.exec('cat dist/node-webkit-v0.11.5-linux-x64/nw dist/haven.nw', {silent: true}).output;
-  fs.writeFileSync('dist/node-webkit-v0.11.5-linux-x64/haven', output, {'flags': 'w', 'encoding': 'binary'});
-  console.log('Generated executable');
-  shell.chmod('+x', 'dist/node-webkit-v0.11.5-linux-x64/haven');
-  shell.rm('dist/node-webkit-v0.11.5-linux-x64/haven.nw');
-  shell.mv('dist/node-webkit-v0.11.5-linux-x64', 'dist/haven-linux-x64');
-  shell.exec('cd dist && zip -r haven-linux-x64.zip haven-linux-x64');
-  // Clean up
-  shell.rm('-r', 'dist/haven-linux-x64', 'dist/haven.nw');
+  exec('cd dist/node-webkit-v0.11.5-linux-x64 && cat nw haven.nw > haven', function() {
+    shell.chmod('+x', 'dist/node-webkit-v0.11.5-linux-x64/haven');
+    shell.rm('dist/node-webkit-v0.11.5-linux-x64/haven.nw');
+    shell.mkdir('dist/haven-linux-x64');
+    shell.mv('dist/node-webkit-v0.11.5-linux-x64/*', 'dist/haven-linux-x64/');
+    shell.rm('-r', 'dist/node-webkit-v0.11.5-linux-x64');
+    shell.exec('cd dist && zip -r haven-linux-x64.zip haven-linux-x64');
+    // Clean up
+    shell.rm('-r', 'dist/haven-linux-x64', 'dist/haven.nw');
+  });
 });
 
 gulp.task('clean', function() {
@@ -58,6 +60,10 @@ gulp.task('clean', function() {
     'dist/node-webkit-v0.11.5-win-ia32',
     'dist/node-webkit-v0.11.5-osx-x64',
     'dist/node-webkit-v0.11.5-linux-ia32',
-    'dist/node-webkit-v0.11.5-linux-x64'
+    'dist/node-webkit-v0.11.5-linux-x64',
+    'dist/haven-win-x64',
+    'dist/haven-win-ia32',
+    'dist/Haven.app',
+    'dist/haven-linux-x64.zip'
   ]);
 });
