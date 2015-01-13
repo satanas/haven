@@ -13,6 +13,7 @@
     "min_height": 480,
     "max_height": 480,
     "toolbar": false,
+    "resizable": "false",
     "position": "center"
   },
   "devDependencies": {
