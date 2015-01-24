@@ -50,6 +50,7 @@ Alysa.prototype.update = function() {
     this.game.physics.arcade.overlap(this, groups.items, this.pickItem);
 
     if (this.hurt) {
+      this.canDoubleJump = false;
       if (this.game.time.elapsedSince(this.hurtTime) >= this.hurtDelay) {
         this.hurt = false;
         this.body.velocity.x = 0;
@@ -114,7 +115,7 @@ Alysa.prototype.movement = function() {
   // Free fall
   if (this.body.velocity.y !== 0 && !this.jumping && !this.body.onFloor()) {
     this.jumping = true;
-    this.canDoubleJump = true;
+    //this.canDoubleJump = true;
   }
 
   if (this.body.onFloor()) {
@@ -197,6 +198,7 @@ Alysa.prototype.takeDamage = function(self, object) {
       self.hurt = true;
       self.invincible = true;
       self.hurtTime = game.time.time;
+      self.canDoubleJump = false;
     }
   }
   if (object.type !== undefined && object.type === 'bullet') {
