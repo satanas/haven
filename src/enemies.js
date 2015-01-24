@@ -128,7 +128,7 @@ Enemy.prototype.onShooting = function() {};
 
 
 var Gumbon = function(game, x, y, facing, zombie, range, map) {
-  if (zombie && zombie === 'true') {
+  if (zombie === 'true') {
     Enemy.call(this, game, x, y, 'gumbon-zombie', facing, 6);
     this.speed = 60;
   } else {
@@ -154,26 +154,13 @@ Gumbon.prototype.update = function() {
   this.render();
   if (!this.body.onFloor()) return;
   this.move();
-  if (this.facing === 'left')
-    var x = Math.ceil((this.x) / 32) - 1;
-  else
-    var x = Math.ceil((this.x) / 32);
-  if (x < 0) x = 0;
-
-  var y = Math.ceil((this.y + this.height) / 32);
-  //console.log('hasTile', this.facing, x, y, this.map.hasTile(x, y, 'Tiles'));
-  if (!this.map.hasTile(x, y, 'Tiles')) {
-    if (this.facing === 'left')
-      this.facing = 'right';
-    else
-      this.facing = 'left';
-  }
 };
 
 
-var Snailbot = function(game, x, y, facing, range) {
+var Snailbot = function(game, x, y, facing, range, map) {
   Enemy.call(this, game, x, y, 'snailbot', facing, 8);
 
+  this.map = map;
   this.bloodType = 'oil';
   this.calculateWalkingRange(x, range);
   this.speed = 100;
