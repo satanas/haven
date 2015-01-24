@@ -4,5 +4,5 @@ var deadType = {
   DECAPITATION: 'decapitation',
   TIMEOUT: 'timeout',
   BURNING: 'burning',
-  BLEDEING: 'bleeding'
+  BLEEDING: 'bleeding'
 };
