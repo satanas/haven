@@ -77,36 +77,45 @@ Game.prototype = {
     this.map.objects['Enemies'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
       var facing = e.properties.facing || 'left';
-      var range = (e.properties.range !== undefined) ? parseInt(e.properties.range) : 100;
+      var range = (e.properties.range !== undefined) ? parseInt(e.properties.range) : -1;
 
       if (e.properties.type === 'acerbus') {
         self.boss = new Acerbus(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'gumbon') {
         var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range, self.map);
       } else if (e.properties.type === 'snailbot') {
-        var item = new Snailbot(self.game, e.x, y, facing, range);
+        var item = new Snailbot(self.game, e.x, y, facing, range, self.map);
       } else if (e.properties.type === 'porktaicho') {
-        var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action, range);
+        //var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action, range);
       } else if (e.properties.type === 'superflowah') {
-        var item = new SuperFlowah(self.game, self.player, e.x, y);
+        //var item = new SuperFlowah(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'medusa') {
-        var item = new Medusa(self.game, e.x, y, facing, range);
+        //var item = new Medusa(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'cannon') {
-        var item = new Cannon(self.game, self.player, e.x, y, facing);
+        //var item = new Cannon(self.game, self.player, e.x, y, facing);
       } else if (e.properties.type === 'wasp') {
         var xrange = (e.properties.xrange) ? parseInt(e.properties.xrange) : 140;
         var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
-        var item = new Wasp(self.game, self.player, e.x, y, facing, xrange, yrange);
+        //var item = new Wasp(self.game, self.player, e.x, y, facing, xrange, yrange);
       } else if (e.properties.type === 'skeleton') {
-        var item = new Skeleton(self.game, e.x, y, facing, range);
+        //var item = new Skeleton(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {
         var item = new Lava(self.game, e.x, y);
       } else if (e.properties.type === 'beartrap') {
         var item = new BearTrap(self.game, self.player, e.x, y);
+      } else if (e.properties.type === 'fallingrock') {
+        var mode = e.properties.mode || 'infinite';
+        var delay = e.properties.delay || 100;
+        var item = new FallingRock(self.game, self.player, e.x, y, mode, delay);
+      } else if (e.properties.type === 'stunningrock') {
+        var yspeed = e.properties.yspeed || 900;
+        var fallingdelay = e.properties.fallingdelay || 400;
+        var idledelay = e.properties.idledelay || 1000;
+        var item = new StunningRock(self.game, e.x, y, yspeed, fallingdelay, idledelay);
       }
     });
 
