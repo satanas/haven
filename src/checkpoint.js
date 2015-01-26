@@ -9,9 +9,15 @@ var Checkpoint = function(game, x, y, origX, origY) {
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   this.body.sensor = true;
+  this.frame = 0;
 
   groups.checkpoints.add(this);
 };
 
 Checkpoint.prototype = Object.create(Phaser.Sprite.prototype);
 Checkpoint.prototype.constructor = Checkpoint;
+
+Checkpoint.prototype.activate = function() {
+  this.activated = true;
+  this.frame = 1;
+};

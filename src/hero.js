@@ -79,7 +79,7 @@ Alysa.prototype.update = function() {
 
 Alysa.prototype.onCheckpoint = function(self, checkpoint) {
   if (!checkpoint.activated) {
-    checkpoint.activated = true;
+    checkpoint.activate();
     self.game.global.lastCheckpoint = checkpoint;
   }
 };
