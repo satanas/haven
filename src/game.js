@@ -109,7 +109,8 @@ Game.prototype = {
       } else if (e.properties.type === 'beartrap') {
         var item = new BearTrap(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'chandelkier') {
-        var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', 'finite', 100, true);
+        var delay = e.properties.delay || 100;
+        var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', 'finite', delay, true);
       } else if (e.properties.type === 'stunningrock') {
         var yspeed = e.properties.yspeed || 900;
         var fallingdelay = e.properties.fallingdelay || 400;

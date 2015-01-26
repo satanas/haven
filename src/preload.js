@@ -62,6 +62,7 @@ Preload.prototype = {
     this.load.spritesheet('medusa', 'assets/meduzzo.png', 57, 46);
     this.load.spritesheet('skeleton', 'assets/skeleton.png', 23, 46);
     this.load.spritesheet('chandelkier', 'assets/chandelkier.png', 64, 32);
+    this.load.spritesheet('boom', 'assets/boom.png', 73, 75);
   },
 
   create: function() {
