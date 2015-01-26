@@ -32,6 +32,8 @@ var Lava = function(game, x, y) {
 
   this.deadType = deadType.BURNING;
   this.body.setSize(32, 20, 0, 12);
+  this.animations.add('main', [0, 1], 2, true);
+  this.animations.play('main');
 };
 
 Lava.prototype = Object.create(Phaser.Sprite.prototype);
