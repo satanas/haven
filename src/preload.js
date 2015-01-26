@@ -51,7 +51,7 @@ Preload.prototype = {
     this.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
     this.load.spritesheet('gumbon-zombie', 'assets/gumbon-zombie.png', 47, 37);
     this.load.spritesheet('snailbot', 'assets/snailbot.png', 84, 67);
-    this.load.spritesheet('superflowah', 'assets/superflowah.png', 93, 68);
+    this.load.spritesheet('ambusher', 'assets/ambusher.png', 93, 68);
     this.load.spritesheet('ladybug', 'assets/ladybug.png', 47, 36);
     this.load.spritesheet('cannon', 'assets/cannon.png', 93, 33);
     this.load.spritesheet('wasp', 'assets/wasp.png', 82, 85);
@@ -60,6 +60,7 @@ Preload.prototype = {
     this.load.spritesheet('checkpoint', 'assets/checkpoint.png', 32, 64);
     this.load.spritesheet('lava', 'assets/lava.png', 32, 32);
     this.load.spritesheet('medusa', 'assets/meduzzo.png', 57, 46);
+    this.load.spritesheet('skeleton', 'assets/skeleton.png', 23, 46);
   },
 
   create: function() {

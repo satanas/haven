@@ -87,8 +87,8 @@ Game.prototype = {
         var item = new Snailbot(self.game, e.x, y, facing, range, self.map);
       } else if (e.properties.type === 'porktaicho') {
         //var item = new Porktaicho(self.game, self.player, e.x, y, facing, e.properties.action, range);
-      } else if (e.properties.type === 'superflowah') {
-        //var item = new SuperFlowah(self.game, self.player, e.x, y);
+      } else if (e.properties.type === 'ambusher') {
+        var item = new Ambusher(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'medusa') {
@@ -101,7 +101,7 @@ Game.prototype = {
         var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
         //var item = new Wasp(self.game, self.player, e.x, y, facing, xrange, yrange);
       } else if (e.properties.type === 'skeleton') {
-        //var item = new Skeleton(self.game, e.x, y, facing, range);
+        var item = new Skeleton(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {

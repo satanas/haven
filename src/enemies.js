@@ -256,7 +256,7 @@ Porktaicho.prototype.render = function() {
 };
 
 
-var SuperFlowah = function(game, player, x, y) {
+var Ambusher = function(game, player, x, y) {
   Enemy.call(this, game, x, y, 'superflowah', 'left', 1);
 
   this.player = player;
@@ -282,12 +282,12 @@ var SuperFlowah = function(game, player, x, y) {
   groups.enemies.add(this);
 };
 
-SuperFlowah.prototype = Object.create(Enemy.prototype);
-SuperFlowah.prototype.constructor = SuperFlowah;
-SuperFlowah.prototype.isPlayerNear = AI.isPlayerNear;
-SuperFlowah.prototype.render = function() {};
+Ambusher.prototype = Object.create(Enemy.prototype);
+Ambusher.prototype.constructor = Ambusher;
+Ambusher.prototype.isPlayerNear = AI.isPlayerNear;
+Ambusher.prototype.render = function() {};
 
-SuperFlowah.prototype.update = function() {
+Ambusher.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles);
 
   this.recover();
@@ -382,7 +382,7 @@ Medusa.prototype.constructor = Medusa;
 
 Medusa.prototype.update = function() {
   this.recover();
-  //this.render();
+  this.render();
   this.move();
 };
 
@@ -404,7 +404,6 @@ Medusa.prototype.move = function() {
   }
   var deltaY = this.yrange * Math.sin(this.elapsedTime * (2 * Math.PI) / this.maxTime);
   this.y = this.origY + deltaY;
-  this.animations.play(this.facing);
 };
 
 
@@ -545,13 +544,12 @@ Wasp.prototype.render = function() {
 var Skeleton = function(game, x, y, facing, zombie, range) {
   Enemy.call(this, game, x, y, 'skeleton', facing, 2);
 
-  this.speed = 80;
+  this.speed = 60;
   this.bloodType = null;
   this.calculateWalkingRange(x, range);
-  this.body.setSize(41, 35, 3, 1);
 
-  //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
-  //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+  this.animations.add('left', [0, 1, 2, 3, 4, 5], 9, true);
+  this.animations.add('right',  [6, 7, 8, 9, 10, 11], 9, true);
 };
 
 Skeleton.prototype = Object.create(Enemy.prototype);
@@ -561,7 +559,7 @@ Skeleton.prototype.move = AI.simpleMove;
 Skeleton.prototype.update = function() {
   this.tileCollisions();
   this.recover();
-  //this.render();
+  this.render();
   if (!this.body.onFloor()) return;
   this.move();
 };
