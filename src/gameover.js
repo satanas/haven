@@ -9,13 +9,13 @@ GameOver.prototype = {
     this.game.input.keyboard.clearCaptures();
     this.game.input.keyboard.start();
     this.game.stage.backgroundColor = '#000';
-    var label = game.add.text(250, 200, "Game Over", {fill: 'white'});
+    bitmapTextCentered(this.game, 160, 'press_start', 'Game Over', 56); //72
     if (this.game.global.causeOfDeath === deadType.TIMEOUT) {
-      var reason = game.add.text(150, 250, "Acerbus escaped with the king", {fill: 'white'});
+      bitmapTextCentered(this.game, 250, 'press_start', 'Acerbus escaped with the king', 22); //30
     } else {
-      var reason = game.add.text(250, 250, "You died", {fill: 'white'});
+      bitmapTextCentered(this.game, 250, 'press_start', 'You died', 22); //30
     }
-    var subLabel = game.add.text(170, 450, "Press Enter to restart", {fill: 'white'});
+    bitmapTextCentered(this.game, 440, 'press_start', 'Press Enter to restart', 16); //22
 
     // Reset variables
     this.game.global.diamonds = 0;

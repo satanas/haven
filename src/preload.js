@@ -20,6 +20,11 @@ Preload.prototype = {
     this.load.tilemap('mario2', 'mario2.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.tilemap('boss', 'boss.json', null, Phaser.Tilemap.TILED_JSON);
 
+    this.game.load.bitmapFont('arcade', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
+    this.game.load.bitmapFont('titles', 'assets/fonts/titles.png', 'assets/fonts/titles.fnt');
+    this.game.load.bitmapFont('pixel_art', 'assets/fonts/pixel_art.png', 'assets/fonts/pixel_art.fnt');
+    this.game.load.bitmapFont('press_start', 'assets/fonts/press_start.png', 'assets/fonts/press_start.fnt');
+
     this.load.image('wall', 'assets/box-blue.png');
     this.load.image('mario', 'assets/mario.png');
     this.load.image('bullet', 'assets/bullet.png');
@@ -38,6 +43,7 @@ Preload.prototype = {
     this.load.image('medusa', 'assets/medusa.png');
     this.load.image('lava', 'assets/lava.png');
     this.load.image('checkpoint', 'assets/checkpoint.png');
+    this.load.image('alysa-face', 'assets/alysa-face.png');
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
