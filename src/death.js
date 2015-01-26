@@ -10,8 +10,8 @@ Death.prototype = {
     this.game.stage.backgroundColor = '#000';
 
     this.game.add.sprite(208, 192, 'alysa-face');
-    this.game.add.bitmapText(304, 250, 'arcade', 'x', 32);
-    this.lives = this.game.add.bitmapText(336, 197, 'arcade', this.game.global.lives.toString(), 96);
+    this.game.add.bitmapText(310, 245, 'press_start', 'x', 32);
+    this.lives = this.game.add.bitmapText(360, 205, 'press_start', this.game.global.lives.toString(), 76);
     this.changeDelay = 1000;
     this.finishDelay = 700;
     this.elapsedTime = 0;

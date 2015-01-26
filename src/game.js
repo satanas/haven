@@ -146,8 +146,7 @@ Game.prototype = {
         if (this.game.global.lives <= 0) {
           this.game.state.start('gameover');
         } else {
-          //this.game.state.start('death');
-          this.game.state.start('gameover');
+          this.game.state.start('death');
         }
       });
       //return;
