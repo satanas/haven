@@ -46,7 +46,7 @@ var BearTrap = function(game, player, x, y) {
   this.activated = false;
 };
 
-BearTrap.prototype = Object.create(Phaser.Sprite.prototype);
+BearTrap.prototype = Object.create(Trap.prototype);
 BearTrap.prototype.constructor = BearTrap;
 
 BearTrap.prototype.update = function() {
@@ -146,7 +146,6 @@ StunningRock.prototype.update = function() {
 
   if (this.mode === 'prepared') {
     this.elapsedTime += this.game.time.elapsed;
-    console.log('prepared', this.elapsedTime);
     if (this.elapsedTime >= this.fallingDelay) {
       this.elapsedTime = 0;
       this.mode = 'falling';
@@ -154,14 +153,12 @@ StunningRock.prototype.update = function() {
     }
   } else if (this.mode === 'idle'){
     this.elapsedTime += this.game.time.elapsed;
-    console.log('idle', this.elapsedTime);
     if (this.elapsedTime >= this.idleDelay) {
       this.elapsedTime = 0;
       this.mode = 'rising';
       this.body.velocity.y = -150;
     }
   } else if (this.mode === 'rising'){
-    console.log('rising', this.elapsedTime);
     if (this.y <= this.origY) {
       this.mode = 'prepared';
       this.elapsedTime = 0;
