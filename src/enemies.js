@@ -389,12 +389,12 @@ Medusa.prototype.update = function() {
 Medusa.prototype.move = function() {
   if (this.facing === 'left') {
     this.body.velocity.x = -1 * this.speed;
-    if (this.x <= this.minX) {
+    if ((this.x <= this.minX) || (this.x <= 0)){
       this.facing = 'right';
     }
   } else {
     this.body.velocity.x = this.speed;
-    if (this.x >= this.maxX) {
+    if ((this.x >= this.maxX) || (this.x + this.width >= this.game.world.width)) {
       this.facing = 'left';
     }
   }
