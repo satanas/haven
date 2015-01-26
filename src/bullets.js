@@ -42,7 +42,7 @@ Bullet.prototype.makeDamage = function(self, object) {
 };
 
 var EnemyBullet = function(game, x, y, angle) {
-  Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
+  Phaser.Sprite.call(this, game, x, y, 'enemy-bullet', 0);
 
   this.angle = angle;
   this.tint = 0xcd0937;
