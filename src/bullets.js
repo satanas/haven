@@ -41,10 +41,6 @@ Bullet.prototype.makeDamage = function(self, object) {
   self.kill();
 };
 
-Bullet.prototype.checkVulnerability = function(self, object) {
-  return object.isVulnerable(self);
-};
-
 var EnemyBullet = function(game, x, y, angle) {
   Phaser.Sprite.call(this, game, x, y, 'bullet', 0);
 
