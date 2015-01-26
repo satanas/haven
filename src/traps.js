@@ -65,15 +65,15 @@ BearTrap.prototype.onActivation = function(self, player) {
 };
 
 
-var FallingRock = function(game, player, x, y, mode, delay) {
-  //Phaser.Sprite.call(this, game, x, y, 'box-blue', 0);
-  Trap.call(this, game, x, y, 'box-blue');
+var FallingTrap = function(game, player, x, y, sprite, mode, delay, animated) {
+  console.log(x, y, sprite, mode, delay, animated);
+  Trap.call(this, game, x, y, sprite);
 
   this.origY = y;
   this.deadType = deadType.BLEEDING;
   this.player = player;
   this.body.gravity.y = 1200;
-  this.body.setSize(32, 32, 0, 0);
+  //this.body.setSize(32, 32, 0, 0);
   this.mode = mode;
   this.harm = 1;
   this.activationTime = 0;
@@ -81,13 +81,18 @@ var FallingRock = function(game, player, x, y, mode, delay) {
   this.activated = false;
   this.respawnTime = 0;
   this.respawnDelay = 500;
+  this.animated = animated;
+
+  if (this.animated) {
+    this.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 10, true);
+  }
 };
 
-FallingRock.prototype = Object.create(Trap.prototype);
-FallingRock.prototype.constructor = FallingRock;
-FallingRock.prototype.isPlayerNear = AI.isPlayerNear;
+FallingTrap.prototype = Object.create(Trap.prototype);
+FallingTrap.prototype.constructor = FallingTrap;
+FallingTrap.prototype.isPlayerNear = AI.isPlayerNear;
 
-FallingRock.prototype.update = function() {
+FallingTrap.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
 
   if (this.alive) {
@@ -101,6 +106,7 @@ FallingRock.prototype.update = function() {
         this.body.allowGravity = true;
       }
     }
+    this.render();
   } else {
     this.respawnTime += this.game.time.elapsed;
     if (this.respawnTime >= this.respawnDelay) {
@@ -113,11 +119,21 @@ FallingRock.prototype.update = function() {
   }
 };
 
-FallingRock.prototype.onCollision = function(self, object) {
+FallingTrap.prototype.render = function() {
+  if (this.animated) {
+    if (this.activated) {
+      this.frame = 2;
+    } else {
+      this.animations.play('idle');
+    }
+  }
+};
+
+FallingTrap.prototype.onCollision = function(self, object) {
   self.kill();
 };
 
-FallingRock.prototype.reset = function() {
+FallingTrap.prototype.reset = function() {
   this.revive();
   this.body.allowGravity = false;
   this.activated = false;

@@ -40,7 +40,7 @@ Game.prototype = {
     if (this.game.global.lastCheckpoint) {
       this.player = new Alysa(this.game, this.game.global.lastCheckpoint.origX, this.game.global.lastCheckpoint.origY);
     } else {
-      this.player = new Alysa(this.game, 250, 170);
+      this.player = new Alysa(this.game, 280, 170);
     }
 
     var self = this;
@@ -108,10 +108,8 @@ Game.prototype = {
         var item = new Lava(self.game, e.x, y);
       } else if (e.properties.type === 'beartrap') {
         var item = new BearTrap(self.game, self.player, e.x, y);
-      } else if (e.properties.type === 'fallingrock') {
-        var mode = e.properties.mode || 'infinite';
-        var delay = e.properties.delay || 100;
-        var item = new FallingRock(self.game, self.player, e.x, y, mode, delay);
+      } else if (e.properties.type === 'chandelkier') {
+        var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', 'finite', 100, true);
       } else if (e.properties.type === 'stunningrock') {
         var yspeed = e.properties.yspeed || 900;
         var fallingdelay = e.properties.fallingdelay || 400;
