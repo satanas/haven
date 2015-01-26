@@ -71,7 +71,6 @@ Alysa.prototype.update = function() {
     this.body.velocity.x = 0;
     if (this.game.time.elapsedSince(this.deadTime) >= this.dyingDelay && !this.death) {
       this.death = true;
-      this.game.global.lives -= 1;
     }
   }
 

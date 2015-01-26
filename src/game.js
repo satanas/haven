@@ -92,7 +92,8 @@ Game.prototype = {
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'medusa') {
-        //var item = new Medusa(self.game, e.x, y, facing, range);
+        range = (range === -1) ? 300 : range;
+        var item = new Medusa(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'cannon') {
         //var item = new Cannon(self.game, self.player, e.x, y, facing);
       } else if (e.properties.type === 'wasp') {
@@ -145,7 +146,8 @@ Game.prototype = {
         if (this.game.global.lives <= 0) {
           this.game.state.start('gameover');
         } else {
-          this.game.state.start('game');
+          //this.game.state.start('death');
+          this.game.state.start('gameover');
         }
       });
       //return;
