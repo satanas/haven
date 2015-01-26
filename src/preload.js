@@ -40,7 +40,6 @@ Preload.prototype = {
     this.load.image('moving-platform', 'assets/moving-platform.png');
     this.load.image('box-blue', 'assets/box-blue.png');
     this.load.image('box-green', 'assets/box-green.png');
-    this.load.image('medusa', 'assets/medusa.png');
     this.load.image('alysa-face', 'assets/alysa-face.png');
 
     // These should be spritesheets
@@ -60,6 +59,7 @@ Preload.prototype = {
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
     this.load.spritesheet('checkpoint', 'assets/checkpoint.png', 32, 64);
     this.load.spritesheet('lava', 'assets/lava.png', 32, 32);
+    this.load.spritesheet('medusa', 'assets/meduzzo.png', 57, 46);
   },
 
   create: function() {

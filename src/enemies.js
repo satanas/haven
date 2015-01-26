@@ -373,8 +373,8 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
   this.elapsedTime = 0;
   this.body.allowGravity = false;
 
-  //this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
-  //this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
+  this.animations.add('left', [0, 1, 2, 3], 12, true);
+  this.animations.add('right',  [4, 5, 6, 7], 12, true);
 };
 
 Medusa.prototype = Object.create(Enemy.prototype);
@@ -404,6 +404,7 @@ Medusa.prototype.move = function() {
   }
   var deltaY = this.yrange * Math.sin(this.elapsedTime * (2 * Math.PI) / this.maxTime);
   this.y = this.origY + deltaY;
+  this.animations.play(this.facing);
 };
 
 
