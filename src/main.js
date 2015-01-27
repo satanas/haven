@@ -7,7 +7,9 @@ game.global = {
   lives: 3,
   lastCheckpoint: null,
   causeOfDeath: null,
-  killedEnemies: 0
+  maxHeroHealth: 10,
+  killedEnemies: 0,
+  items: []
 }
 var debug = false;
 var groups = {};

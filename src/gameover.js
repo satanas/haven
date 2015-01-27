@@ -22,6 +22,7 @@ GameOver.prototype = {
     this.game.global.lives = 3;
     this.game.global.lastCheckpoint = null;
     this.game.global.causeOfDeath = null;
+    this.game.global.items = [];
   },
 
   update: function() {
