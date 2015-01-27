@@ -42,6 +42,8 @@ Preload.prototype = {
     this.load.image('box-blue', 'assets/box-blue.png');
     this.load.image('box-green', 'assets/box-green.png');
     this.load.image('alysa-face', 'assets/alysa-face.png');
+    this.load.image('hud', 'assets/hud.png');
+    this.load.image('timer', 'assets/timer.png');
 
     // These should be spritesheets
     this.load.image('acerbus', 'assets/acerbus.png');
@@ -64,6 +66,7 @@ Preload.prototype = {
     this.load.spritesheet('skeleton', 'assets/skeleton.png', 23, 46);
     this.load.spritesheet('chandelkier', 'assets/chandelkier.png', 64, 32);
     this.load.spritesheet('boom', 'assets/boom.png', 73, 75);
+    this.load.spritesheet('degradation', 'assets/alysa-degradation.png', 46, 37);
   },
 
   create: function() {

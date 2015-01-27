@@ -29,6 +29,8 @@ Game.prototype = {
     groups.platforms = this.game.add.group();
     groups.platforms.enableBody = true;
 
+    groups.hud = this.game.add.group();
+
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('MARIO', 'mario');
     groups.tiles = this.map.createLayer('Tiles');
@@ -46,11 +48,18 @@ Game.prototype = {
     var self = this;
     this.map.objects['Objects'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;
-      if (e.properties.type === 'diamond') {
-        var item = new Diamond(self.game, e.x, y);
-      } else if (e.properties.type === 'extralife') {
-        var item = new ExtraLife(self.game, e.x, y);
-      } else if (e.properties.type === 'checkpoint') {
+      var add = true;
+      self.game.global.items.forEach(function(item) {
+        if (item.x === e.x && item.y === y) add = false;
+      });
+      if (add) {
+        if (e.properties.type === 'diamond') {
+          var item = new Diamond(self.game, e.x, y);
+        } else if (e.properties.type === 'extralife') {
+          var item = new ExtraLife(self.game, e.x, y);
+        }
+      }
+      if (e.properties.type === 'checkpoint') {
         var origX = parseInt(e.properties.orig_x);
         var origY = parseInt(e.properties.orig_y);
         var item = new Checkpoint(self.game, e.x, y, origX, origY);
@@ -123,16 +132,22 @@ Game.prototype = {
       groups.tiles.debug = true;
     }
 
-    this.clock = new Clock(300, this.game);
-    this.clock.start();
+    this.clock = new Clock(this.game);
+    this.clock.start(301);
+
+    this.hud = new HUD(this.game, this.player);
 
     this.game.world.bringToTop(groups.platforms);
     this.game.world.bringToTop(groups.enemies);
     this.game.world.bringToTop(groups.items);
     this.game.world.bringToTop(groups.bullets);
+    this.game.world.bringToTop(groups.hud);
   },
 
   update: function() {
+    this.clock.update();
+    this.hud.update(this.clock);
+
     if (this.clock.ended && this.player.status !== 'dying') {
       this.player.die(deadType.timeout);
     }
