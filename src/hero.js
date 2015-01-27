@@ -3,7 +3,7 @@
 var Alysa = function(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'alysa', 0);
 
-  this.health = 10;
+  this.health = this.game.global.maxHeroHealth;
   this.death = false;
   this.jumping = false;
   this.facing = 'right';
@@ -213,6 +213,7 @@ Alysa.prototype.pickItem = function(self, object) {
     self.game.global.lives += 1;
     console.log('picking extralife', self.game.global.lives);
   }
+  self.game.global.items.push(object);
   object.destroy();
 };
 
