@@ -12,6 +12,12 @@ Game.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
 
+    if (this.bgmSound === undefined) {
+      this.game.sound.stopAll();
+      this.bgmSound = this.game.add.audio('ingame', 1, true);
+      this.bgmSound.onDecoded.add(this.start, this);
+    }
+
     this.bg1 = game.add.tileSprite(0, 0, 640, 480, 'bg');
     this.bg1.fixedToCamera = true;
     groups.bullets = this.game.add.group();
@@ -142,6 +148,10 @@ Game.prototype = {
     this.game.world.bringToTop(groups.items);
     this.game.world.bringToTop(groups.bullets);
     this.game.world.bringToTop(groups.hud);
+  },
+
+  start: function() {
+    this.bgmSound.play();
   },
 
   update: function() {
