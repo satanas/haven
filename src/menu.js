@@ -10,6 +10,7 @@ Menu.prototype = {
     this.game.stage.backgroundColor = '#000';
     this.currentOption = 'start';
     this.background = this.game.add.sprite(0, 0, 'menu');
+    this.game.sound.stopAll();
     this.bgmSound = this.game.add.audio('bgmintro', 1, true);
     this.bgmSound.onDecoded.add(this.start, this);
   },
