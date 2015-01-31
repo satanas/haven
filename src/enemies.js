@@ -23,6 +23,7 @@ var Enemy = function(game, x, y, type, facing, health) {
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
+  this.hitSound = null;
   groups.enemies.add(this);
 };
 
@@ -39,6 +40,9 @@ Enemy.prototype.takeDamage = function() {
     this.hurt = true;
     this.hurtTime = this.game.time.time;
     this.health -= 1;
+    if (this.hitSound !== null) {
+      this.hitSound.play();
+    }
     if (this.health <= 0) {
       var exp = new Explosion(this.game, this.x, this.y, this.width, this.height);
       this.game.global.killedEnemies += 1;
@@ -376,6 +380,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
 
   this.animations.add('left', [0, 1, 2, 3], 12, true);
   this.animations.add('right',  [4, 5, 6, 7], 12, true);
+  this.hitSound = this.game.add.sound('medusahit');
 };
 
 Medusa.prototype = Object.create(Enemy.prototype);
