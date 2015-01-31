@@ -17,12 +17,20 @@ GameOver.prototype = {
     }
     bitmapTextCentered(this.game, 440, 'press_start', 'Press Enter to restart', 16); //22
 
+    this.game.sound.stopAll();
+    this.bgmSound = this.game.add.audio('gameover');
+    this.bgmSound.onDecoded.add(this.start, this);
+
     // Reset variables
     this.game.global.diamonds = 0;
     this.game.global.lives = 3;
     this.game.global.lastCheckpoint = null;
     this.game.global.causeOfDeath = null;
     this.game.global.items = [];
+  },
+
+  start: function() {
+    this.bgmSound.play();
   },
 
   update: function() {
