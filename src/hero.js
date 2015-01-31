@@ -68,6 +68,8 @@ Alysa.prototype.update = function() {
     if (this.invincible) {
       if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay) {
         this.invincible = false;
+      }
+      if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay - 120) {
         this.alpha = 1.0;
       }
     }
@@ -209,8 +211,8 @@ Alysa.prototype.takeDamage = function(self, object) {
       self.invincible = true;
       self.hurtTime = game.time.time;
       self.canDoubleJump = false;
-      self.hurtSound.play();
     }
+    self.hurtSound.play();
   }
   if (object.type !== undefined && object.type === 'bullet') {
     object.kill();

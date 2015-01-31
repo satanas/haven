@@ -75,6 +75,8 @@ Preload.prototype = {
     this.load.audio('alysadies', 'assets/sounds/alysadies.mp3');
     this.load.audio('diamond1', 'assets/sounds/diamondcollect.mp3');
     this.load.audio('diamond2', 'assets/sounds/diamondcollect2.mp3');
+
+    this.load.audio('bgmintro', 'assets/sounds/bgm01intro.mp3');
   },
 
   create: function() {
