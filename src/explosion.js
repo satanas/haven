@@ -13,6 +13,8 @@ var Explosion = function(game, x, y, w, h) {
   var anim = this.animations.add('main', null, 40, false);
   this.animations.play('main');
   anim.onComplete.add(this.die, this);
+  this.explosionSound = this.game.add.audio('explosion');
+  this.explosionSound.play();
 
   this.game.add.existing(this);
 };
