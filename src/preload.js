@@ -67,6 +67,14 @@ Preload.prototype = {
     this.load.spritesheet('chandelkier', 'assets/chandelkier.png', 64, 32);
     this.load.spritesheet('boom', 'assets/boom.png', 73, 75);
     this.load.spritesheet('degradation', 'assets/alysa-degradation.png', 46, 37);
+
+    this.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
+    this.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');
+    this.load.audio('alysashoot', 'assets/sounds/alysashoot.mp3');
+    this.load.audio('alysahurt', 'assets/sounds/alysahurtdamage.mp3');
+    this.load.audio('alysadies', 'assets/sounds/alysadies.mp3');
+    this.load.audio('diamond1', 'assets/sounds/diamondcollect.mp3');
+    this.load.audio('diamond2', 'assets/sounds/diamondcollect2.mp3');
   },
 
   create: function() {

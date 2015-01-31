@@ -28,6 +28,14 @@ var Alysa = function(game, x, y) {
   this.animations.add('dying-left', [20, 21, 22, 23], 12, false);
   this.animations.add('dying-right', [24, 25, 26, 27], 12, false);
 
+  // Sounds
+  this.jumpSound = this.game.add.audio('alysajump');
+  this.doubleJumpSound = this.game.add.audio('alysadjump');
+  this.shootSound = this.game.add.audio('alysashoot');
+  this.hurtSound = this.game.add.audio('alysahurt');
+  this.dieSound = this.game.add.audio('alysadies');
+  this.diamondsSoundPool = new AudioPool(this.game, ['diamond1', 'diamond2']);
+
   this.game.physics.arcade.enable(this);
   this.body.gravity.y = 1000;
   this.body.maxVelocity.y = 500;
@@ -110,6 +118,7 @@ Alysa.prototype.movement = function() {
   if (this.cursors.up.justPressed(50) && !this.jumping && !this.hurt) {
     this.jumping = true;
     this.body.velocity.y = -800;
+    this.jumpSound.play();
   }
   // Free fall
   if (this.body.velocity.y !== 0 && !this.jumping && !this.body.onFloor()) {
@@ -131,6 +140,7 @@ Alysa.prototype.movement = function() {
     this.doubleJumping = true;
     this.canDoubleJump = false;
     this.body.velocity.y = -500;
+    this.doubleJumpSound.play();
   }
 };
 
@@ -140,6 +150,7 @@ Alysa.prototype.shoot = function() {
     this.lastShotTime = game.time.time;
     this.shooting = true;
     var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
+    this.shootSound.play();
   }
 
   if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X) && !this.canShoot) {
@@ -198,6 +209,7 @@ Alysa.prototype.takeDamage = function(self, object) {
       self.invincible = true;
       self.hurtTime = game.time.time;
       self.canDoubleJump = false;
+      self.hurtSound.play();
     }
   }
   if (object.type !== undefined && object.type === 'bullet') {
@@ -208,6 +220,7 @@ Alysa.prototype.takeDamage = function(self, object) {
 Alysa.prototype.pickItem = function(self, object) {
   if (object.type === 'diamond') {
     self.game.global.diamonds += 1;
+    self.diamondsSoundPool.randomPlay();
     console.log('picking diamonds', self.game.global.diamonds);
   } else if (object.type === 'extralife') {
     self.game.global.lives += 1;
@@ -224,6 +237,7 @@ Alysa.prototype.die = function(reason) {
   this.game.camera.follow(null);
   this.game.global.causeOfDeath = reason || deadType.BLEEDING;
   console.log('Dying for', this.game.global.causeOfDeath);
+  this.dieSound.play();
   if (this.facing === 'left') {
     this.animations.play('dying-left');
   } else {
