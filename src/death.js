@@ -9,6 +9,7 @@ Death.prototype = {
     this.game.input.keyboard.start();
     this.game.stage.backgroundColor = '#000';
 
+    this.lifeSound = this.game.add.audio('lifedown');
     this.game.add.sprite(208, 192, 'alysa-face');
     this.game.add.bitmapText(310, 245, 'press_start', 'x', 32);
     this.lives = this.game.add.bitmapText(360, 205, 'press_start', this.game.global.lives.toString(), 76);
@@ -28,6 +29,7 @@ Death.prototype = {
       }
     } else {
       if (this.elapsedTime >= this.changeDelay) {
+        this.lifeSound.play();
         this.changed = true;
         this.game.global.lives -= 1;
         this.elapsedTime = 0;
