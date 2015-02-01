@@ -2,15 +2,17 @@
 
 var Clock = function(game) {
   this.maxTime = 0;
+  this.criticalTime = 0;
   this.time = 0;
   this.game = game;
   this.ended = false;
   this.looping = null;
 };
 
-Clock.prototype.start = function(time) {
-  this.maxTime = time * 1000;
-  this.time = time * 1000;
+Clock.prototype.start = function(initTime, criticalTime) {
+  this.maxTime = initTime * 1000;
+  this.criticalTime = criticalTime * 1000;
+  this.time = initTime * 1000;
 };
 
 Clock.prototype.update = function() {
@@ -20,6 +22,10 @@ Clock.prototype.update = function() {
       this.ended = true;
     }
   }
+};
+
+Clock.prototype.isCritical = function() {
+  return this.time <= this.criticalTime;
 };
 
 Clock.prototype.getTime = function() {

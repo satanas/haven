@@ -7,6 +7,7 @@ Game.prototype = {
     this.map = null;
     this.player = null;
     this.boss = null;
+    this.clock = null;
 
     this.game.stage.backgroundColor = '#3498db';
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -69,6 +70,12 @@ Game.prototype = {
         var origX = parseInt(e.properties.orig_x);
         var origY = parseInt(e.properties.orig_y);
         var item = new Checkpoint(self.game, e.x, y, origX, origY);
+      }
+      if (e.properties.type === 'clock') {
+        var initTime = e.properties.init_time || 300;
+        var criticalTime = e.properties.critical_time || 20;
+        self.clock = new Clock(self.game);
+        self.clock.start(initTime, criticalTime);
       }
     });
 
@@ -138,10 +145,7 @@ Game.prototype = {
       groups.tiles.debug = true;
     }
 
-    this.clock = new Clock(this.game);
-    this.clock.start(301);
-
-    this.hud = new HUD(this.game, this.player);
+    this.hud = new HUD(this.game, this.player, this.clock);
 
     this.game.world.bringToTop(groups.platforms);
     this.game.world.bringToTop(groups.enemies);
@@ -155,12 +159,15 @@ Game.prototype = {
   },
 
   update: function() {
-    this.clock.update();
-    this.hud.update(this.clock);
+    if (this.clock !== null) {
+      this.clock.update();
 
-    if (this.clock.ended && this.player.status !== 'dying') {
-      this.player.die(deadType.timeout);
+      if (this.clock.ended && this.player.status !== 'dying') {
+        this.player.die(deadType.timeout);
+      }
     }
+
+    this.hud.update();
 
     if (this.player.death){
       this.player.body.enable = false;
