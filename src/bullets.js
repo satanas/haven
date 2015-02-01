@@ -36,9 +36,13 @@ Bullet.prototype.die = function(self, platform) {
 
 Bullet.prototype.makeDamage = function(self, object) {
   if (object && object.isVulnerable(self)) {
-    object.takeDamage();
+    if (object.takeDamage) {
+      object.takeDamage();
+    }
   } else {
-    object.rejectDamage();
+    if (object.rejectDamage) {
+      object.rejectDamage();
+    }
   }
   self.kill();
 };
