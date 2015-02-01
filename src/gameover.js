@@ -1,6 +1,6 @@
 'use strict';
 
-function GameOver() {}
+var GameOver = function() {};
 
 GameOver.prototype = {
   create: function() {
