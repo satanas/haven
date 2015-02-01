@@ -34,6 +34,7 @@ var Alysa = function(game, x, y) {
   this.shootSound = this.game.add.audio('alysashoot');
   this.hurtSound = this.game.add.audio('alysahurt');
   this.dieSound = this.game.add.audio('alysadies');
+  this.extralifeSound = this.game.add.audio('extralife');
   this.diamondsSoundPool = new AudioPool(this.game, ['diamond1', 'diamond2']);
 
   this.game.physics.arcade.enable(this);
@@ -226,6 +227,7 @@ Alysa.prototype.pickItem = function(self, object) {
     console.log('picking diamonds', self.game.global.diamonds);
   } else if (object.type === 'extralife') {
     self.game.global.lives += 1;
+    self.extralifeSound.play();
     console.log('picking extralife', self.game.global.lives);
   }
   self.game.global.items.push(object);
