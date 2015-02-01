@@ -13,6 +13,7 @@ Menu.prototype = {
     this.game.sound.stopAll();
     this.bgmSound = this.game.add.audio('bgmintro', 1, true);
     this.bgmSound.onDecoded.add(this.start, this);
+    this.selectSound = this.game.add.audio('select');
   },
 
   start: function() {
@@ -23,6 +24,7 @@ Menu.prototype = {
     if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
 
     if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
+      this.selectSound.play();
       this.game.input.keyboard.stop();
       this.game.state.start('intro');
     }
