@@ -127,6 +127,7 @@ Enemy.prototype.isVulnerable = function(object) {
 
 Enemy.prototype.adjustHitBox = function() {};
 Enemy.prototype.onShooting = function() {};
+Enemy.prototype.rejectDamage = function() {};
 
 
 //////////////////
@@ -144,6 +145,7 @@ var Gumbon = function(game, x, y, facing, zombie, range, map) {
   this.map = map;
   this.calculateWalkingRange(x, range);
   this.body.setSize(41, 35, 3, 1);
+  this.hitSound = this.game.add.audio('organichit');
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5], 12, true);
   this.animations.add('right',  [6, 7, 8, 9, 10, 11], 12, true);
@@ -171,6 +173,8 @@ var Snailbot = function(game, x, y, facing, range, map) {
   this.speed = 100;
   this.body.setSize(79, 50, 5, 14);
 
+  this.hitSound = this.game.add.audio('mechanichit');
+  this.invulnerableSound = this.game.add.audio('invulnerablehit');
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 12, true);
 };
@@ -201,6 +205,10 @@ Snailbot.prototype.isVulnerable = function(object) {
   return true;
 };
 
+Snailbot.prototype.rejectDamage = function() {
+  this.invulnerableSound.play();
+};
+
 
 var Porktaicho = function(game, player, x, y, facing, action, range) {
   Enemy.call(this, game, x, y, 'porktaicho', facing, 3);
@@ -212,6 +220,7 @@ var Porktaicho = function(game, player, x, y, facing, action, range) {
   this.shootingLapse = 0;
   this.action = action;
   this.body.setSize(30, 51, 26, 0);
+  this.hitSound = this.game.add.audio('organichit');
 
   this.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
   this.animations.add('right',  [8, 9, 10, 11, 12, 13, 14], 16, true);
