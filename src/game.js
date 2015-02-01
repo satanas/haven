@@ -14,7 +14,7 @@ Game.prototype = {
 
     if (this.bgmSound === undefined) {
       this.game.sound.stopAll();
-      this.bgmSound = this.game.add.audio('ingame', 1, true);
+      this.bgmSound = this.game.add.audio('ingame', 0.7, true);
       this.bgmSound.onDecoded.add(this.start, this);
     }
 
@@ -166,11 +166,12 @@ Game.prototype = {
       this.player.body.enable = false;
       var self = this;
       this.game.plugin.fadeOut(0x000, 750, 0, function() {
-        console.log('dead, rest', this.game.global.lives);
-        if (this.game.global.lives <= 0) {
-          this.game.state.start('gameover');
+        console.log('dead, rest', self.game.global.lives);
+        if (self.game.global.lives < 1) {
+          self.bgmSound = undefined;
+          self.game.state.start('gameover');
         } else {
-          this.game.state.start('death');
+          self.game.state.start('death');
         }
       });
       //return;
