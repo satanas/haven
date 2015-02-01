@@ -42,7 +42,7 @@ Game.prototype = {
     groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
-    this.map.setCollisionBetween(1, 120, true, 'Tiles');
+    this.map.setCollisionBetween(1, 124, true, 'Tiles');
     groups.tiles.resizeWorld();
 
     if (this.game.global.lastCheckpoint) {
