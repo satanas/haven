@@ -66,8 +66,10 @@ ClosingTrap.prototype.update = function() {
 };
 
 ClosingTrap.prototype.onActivation = function(self, player) {
-  player.x = self.body.x;
-  self.activated = true;
+  if (!player.invincible) {
+    player.x = self.body.x;
+    self.activated = true;
+  }
 };
 
 
