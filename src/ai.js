@@ -68,6 +68,8 @@ var AI = {
   },
 
   isPlayerNear: function(range) {
-    return Math.abs(this.player.x - this.x) <= range;
+    var playerCenter = this.player.x + (this.player.width / 2);
+    var objCenter = this.x + (this.width / 2);
+    return Math.abs(playerCenter - objCenter) <= range;
   }
 };
