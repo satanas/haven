@@ -51,6 +51,7 @@ Alysa.prototype.constructor = Alysa;
 
 Alysa.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
+  this.game.physics.arcade.collide(this, groups.blockEnemies, this.onCollision);
   this.game.physics.arcade.collide(this, groups.platforms, this.onCollision, this.checkPlatform);
   this.game.physics.arcade.overlap(this, groups.checkpoints, this.onCheckpoint);
 

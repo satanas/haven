@@ -27,6 +27,9 @@ Game.prototype = {
     groups.enemies = this.game.add.group();
     groups.enemies.enableBody = true;
 
+    groups.blockEnemies= this.game.add.group();
+    groups.blockEnemies.enableBody = true;
+
     groups.items = this.game.add.group();
     groups.items.enableBody = true;
 
@@ -126,6 +129,8 @@ Game.prototype = {
         var item = new Skeleton(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'carniplant') {
         var item = new Carniplant(self.game, e.x, y);
+      } else if (e.properties.type === 'gunner') {
+        var item = new Gunner(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {

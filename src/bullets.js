@@ -24,6 +24,7 @@ Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles, this.die);
+  this.game.physics.arcade.collide(this, groups.blockEnemies, this.makeDamage);
   this.game.physics.arcade.overlap(this, groups.enemies, this.makeDamage);
   if (!this.alive) {
     this.destroy();

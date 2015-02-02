@@ -1,7 +1,7 @@
 'use strict';
 
 // Parent class for all enemies
-var Enemy = function(game, x, y, type, facing, health) {
+var Enemy = function(game, x, y, type, facing, health, group) {
   Phaser.Sprite.call(this, game, x, y, type, 0);
 
   this.facing = facing;
@@ -24,7 +24,11 @@ var Enemy = function(game, x, y, type, facing, health) {
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
   this.hitSound = null;
-  groups.enemies.add(this);
+  if (group === undefined) {
+    groups.enemies.add(this);
+  } else {
+    group.add(this);
+  }
 };
 
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
@@ -606,4 +610,42 @@ Carniplant.prototype.constructor = Carniplant;
 Carniplant.prototype.update = function() {
   this.recover();
   this.render();
+};
+
+var Gunner = function(game, player, x, y) {
+  Enemy.call(this, game, x, y, 'gunner', 'left', 1, groups.blockEnemies);
+
+  this.player = player;
+  this.shootingDelay = 1500;
+  this.shootingLapse = 0;
+  this.body.setSize(32, 20, 0, 12);
+  this.body.immovable = true;
+  this.invulnerableSound = this.game.add.audio('invulnerablehit');
+  this.frame = 0;
+};
+
+Gunner.prototype = Object.create(Enemy.prototype);
+Gunner.prototype.constructor = Gunner;
+
+Gunner.prototype.update = function() {
+  this.tileCollisions();
+  this.render();
+  this.turn();
+
+  if (!this.body.onFloor()) return;
+
+  this.shoot();
+};
+
+Gunner.prototype.isVulnerable = function(object) {
+  return false;
+};
+
+Gunner.prototype.rejectDamage = function() {
+  this.invulnerableSound.play();
+};
+
+Gunner.prototype.calculateBulletCoords = function() {
+  console.log('bullet', {x: this.body.x + (this.body.width / 2), y: this.body.y + 8});
+  return {x: this.body.x + (this.body.width / 2), y: this.body.y + 8};
 };
