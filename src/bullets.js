@@ -51,8 +51,6 @@ Bullet.prototype.makeDamage = function(self, object) {
 var EnemyBullet = function(game, x, y, angle) {
   Phaser.Sprite.call(this, game, x, y, 'enemy-bullet', 0);
 
-  this.angle = angle;
-  this.tint = 0xcd0937;
   this.speed = 600;
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;

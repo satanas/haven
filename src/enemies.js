@@ -492,7 +492,8 @@ Cuirass.prototype.rejectDamage = function() {
 };
 
 Cuirass.prototype.calculateBulletCoords = function() {
-  return {x: this.body.x + (this.body.width / 2), y: this.body.y + 17};
+  var yOffset = (this.index === 0) ? 10 : ((this.index === 1) ? 13 : 17);
+  return {x: this.body.x + (this.body.width / 2), y: this.body.y + yOffset};
 };
 
 Cuirass.prototype.render = function(self) {
@@ -646,6 +647,6 @@ Gunner.prototype.rejectDamage = function() {
 };
 
 Gunner.prototype.calculateBulletCoords = function() {
-  console.log('bullet', {x: this.body.x + (this.body.width / 2), y: this.body.y + 8});
-  return {x: this.body.x + (this.body.width / 2), y: this.body.y + 8};
+  var xOffset = (this.facing === 'left') ? -4 : 4
+  return {x: this.body.x + (this.body.width / 2) + xOffset, y: this.body.y + 2};
 };
