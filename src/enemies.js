@@ -458,7 +458,6 @@ Cuirass.prototype.onShooting = function() {
   if (this.index > 2) {
     this.animations.play('close');
     this.hidden = true;
-    //this.invincible = true;
     this.index = 0;
   }
 };
@@ -472,7 +471,6 @@ Cuirass.prototype.update = function() {
     this.hiddenTime += this.game.time.elapsed;
     if (this.hiddenTime >= this.hiddenLapse) {
       this.hidden = false;
-      //this.invincible = false;
       this.hiddenTime = 0;
       this.animations.play('open');
     }
