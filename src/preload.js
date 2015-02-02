@@ -56,7 +56,6 @@ Preload.prototype = {
     this.load.spritesheet('snailbot', 'assets/snailbot.png', 84, 67);
     this.load.spritesheet('ambusher', 'assets/ambusher.png', 93, 68);
     this.load.spritesheet('ladybug', 'assets/ladybug.png', 47, 36);
-    this.load.spritesheet('cannon', 'assets/cannon.png', 93, 33);
     this.load.spritesheet('wasp', 'assets/wasp.png', 82, 85);
     this.load.spritesheet('porktaicho', 'assets/porktaicho.png', 63, 51);
     this.load.spritesheet('alysa', 'assets/alysa.png', 38, 52);
@@ -69,6 +68,7 @@ Preload.prototype = {
     this.load.spritesheet('degradation', 'assets/alysa-degradation.png', 46, 37);
     this.load.spritesheet('planttrap', 'assets/planttrap.png', 96, 32);
     this.load.spritesheet('cuirass', 'assets/cuirass.png', 32, 32);
+    this.load.spritesheet('carniplant', 'assets/carniplant.png', 56, 56);
 
     this.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
     this.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');

@@ -7,7 +7,7 @@ var Enemy = function(game, x, y, type, facing, health) {
   this.facing = facing;
   this.harm = 1;
   this.health = health;
-  this.bloodType = 'blood';
+  this.bloodType = bloodType.BLOOD;
 
   // Hurt variables
   this.hurt = false;
@@ -168,7 +168,7 @@ var Snailbot = function(game, x, y, facing, range, map) {
   Enemy.call(this, game, x, y, 'snailbot', facing, 8);
 
   this.map = map;
-  this.bloodType = 'oil';
+  this.bloodType = bloodType.OIL;
   this.calculateWalkingRange(x, range);
   this.speed = 100;
   this.body.setSize(79, 50, 5, 14);
@@ -270,11 +270,11 @@ Porktaicho.prototype.render = function() {
 };
 
 
-var Ambusher = function(game, player, x, y) {
-  Enemy.call(this, game, x, y, 'superflowah', 'left', 1);
+var Ambusher = function(game, player, x, y, facing, moveable) {
+  Enemy.call(this, game, x, y, 'ambusher', facing, 3);
 
   this.player = player;
-  this.bloodType = 'pieces';
+  this.bloodType = bloodType.PIECES;
   this.health = 5;
   this.shotDelay = 700;
   this.maxShots = 3;
@@ -352,7 +352,7 @@ var Ladybug = function(game, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'ladybug', facing, 1);
 
   this.speed = 80;
-  this.bloodType = 'oil';
+  this.bloodType = bloodType.OIL;
   this.calculateWalkingRange(x, range);
   this.body.setSize(47, 30, 0, 6);
 
@@ -377,7 +377,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
   Enemy.call(this, game, x, y, 'medusa', facing, 3);
 
   this.origY = y;
-  this.bloodType = 'acid';
+  this.bloodType = bloodType.ACID;
   this.speed = 120;
   this.calculateWalkingRange(x, xrange);
   this.maxCycles = 4;
@@ -425,7 +425,7 @@ Medusa.prototype.move = function() {
 var Cuirass = function(game, player, x, y, facing) {
   Enemy.call(this, game, x, y, 'cuirass', facing, 1);
 
-  this.bloodType = 'pieces';
+  this.bloodType = bloodType.PIECES;
   this.player = player;
   this.shootingLapse = 0;
   this.shootingDelay = 500;
@@ -497,7 +497,7 @@ var Wasp = function(game, player, x, y, facing, range) {
   Enemy.call(this, game, x, y, 'wasp', facing, 3);
 
   this.player = player;
-  this.bloodType = 'oil';
+  this.bloodType = bloodType.OIL;
   this.speed = 160;
   this.shootingLapse = 800;
   this.shootingDelay = 2000;
@@ -580,4 +580,23 @@ Skeleton.prototype.update = function() {
   this.render();
   if (!this.body.onFloor()) return;
   this.move();
+};
+
+var Carniplant = function(game, x, y) {
+  Enemy.call(this, game, x, y, 'carniplant', 'left', 2);
+  console.log('Carniplant');
+
+  this.body.allowGravity = false;
+  this.bloodType = bloodType.BLOOD;
+
+  this.animations.add('main', [0, 1], 9, true);
+  this.animations.play('main');
+};
+
+Carniplant.prototype = Object.create(Enemy.prototype);
+Carniplant.prototype.constructor = Carniplant;
+
+Carniplant.prototype.update = function() {
+  this.recover();
+  this.render();
 };
