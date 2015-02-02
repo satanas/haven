@@ -105,7 +105,7 @@ FallingTrap.prototype.constructor = FallingTrap;
 FallingTrap.prototype.isPlayerNear = AI.isPlayerNear;
 
 FallingTrap.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
+  this.game.physics.arcade.collide(this, groups.tiles);
 
   if (this.alive) {
     if (!this.activated) {
@@ -119,7 +119,6 @@ FallingTrap.prototype.update = function() {
         this.body.allowGravity = true;
       }
     }
-    this.render();
     // Killing
     if (this.body.onFloor()) {
       this.deadTime += this.game.time.elapsed;
@@ -127,6 +126,8 @@ FallingTrap.prototype.update = function() {
         this.kill();
       }
     }
+
+    this.render();
   } else {
     this.respawnTime += this.game.time.elapsed;
     if (this.respawnTime >= this.respawnDelay) {
@@ -160,10 +161,6 @@ FallingTrap.prototype.render = function() {
       }
     }
   }
-};
-
-FallingTrap.prototype.onCollision = function(self, object) {
-  //self.kill();
 };
 
 FallingTrap.prototype.reset = function() {

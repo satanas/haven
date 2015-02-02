@@ -104,7 +104,7 @@ Game.prototype = {
       if (e.properties.type === 'acerbus') {
         self.boss = new Acerbus(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'gumbon') {
-        var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range, self.map);
+        //var item = new Gumbon(self.game, e.x, y, facing, e.properties.zombie, range, self.map);
       } else if (e.properties.type === 'snailbot') {
         var item = new Snailbot(self.game, e.x, y, facing, range, self.map);
       } else if (e.properties.type === 'porktaicho') {
@@ -134,7 +134,11 @@ Game.prototype = {
         var item = new ClosingTrap(self.game, self.player, e.x, y, 'planttrap');
       } else if (e.properties.type === 'chandelkier') {
         var delay = e.properties.delay || 100;
-        var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', 'finite', delay, true);
+        var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', repetitionType.FINITE, delay, warningType.ANIMATION);
+      } else if (e.properties.type === 'fallingrock') {
+        var delay = e.properties.delay || 100;
+        var repetition = e.properties.repetition || repetitionType.FINITE;
+        var item = new FallingTrap(self.game, self.player, e.x, y, 'rock', repetition, delay, warningType.RUMBLE);
       } else if (e.properties.type === 'stunningrock') {
         var yspeed = e.properties.yspeed || 900;
         var fallingdelay = e.properties.fallingdelay || 400;
