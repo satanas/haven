@@ -71,25 +71,31 @@ ClosingTrap.prototype.onActivation = function(self, player) {
 };
 
 
-var FallingTrap = function(game, player, x, y, sprite, mode, delay, animated) {
-  console.log(x, y, sprite, mode, delay, animated);
+var FallingTrap = function(game, player, x, y, sprite, repetition, delay, warning) {
   Trap.call(this, game, x, y, sprite);
 
+  this.origX = x;
   this.origY = y;
+  this.rumbleRange = 3;
+  this.rumbleDirection = -1;
+  this.rumbleTime = 0;
+  this.rumbleDelay = 50;
   this.deadType = deadType.BLEEDING;
   this.player = player;
   this.body.gravity.y = 1200;
-  //this.body.setSize(32, 32, 0, 0);
-  this.mode = mode;
+  this.body.allowGravity = false;
+  this.repetition = repetition;
   this.harm = 1;
   this.activationTime = 0;
   this.activationDelay = delay;
   this.activated = false;
   this.respawnTime = 0;
   this.respawnDelay = 500;
-  this.animated = animated;
+  this.deadTime = 0;
+  this.deadDelay = 100;
+  this.warning = warning;
 
-  if (this.animated) {
+  if (this.warning === warningType.ANIMATION) {
     this.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 10, true);
   }
 };
@@ -103,7 +109,8 @@ FallingTrap.prototype.update = function() {
 
   if (this.alive) {
     if (!this.activated) {
-      if (this.isPlayerNear(20)) {
+      var range = (this.width / 2) + (this.player.width / 2) - 10;
+      if (this.isPlayerNear(range)) {
         this.activated = true;
       }
     } else {
@@ -113,10 +120,17 @@ FallingTrap.prototype.update = function() {
       }
     }
     this.render();
+    // Killing
+    if (this.body.onFloor()) {
+      this.deadTime += this.game.time.elapsed;
+      if (this.deadTime >= this.deadDelay) {
+        this.kill();
+      }
+    }
   } else {
     this.respawnTime += this.game.time.elapsed;
     if (this.respawnTime >= this.respawnDelay) {
-      if (this.mode === 'infinite') {
+      if (this.repetition === repetitionType.INFINITE){
         this.reset();
       } else {
         this.destroy();
@@ -126,17 +140,30 @@ FallingTrap.prototype.update = function() {
 };
 
 FallingTrap.prototype.render = function() {
-  if (this.animated) {
+  if (this.warning === warningType.ANIMATION) {
     if (this.activated) {
       this.frame = 2;
     } else {
       this.animations.play('idle');
     }
+  } else if (this.warning === warningType.RUMBLE) {
+    if (this.activated) {
+      if (this.body.allowGravity) {
+        this.x = this.origX;
+      } else {
+        this.rumbleTime += this.game.time.elapsed;
+        if (this.rumbleTime >= this.rumbleDelay) {
+          this.rumbleDirection *= -1;
+          this.x += this.rumbleDirection * this.rumbleRange;
+          this.rumbleTime = 0;
+        }
+      }
+    }
   }
 };
 
 FallingTrap.prototype.onCollision = function(self, object) {
-  self.kill();
+  //self.kill();
 };
 
 FallingTrap.prototype.reset = function() {
@@ -145,6 +172,9 @@ FallingTrap.prototype.reset = function() {
   this.activated = false;
   this.activationTime = 0;
   this.respawnTime = 0;
+  this.rumbleTime = 0;
+  this.deadTime = 0;
+  this.x = this.origX;
   this.y = this.origY;
 };
 
