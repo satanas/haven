@@ -39,29 +39,35 @@ var Lava = function(game, x, y) {
 Lava.prototype = Object.create(Phaser.Sprite.prototype);
 Lava.prototype.constructor = Lava;
 
-var BearTrap = function(game, player, x, y) {
-  Trap.call(this, game, x, y, 'box-blue');
+var ClosingTrap = function(game, player, x, y, type) {
+  if (type === 'beartrap') {
+    Trap.call(this, game, x, y, 'box-blue');
+    this.body.setSize(32, 10, 0, 22);
+  } else if (type === 'planttrap') {
+    Trap.call(this, game, x, y, 'planttrap');
+    this.body.setSize(35, 22, 31, 10);
+    this.frame = 0;
+  }
 
   this.deadType = deadType.DECAPITATION;
   this.player = player;
-  this.body.setSize(32, 10, 0, 22);
   this.activated = false;
 };
 
-BearTrap.prototype = Object.create(Trap.prototype);
-BearTrap.prototype.constructor = BearTrap;
+ClosingTrap.prototype = Object.create(Trap.prototype);
+ClosingTrap.prototype.constructor = ClosingTrap;
 
-BearTrap.prototype.update = function() {
+ClosingTrap.prototype.update = function() {
   this.game.physics.arcade.collide(this, groups.tiles);
   this.game.physics.arcade.overlap(this, this.player, this.onActivation);
   if (this.activated) {
-    this.tint = 0xcf00e2;
+    this.frame = 1;
   }
 };
 
-BearTrap.prototype.onActivation = function(self, player) {
-  player.x = self.x;
-  this.activated = true;
+ClosingTrap.prototype.onActivation = function(self, player) {
+  player.x = self.body.x;
+  self.activated = true;
 };
 
 

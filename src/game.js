@@ -129,7 +129,9 @@ Game.prototype = {
       } else if (e.properties.type === 'lava') {
         var item = new Lava(self.game, e.x, y);
       } else if (e.properties.type === 'beartrap') {
-        var item = new BearTrap(self.game, self.player, e.x, y);
+        var item = new ClosingTrap(self.game, self.player, e.x, y, 'beartrap');
+      } else if (e.properties.type === 'planttrap') {
+        var item = new ClosingTrap(self.game, self.player, e.x, y, 'planttrap');
       } else if (e.properties.type === 'chandelkier') {
         var delay = e.properties.delay || 100;
         var item = new FallingTrap(self.game, self.player, e.x, y, 'chandelkier', 'finite', delay, true);
