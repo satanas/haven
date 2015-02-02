@@ -23,5 +23,6 @@ game.state.add('menu', Menu);
 game.state.add('game', Game);
 game.state.add('gameover', GameOver);
 game.state.add('death', Death);
+game.state.add('ending', Ending);
 
 game.state.start('boot');
