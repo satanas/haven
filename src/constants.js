@@ -7,6 +7,13 @@ var deadType = {
   BLEEDING: 'bleeding'
 };
 
+var bloodType = {
+  OIL: 'oil',
+  BLOOD: 'blood',
+  PIECES: 'pieces',
+  ACID: 'acid'
+};
+
 var repetitionType = {
   FINITE: 0,
   INFINITE: 1
