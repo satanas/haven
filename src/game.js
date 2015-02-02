@@ -132,7 +132,7 @@ Game.prototype = {
       } else if (e.properties.type === 'gunner') {
         var item = new Gunner(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'cannon') {
-        var item = new Cannon(self.game, self.player, e.x-30, y);
+        var item = new Cannon(self.game, self.player, e.x, y);
       } else if (e.properties.type === 'spike') {
         var item = new Spike(self.game, e.x, y);
       } else if (e.properties.type === 'lava') {
