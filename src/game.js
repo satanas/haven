@@ -49,7 +49,7 @@ Game.prototype = {
     if (this.game.global.lastCheckpoint) {
       this.player = new Alysa(this.game, this.game.global.lastCheckpoint.origX, this.game.global.lastCheckpoint.origY);
     } else {
-      this.player = new Alysa(this.game, 280, 170);
+      this.player = new Alysa(this.game, 280, 370);
     }
 
     var self = this;
@@ -70,8 +70,7 @@ Game.prototype = {
         var origX = parseInt(e.properties.orig_x);
         var origY = parseInt(e.properties.orig_y);
         var item = new Checkpoint(self.game, e.x, y, origX, origY);
-      }
-      if (e.properties.type === 'clock') {
+      } else if (e.properties.type === 'clock') {
         var initTime = e.properties.init_time || 300;
         var criticalTime = e.properties.critical_time || 20;
         self.clock = new Clock(self.game);

@@ -221,16 +221,24 @@ Alysa.prototype.takeDamage = function(self, object) {
 };
 
 Alysa.prototype.pickItem = function(self, object) {
-  if (object.type === 'diamond') {
+  if (object.itemType === 'diamond') {
     self.game.global.diamonds += 1;
     self.diamondsSoundPool.randomPlay();
+    self.game.global.items.push(object);
     console.log('picking diamonds', self.game.global.diamonds);
-  } else if (object.type === 'extralife') {
+  } else if (object.itemType === 'extralife') {
     self.game.global.lives += 1;
     self.extralifeSound.play();
+    self.game.global.items.push(object);
     console.log('picking extralife', self.game.global.lives);
+  } else if (object.itemType === 'heart') {
+    self.health += 1;
+    if (self.health > self.game.global.maxHeroHealth) {
+      self.health = self.game.global.maxHeroHealth;
+    }
+    self.extralifeSound.play();
+    console.log('picking health', self.health);
   }
-  self.game.global.items.push(object);
   object.destroy();
 };
 
