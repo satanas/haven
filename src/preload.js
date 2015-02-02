@@ -68,6 +68,7 @@ Preload.prototype = {
     this.load.spritesheet('boom', 'assets/boom.png', 73, 75);
     this.load.spritesheet('degradation', 'assets/alysa-degradation.png', 46, 37);
     this.load.spritesheet('planttrap', 'assets/planttrap.png', 96, 32);
+    this.load.spritesheet('cuirass', 'assets/cuirass.png', 32, 32);
 
     this.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
     this.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');

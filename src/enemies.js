@@ -422,8 +422,8 @@ Medusa.prototype.move = function() {
 };
 
 
-var Cannon = function(game, player, x, y, facing) {
-  Enemy.call(this, game, x, y, 'medusa', facing, 1);
+var Cuirass = function(game, player, x, y, facing) {
+  Enemy.call(this, game, x, y, 'cuirass', facing, 1);
 
   this.bloodType = 'pieces';
   this.player = player;
@@ -435,30 +435,33 @@ var Cannon = function(game, player, x, y, facing) {
   this.hiddenTime = 0;
   this.hidden = true;
   this.body.allowGravity = false;
-  this.tint = 0x01fc01;
 
-  //this.shotLeft = this.animations.add('left', [0, 1, 2], 13, false);
-  //this.shotLeft.onComplete.add(this.render);
-  //this.shotRight = this.animations.add('right',  [5, 6, 7], 13, false);
-  //this.shotRight.onComplete.add(this.render);
+  if (facing === 'left') {
+    this.animations.add('open', [0, 1, 2], 10, false);
+    this.animations.add('close', [2, 2, 2, 1, 0], 10, false);
+    this.frame = 0;
+  } else {
+    this.animations.add('open', [5, 4, 3], 10, false);
+    this.animations.add('close', [3, 3, 3, 4, 5], 10, false);
+    this.frame = 5;
+  }
 };
 
-Cannon.prototype = Object.create(Enemy.prototype);
-Cannon.prototype.constructor = Cannon;
-Cannon.prototype.adjustHitBox = function() {};
+Cuirass.prototype = Object.create(Enemy.prototype);
+Cuirass.prototype.constructor = Cuirass;
+Cuirass.prototype.adjustHitBox = function() {};
 
-Cannon.prototype.onShooting = function() {
+Cuirass.prototype.onShooting = function() {
   this.index += 1;
   if (this.index > 2) {
-    this.tint = 0x01fc01;
+    this.animations.play('close');
     this.hidden = true;
     this.invincible = true;
     this.index = 0;
   }
-  //this.animations.play(this.facing);
 };
 
-Cannon.prototype.update = function() {
+Cuirass.prototype.update = function() {
   this.tileCollisions();
   this.recover();
   this.turn();
@@ -466,21 +469,21 @@ Cannon.prototype.update = function() {
   if (this.hidden) {
     this.hiddenTime += this.game.time.elapsed;
     if (this.hiddenTime >= this.hiddenLapse) {
-      this.tint = 0xffffff;
       this.hidden = false;
       this.invincible = false;
       this.hiddenTime = 0;
+      this.animations.play('open');
     }
   } else {
     this.shoot(this.angles[this.index]);
   }
 };
 
-Cannon.prototype.calculateBulletCoords = function() {
+Cuirass.prototype.calculateBulletCoords = function() {
   return {x: this.body.x + (this.body.width / 2), y: this.body.y + 17};
 };
 
-Cannon.prototype.render = function(self) {
+Cuirass.prototype.render = function(self) {
   self.animations.stop();
   if (self.facing === 'left') {
     self.frame = 3;

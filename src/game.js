@@ -116,8 +116,8 @@ Game.prototype = {
       } else if (e.properties.type === 'medusa') {
         range = (range === -1) ? 300 : range;
         var item = new Medusa(self.game, e.x, y, facing, range);
-      } else if (e.properties.type === 'cannon') {
-        //var item = new Cannon(self.game, self.player, e.x, y, facing);
+      } else if (e.properties.type === 'cuirass') {
+        var item = new Cuirass(self.game, self.player, e.x, y, facing);
       } else if (e.properties.type === 'wasp') {
         var xrange = (e.properties.xrange) ? parseInt(e.properties.xrange) : 140;
         var yrange = (e.properties.yrange) ? parseInt(e.properties.yrange) : 40;
