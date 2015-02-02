@@ -436,6 +436,8 @@ var Cuirass = function(game, player, x, y, facing) {
   this.hidden = true;
   this.body.allowGravity = false;
 
+  this.invulnerableSound = this.game.add.audio('invulnerablehit');
+
   if (facing === 'left') {
     this.animations.add('open', [0, 1, 2], 10, false);
     this.animations.add('close', [2, 2, 2, 1, 0], 10, false);
@@ -456,7 +458,7 @@ Cuirass.prototype.onShooting = function() {
   if (this.index > 2) {
     this.animations.play('close');
     this.hidden = true;
-    this.invincible = true;
+    //this.invincible = true;
     this.index = 0;
   }
 };
@@ -470,13 +472,21 @@ Cuirass.prototype.update = function() {
     this.hiddenTime += this.game.time.elapsed;
     if (this.hiddenTime >= this.hiddenLapse) {
       this.hidden = false;
-      this.invincible = false;
+      //this.invincible = false;
       this.hiddenTime = 0;
       this.animations.play('open');
     }
   } else {
     this.shoot(this.angles[this.index]);
   }
+};
+
+Cuirass.prototype.isVulnerable = function(object) {
+  return !this.hidden;
+};
+
+Cuirass.prototype.rejectDamage = function() {
+  this.invulnerableSound.play();
 };
 
 Cuirass.prototype.calculateBulletCoords = function() {
@@ -584,7 +594,6 @@ Skeleton.prototype.update = function() {
 
 var Carniplant = function(game, x, y) {
   Enemy.call(this, game, x, y, 'carniplant', 'left', 2);
-  console.log('Carniplant');
 
   this.body.allowGravity = false;
   this.bloodType = bloodType.BLOOD;
