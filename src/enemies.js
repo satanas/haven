@@ -650,3 +650,36 @@ Gunner.prototype.calculateBulletCoords = function() {
   var xOffset = (this.facing === 'left') ? -4 : 4
   return {x: this.body.x + (this.body.width / 2) + xOffset, y: this.body.y + 2};
 };
+
+var Cannon = function(game, player, x, y) {
+  Enemy.call(this, game, x, y, 'cannon', 'left', 3, groups.enemies);
+
+  this.player = player;
+  this.bloodType = bloodType.OIL;
+  this.shootingDelay = 1500;
+  this.shootingLapse = 0;
+  this.body.setSize(48, 40, 34, 0);
+  this.body.immovable = true;
+  this.frame = 0;
+};
+
+Cannon.prototype = Object.create(Enemy.prototype);
+Cannon.prototype.constructor = Cannon;
+
+Cannon.prototype.update = function() {
+  this.tileCollisions();
+  this.recover();
+  this.render();
+
+  if (!this.body.onFloor()) return;
+
+  this.shoot();
+};
+
+Cannon.prototype.isVulnerable = function(object) {
+  return true;
+};
+
+Cannon.prototype.calculateBulletCoords = function() {
+  return {x: this.body.x + (this.body.width / 2) - 4, y: this.body.y + 15};
+};
