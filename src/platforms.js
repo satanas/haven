@@ -79,8 +79,6 @@ var FallingPlatform = function(game, player, x, y, lifetime) {
   this.player = player;
   this.playerOnTop = false;
   this.lifetime = lifetime;
-  this.checkWorldBounds = true;
-  this.outOfBoundsKill = true;
   this.game.physics.arcade.enable(this);
   this.body.gravity.y = 1000;
   this.body.allowGravity = false;
@@ -101,9 +99,12 @@ FallingPlatform.prototype.update = function() {
   if ((this.player.y + this.player.height === this.y) && (this.player.x + this.player.width >= this.x && this.player.x <= this.x + this.width)) {
     this.playerOnTop = true;
     this.lifetime -= this.game.time.elapsed;
-    if (this.lifetime <= 0) {
-      this.body.immovable = false;
-      this.body.allowGravity = true;
+  }
+  if (this.lifetime <= 0) {
+    this.body.immovable = false;
+    this.body.allowGravity = true;
+    if (this.y > this.game.world.height) {
+      this.kill();
     }
   }
 
