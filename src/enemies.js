@@ -393,7 +393,7 @@ var Medusa = function(game, x, y, facing, xrange, yrange) {
 
   this.animations.add('left', [0, 1, 2, 3], 12, true);
   this.animations.add('right',  [4, 5, 6, 7], 12, true);
-  this.hitSound = this.game.add.sound('medusahit');
+  this.hitSound = this.game.add.sound('organichit');
 };
 
 Medusa.prototype = Object.create(Enemy.prototype);

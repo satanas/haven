@@ -117,7 +117,7 @@ Game.prototype = {
       } else if (e.properties.type === 'ladybug') {
         var item = new Ladybug(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'medusa') {
-        range = (range === -1) ? 300 : range;
+        range = (range === -1) ? 250 : range;
         var item = new Medusa(self.game, e.x, y, facing, range);
       } else if (e.properties.type === 'cuirass') {
         var item = new Cuirass(self.game, self.player, e.x, y, facing);

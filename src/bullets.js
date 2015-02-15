@@ -61,7 +61,9 @@ var EnemyBullet = function(game, x, y, angle) {
   var radAngle = Math.PI / 180 * angle;
   this.body.velocity.x = Math.cos(radAngle) * this.speed;
   this.body.velocity.y = Math.sin(radAngle) * this.speed;
+  this.shootSound = this.game.add.audio('enemyshoot');
 
+  this.shootSound.play();
   groups.enemies.add(this);
 };
 

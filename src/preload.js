@@ -76,18 +76,19 @@ Preload.prototype = {
     this.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
     this.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');
     this.load.audio('alysashoot', 'assets/sounds/alysashoot.mp3');
+    this.load.audio('enemyshoot', 'assets/sounds/enemyshoot.mp3');
     this.load.audio('alysahurt', 'assets/sounds/alysahurtdamage.mp3');
-    this.load.audio('alysadies', 'assets/sounds/alysadies.mp3');
+    this.load.audio('alysadies', 'assets/sounds/alysadiestime.mp3');
     this.load.audio('diamond1', 'assets/sounds/diamondcollect.mp3');
     this.load.audio('diamond2', 'assets/sounds/diamondcollect2.mp3');
     this.load.audio('explosion', 'assets/sounds/explosion.wav');
     this.load.audio('medusahit', 'assets/sounds/medusahit.mp3');
-    this.load.audio('select', 'assets/sounds/select.wav');
+    this.load.audio('select', 'assets/sounds/select.mp3');
     this.load.audio('extralife', 'assets/sounds/1up.wav');
     this.load.audio('lifedown', 'assets/sounds/1down.wav');
-    this.load.audio('invulnerablehit', 'assets/sounds/invulnerablehit.wav');
-    this.load.audio('organichit', 'assets/sounds/organichit.wav');
-    this.load.audio('mechanichit', 'assets/sounds/mechanichit.wav');
+    this.load.audio('invulnerablehit', 'assets/sounds/invulnerablehit.mp3');
+    this.load.audio('organichit', 'assets/sounds/organichit.mp3');
+    this.load.audio('mechanichit', 'assets/sounds/mechanichit.mp3');
 
     // BGM
     this.load.audio('bgmintro', 'assets/sounds/bgm01intro.mp3');

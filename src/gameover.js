@@ -20,6 +20,7 @@ GameOver.prototype = {
     this.game.sound.stopAll();
     this.bgmSound = this.game.add.audio('gameover');
     this.bgmSound.onDecoded.add(this.start, this);
+    this.selectSound = this.game.add.audio('select');
 
     // Reset variables
     this.game.global.diamonds = 0;
@@ -37,6 +38,7 @@ GameOver.prototype = {
     if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
 
     if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
+      this.selectSound.play();
       this.game.state.start('menu');
     }
   }
