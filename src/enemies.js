@@ -8,6 +8,7 @@ var Enemy = function(game, x, y, type, facing, health, group) {
   this.harm = 1;
   this.health = health;
   this.bloodType = bloodType.BLOOD;
+  this.willDrop = true;
 
   // Hurt variables
   this.hurt = false;
@@ -51,6 +52,7 @@ Enemy.prototype.takeDamage = function() {
       var exp = new Explosion(this.game, this.x, this.y, this.width, this.height);
       this.game.global.killedEnemies += 1;
       console.log('killed enemies', this.game.global.killedEnemies);
+      this.drop();
       this.destroy();
     }
   }
@@ -111,7 +113,7 @@ Enemy.prototype.shoot = function(angle) {
       this.shooting = true;
       this.elapsedTimeAfterShot = 0;
       var p = this.calculateBulletCoords();
-      var bullet = new EnemyBullet(game, p.x, p.y, angle);
+      var bullet = new EnemyBullet(p.x, p.y, angle);
       this.onShooting();
     }
   }
@@ -127,6 +129,22 @@ Enemy.prototype.onWalkingLimits = function() {
 
 Enemy.prototype.isVulnerable = function(object) {
   return !this.invincible;
+};
+
+Enemy.prototype.drop = function() {
+  if (!this.willDrop) return;
+
+  var value = Math.floor(Math.random() * 10) / 10;
+  if (value <= game.global.drop) {
+    var x = this.x + (this.width / 2),
+        y = this.y + (this.height / 2);
+    console.log('dropping', x, y, this);
+    if (Math.round(Math.random()) === 0) {
+      var diamond = new Diamond(x, y);
+    } else {
+      var heart = new Heart(x, y);
+    }
+  }
 };
 
 Enemy.prototype.adjustHitBox = function() {};
@@ -331,7 +349,7 @@ Ambusher.prototype.update = function() {
       if (this.game.time.elapsedSince(this.lastActionTime) >= this.shotDelay) {
         this.shots += 1;
         var angle = this.facing === 'left' ? 180 : 0;
-        var bullet = new EnemyBullet(this.game, this.body.x - 20, this.body.y + 45, angle);
+        var bullet = new EnemyBullet(this.body.x - 20, this.body.y + 45, angle);
         this.lastActionTime = this.game.time.time;
         this.animations.play('shoot');
         if (this.shots > 2) {

@@ -5,6 +5,7 @@ game.global = {
   diamonds: 0,
   level: 1,
   lives: 3,
+  drop: 0.4,
   lastCheckpoint: null,
   causeOfDeath: null,
   maxHeroHealth: 4,

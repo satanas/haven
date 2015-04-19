@@ -1,9 +1,9 @@
 'use strict';
 
-var Diamond = function(game, x, y) {
+var Diamond = function(x, y) {
   Phaser.Sprite.call(this, game, x, y, 'diamond', 0);
 
-  this.game.physics.arcade.enable(this);
+  game.physics.arcade.enable(this);
   this.body.setSize(16, 12, 8, 10);
   this.body.allowGravity = true;
   this.itemType = 'diamond';
@@ -14,13 +14,13 @@ Diamond.prototype = Object.create(Phaser.Sprite.prototype);
 Diamond.prototype.constructor = Diamond;
 
 Diamond.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles);
+  game.physics.arcade.collide(this, groups.tiles);
 };
 
-var ExtraLife = function(game, x, y) {
+var ExtraLife = function(x, y) {
   Phaser.Sprite.call(this, game, x, y, 'extralife', 0);
 
-  this.game.physics.arcade.enable(this);
+  game.physics.arcade.enable(this);
   this.body.allowGravity = true;
   this.body.setSize(28, 24, 2, 4);
   this.itemType = 'extralife';
@@ -31,13 +31,13 @@ ExtraLife.prototype = Object.create(Phaser.Sprite.prototype);
 ExtraLife.prototype.constructor = ExtraLife;
 
 ExtraLife.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles);
+  game.physics.arcade.collide(this, groups.tiles);
 };
 
-var Heart = function(game, x, y) {
+var Heart = function(x, y) {
   Phaser.Sprite.call(this, game, x, y, 'heart', 0);
 
-  this.game.physics.arcade.enable(this);
+  game.physics.arcade.enable(this);
   this.body.setSize(16, 16, 0, 0);
   this.body.allowGravity = false;
   this.body.velocity.y = 50;
@@ -50,5 +50,5 @@ Heart.prototype = Object.create(Phaser.Sprite.prototype);
 Heart.prototype.constructor = Heart;
 
 Heart.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles);
+  game.physics.arcade.collide(this, groups.tiles);
 };

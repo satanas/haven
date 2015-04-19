@@ -66,9 +66,9 @@ var Play = {
       });
       if (add) {
         if (e.properties.type === 'diamond') {
-          var item = new Diamond(self.game, e.x, y);
+          var item = new Diamond(e.x, y);
         } else if (e.properties.type === 'extralife') {
-          var item = new ExtraLife(self.game, e.x, y);
+          var item = new ExtraLife(e.x, y);
         }
       }
       if (e.properties.type === 'checkpoint') {
@@ -177,7 +177,7 @@ var Play = {
   },
 
   start: function() {
-    this.bgmSound.play();
+    //this.bgmSound.play();
   },
 
   update: function() {
