@@ -18,7 +18,7 @@ var Menu = {
     }, this);
 
     var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    enterKey.onDown.addOnce(this.start, this);
+    enterKey.onDown.add(this.start, this);
 
     game.sound.stopAll();
     this.bgmSound.play();
