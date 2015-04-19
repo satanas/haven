@@ -67,6 +67,7 @@ var Preload = {
     game.load.spritesheet('carniplant', 'assets/carniplant.png', 56, 56);
     game.load.spritesheet('heart', 'assets/heart.png', 16, 16);
     game.load.spritesheet('cannon', 'assets/cannon.png', 83, 41);
+    game.load.spritesheet('portal', 'assets/portal.png', 64, 64);
 
     game.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
     game.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');

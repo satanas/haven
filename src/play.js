@@ -38,6 +38,9 @@ var Play = {
     groups.platforms = this.game.add.group();
     groups.platforms.enableBody = true;
 
+    groups.portals = this.game.add.group();
+    groups.portals.enableBody = true;
+
     groups.hud = this.game.add.group();
 
     this.map = this.game.add.tilemap('map');
@@ -77,6 +80,8 @@ var Play = {
         var criticalTime = e.properties.critical_time || 20;
         self.clock = new Clock(self.game);
         self.clock.start(initTime, criticalTime);
+      } else if (e.properties.type === 'portal') {
+        var portal = new Portal(e.x, y);
       }
     });
 
@@ -186,6 +191,8 @@ var Play = {
 
     this.hud.update();
 
+    game.physics.arcade.overlap(this.player, groups.portals, this.nextLevel);
+
     if (this.player.death){
       this.player.body.enable = false;
       var self = this;
@@ -201,6 +208,13 @@ var Play = {
       //return;
     }
     this.bg1.tilePosition.x -= 0.5;
+  },
+
+  nextLevel: function() {
+    game.plugin.fadeOut(0x000, 750, 0, function() {
+      game.global.level += 1;
+      game.state.start('ending');
+    }, this);
   },
 
   render: function() {
