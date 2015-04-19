@@ -4,7 +4,7 @@ var Disclaimer = {
   create: function() {
     game.stage.backgroundColor = '#000';
     bitmapTextCentered(60, 'press_start', 'Demo disclaimer', 30);
-    bitmapTextCentered(150, 'press_start', 'This release has as sole purpose to', 16);
+    bitmapTextCentered(150, 'press_start', 'This release has the sole purpose of', 16);
     bitmapTextCentered(180, 'press_start', 'demonstrate the basis of the game', 16);
     bitmapTextCentered(210, 'press_start', 'mechanic. Esential parts of the story', 16);
     bitmapTextCentered(240, 'press_start', 'were removed to avoid spoilers', 16);
