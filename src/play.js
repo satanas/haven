@@ -6,6 +6,7 @@ var Play = {
     this.player = null;
     this.boss = null;
     this.clock = null;
+    this.paused = false;
 
     this.game.stage.backgroundColor = '#3498db';
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -158,6 +159,9 @@ var Play = {
       groups.tiles.debug = true;
     }
 
+    this.pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
+    this.pauseKey.onUp.add(this.togglePause, this);
+
     this.hud = new HUD(this.game, this.player, this.clock);
 
     this.game.world.bringToTop(groups.platforms);
@@ -215,5 +219,16 @@ var Play = {
         self.game.debug.body(e);
       });
     }
-  }
+  },
+
+  togglePause: function() {
+    this.paused = !this.paused;
+    if (this.paused) {
+      this.pauseText = bitmapTextCentered(300, 'titles', 'Paused', 48);
+    } else {
+      this.pauseText.destroy();
+      this.pauseText = null;
+    }
+    game.paused = this.paused;
+  },
 };

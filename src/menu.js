@@ -40,8 +40,8 @@ var Menu = {
 
   show: function() {
     this.scrolling = false;
-    bitmapTextCentered(game.height - 70, 'press_start', 'Press ENTER to start', 12);
-    bitmapTextCentered(game.height - 20, 'press_start', 'Created by LudusPactum - @luduspactum', 10);
+    bitmapTextCentered(game.height - 70, 'titles', 'Press ENTER to start', 12);
+    bitmapTextCentered(game.height - 20, 'titles', 'Created by LudusPactum - @luduspactum', 10);
   }
 };
 
