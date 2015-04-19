@@ -1,17 +1,15 @@
 'use strict';
 
-function Boot() {};
-
-Boot.prototype = {
+var Boot = {
   preload: function() {
-    this.game.stage.backgroundColor = '#fff';
-    this.load.image('preloadbar', 'assets/preloadbar.png');
-    this.load.image('logo', 'assets/luduspactum_logo.png');
+    game.stage.backgroundColor = '#fff';
+    game.load.image('preloadbar', 'assets/preloadbar.png');
+    game.load.image('logo', 'assets/luduspactum_logo.png');
   },
 
   create: function () {
-    this.game.plugin = this.game.plugins.add(Phaser.Plugin.Fade)
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.state.start('preload');
+    game.plugin = game.plugins.add(Phaser.Plugin.Fade)
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.state.start('preload');
   }
 };
