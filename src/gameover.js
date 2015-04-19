@@ -4,30 +4,30 @@ var GameOver = function() {};
 
 GameOver.prototype = {
   create: function() {
-    this.startTime = this.game.time.time;
+    this.startTime = game.time.time;
     console.log('game over', this.startTime);
-    this.game.input.keyboard.clearCaptures();
-    this.game.input.keyboard.start();
-    this.game.stage.backgroundColor = '#000';
-    bitmapTextCentered(this.game, 160, 'press_start', 'Game Over', 56); //72
+    game.input.keyboard.clearCaptures();
+    game.input.keyboard.start();
+    game.stage.backgroundColor = '#000';
+    bitmapTextCentered(160, 'press_start', 'Game Over', 56); //72
     if (this.game.global.causeOfDeath === deadType.TIMEOUT) {
-      bitmapTextCentered(this.game, 250, 'press_start', 'Acerbus escaped with the king', 22); //30
+      bitmapTextCentered(250, 'press_start', 'Acerbus escaped with the king', 22); //30
     } else {
-      bitmapTextCentered(this.game, 250, 'press_start', 'You died', 22); //30
+      bitmapTextCentered(250, 'press_start', 'You died', 22); //30
     }
-    bitmapTextCentered(this.game, 440, 'press_start', 'Press Enter to restart', 16); //22
+    bitmapTextCentered(440, 'press_start', 'Press Enter to restart', 16); //22
 
-    this.game.sound.stopAll();
-    this.bgmSound = this.game.add.audio('gameover');
+    game.sound.stopAll();
+    this.bgmSound = game.add.audio('gameover');
     this.bgmSound.onDecoded.add(this.start, this);
-    this.selectSound = this.game.add.audio('select');
+    this.selectSound = game.add.audio('select');
 
     // Reset variables
-    this.game.global.diamonds = 0;
-    this.game.global.lives = 3;
-    this.game.global.lastCheckpoint = null;
-    this.game.global.causeOfDeath = null;
-    this.game.global.items = [];
+    game.global.diamonds = 0;
+    game.global.lives = 3;
+    game.global.lastCheckpoint = null;
+    game.global.causeOfDeath = null;
+    game.global.items = [];
   },
 
   start: function() {
@@ -35,11 +35,11 @@ GameOver.prototype = {
   },
 
   update: function() {
-    if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
+    if (game.time.time < this.startTime + game.global.sceneDelay) return;
 
-    if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
+    if (game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
       this.selectSound.play();
-      this.game.state.start('menu');
+      game.state.start('menu');
     }
   }
 };
