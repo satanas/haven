@@ -33,8 +33,7 @@ var Menu = {
       this.show();
     } else {
       this.selectSound.play();
-      game.input.keyboard.stop();
-      game.state.start('intro');
+      game.state.start('disclaimer');
     }
   },
 
