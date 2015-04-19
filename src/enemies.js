@@ -111,7 +111,7 @@ Enemy.prototype.shoot = function(angle) {
       this.shooting = true;
       this.elapsedTimeAfterShot = 0;
       var p = this.calculateBulletCoords();
-      var bullet = new EnemyBullet(this.game, p.x, p.y, angle);
+      var bullet = new EnemyBullet(game, p.x, p.y, angle);
       this.onShooting();
     }
   }

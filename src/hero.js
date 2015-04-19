@@ -21,7 +21,7 @@ var Alysa = function(game, x, y) {
   this.deadTime = 0;
   this.dyingDelay = 900;
   this.shotDelay = 155;
-  this.cursors = this.game.input.keyboard.createCursorKeys();
+  this.cursors = game.input.keyboard.createCursorKeys();
 
   this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
   this.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
@@ -29,49 +29,49 @@ var Alysa = function(game, x, y) {
   this.animations.add('dying-right', [24, 25, 26, 27], 12, false);
 
   // Sounds
-  this.jumpSound = this.game.add.audio('alysajump');
-  this.doubleJumpSound = this.game.add.audio('alysadjump');
-  this.shootSound = this.game.add.audio('alysashoot');
-  this.hurtSound = this.game.add.audio('alysahurt');
-  this.dieSound = this.game.add.audio('alysadies');
-  this.extralifeSound = this.game.add.audio('extralife');
-  this.diamondsSoundPool = new AudioPool(this.game, ['diamond1', 'diamond2']);
+  this.jumpSound = game.add.audio('alysajump');
+  this.doubleJumpSound = game.add.audio('alysadjump');
+  this.shootSound = game.add.audio('alysashoot');
+  this.hurtSound = game.add.audio('alysahurt');
+  this.dieSound = game.add.audio('alysadies');
+  this.extralifeSound = game.add.audio('extralife');
+  this.diamondsSoundPool = new AudioPool(['diamond1', 'diamond2']);
 
-  this.game.physics.arcade.enable(this);
+  game.physics.arcade.enable(this);
   this.body.gravity.y = 1000;
   this.body.maxVelocity.y = 500;
   this.body.maxVelocity.x = 200;
   this.body.setSize(22, 45, 8, 7);
-  this.game.camera.follow(this);
-  this.game.add.existing(this);
+  game.camera.follow(this);
+  game.add.existing(this);
 };
 
 Alysa.prototype = Object.create(Phaser.Sprite.prototype);
 Alysa.prototype.constructor = Alysa;
 
 Alysa.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
-  this.game.physics.arcade.collide(this, groups.blockEnemies, this.onCollision);
-  this.game.physics.arcade.collide(this, groups.platforms, this.onCollision, this.checkPlatform);
-  this.game.physics.arcade.overlap(this, groups.checkpoints, this.onCheckpoint);
+  game.physics.arcade.collide(this, groups.tiles, this.onCollision);
+  game.physics.arcade.collide(this, groups.blockEnemies, this.onCollision);
+  game.physics.arcade.collide(this, groups.platforms, this.onCollision, this.checkPlatform);
+  game.physics.arcade.overlap(this, groups.checkpoints, this.onCheckpoint);
 
   if (this.status === 'alive') {
-    this.game.physics.arcade.overlap(this, groups.enemies, this.takeDamage);
-    this.game.physics.arcade.overlap(this, groups.items, this.pickItem);
+    game.physics.arcade.overlap(this, groups.enemies, this.takeDamage);
+    game.physics.arcade.overlap(this, groups.items, this.pickItem);
 
     if (this.hurt) {
       this.canDoubleJump = false;
-      if (this.game.time.elapsedSince(this.hurtTime) >= this.hurtDelay) {
+      if (game.time.elapsedSince(this.hurtTime) >= this.hurtDelay) {
         this.hurt = false;
         this.body.velocity.x = 0;
       }
     }
 
     if (this.invincible) {
-      if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay) {
+      if (game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay) {
         this.invincible = false;
       }
-      if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay - 120) {
+      if (game.time.elapsedSince(this.hurtTime) >= this.invincibilityDelay - 120) {
         this.alpha = 1.0;
       }
     }
@@ -81,7 +81,7 @@ Alysa.prototype.update = function() {
     this.worldBoundCollisions();
   } else {
     this.body.velocity.x = 0;
-    if (this.game.time.elapsedSince(this.deadTime) >= this.dyingDelay && !this.death) {
+    if (game.time.elapsedSince(this.deadTime) >= this.dyingDelay && !this.death) {
       this.death = true;
     }
   }
@@ -92,7 +92,7 @@ Alysa.prototype.update = function() {
 Alysa.prototype.onCheckpoint = function(self, checkpoint) {
   if (!checkpoint.activated) {
     checkpoint.activate();
-    self.game.global.lastCheckpoint = checkpoint;
+    game.global.lastCheckpoint = checkpoint;
   }
 };
 
@@ -149,20 +149,20 @@ Alysa.prototype.movement = function() {
 };
 
 Alysa.prototype.shoot = function() {
-  if (this.game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot && !this.hurt) {
+  if (game.input.keyboard.justPressed(Phaser.Keyboard.X) && !this.shooting && this.canShoot && !this.hurt) {
     this.canShoot = false;
     this.lastShotTime = game.time.time;
     this.shooting = true;
-    var bullet = new Bullet(this.game, this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
+    var bullet = new Bullet(this.body.x + (this.body.width / 2), this.body.y + (this.body.height / 2), this.facing);
     this.shootSound.play();
   }
 
-  if (this.game.input.keyboard.justReleased(Phaser.Keyboard.X) && !this.canShoot) {
+  if (game.input.keyboard.justReleased(Phaser.Keyboard.X) && !this.canShoot) {
     this.canShoot = true;
   }
 
   if (this.canShoot && this.shooting) {
-    if (this.game.time.elapsedSince(this.lastShotTime) >= this.shotDelay) {
+    if (game.time.elapsedSince(this.lastShotTime) >= this.shotDelay) {
       this.shooting = false;
     }
   }
@@ -223,19 +223,19 @@ Alysa.prototype.takeDamage = function(self, object) {
 
 Alysa.prototype.pickItem = function(self, object) {
   if (object.itemType === 'diamond') {
-    self.game.global.diamonds += 1;
+    game.global.diamonds += 1;
     self.diamondsSoundPool.randomPlay();
-    self.game.global.items.push(object);
-    console.log('picking diamonds', self.game.global.diamonds);
+    game.global.items.push(object);
+    console.log('picking diamonds', game.global.diamonds);
   } else if (object.itemType === 'extralife') {
-    self.game.global.lives += 1;
+    game.global.lives += 1;
     self.extralifeSound.play();
-    self.game.global.items.push(object);
-    console.log('picking extralife', self.game.global.lives);
+    game.global.items.push(object);
+    console.log('picking extralife', game.global.lives);
   } else if (object.itemType === 'heart') {
     self.health += 1;
-    if (self.health > self.game.global.maxHeroHealth) {
-      self.health = self.game.global.maxHeroHealth;
+    if (self.health > game.global.maxHeroHealth) {
+      self.health = game.global.maxHeroHealth;
     }
     self.extralifeSound.play();
     console.log('picking health', self.health);
@@ -245,11 +245,11 @@ Alysa.prototype.pickItem = function(self, object) {
 
 Alysa.prototype.die = function(reason) {
   this.alpha = 1.0;
-  this.deadTime = this.game.time.time;
+  this.deadTime = game.time.time;
   this.status = 'dying';
-  this.game.camera.follow(null);
-  this.game.global.causeOfDeath = reason || deadType.BLEEDING;
-  console.log('Dying for', this.game.global.causeOfDeath);
+  game.camera.follow(null);
+  game.global.causeOfDeath = reason || deadType.BLEEDING;
+  console.log('Dying for', game.global.causeOfDeath);
   this.dieSound.play();
   if (this.facing === 'left') {
     this.animations.play('dying-left');
@@ -259,13 +259,13 @@ Alysa.prototype.die = function(reason) {
 };
 
 Alysa.prototype.worldBoundCollisions = function() {
-  if (this.x >= this.game.world.width - this.width) {
-    this.x = this.game.world.width - this.width;
+  if (this.x >= game.world.width - this.width) {
+    this.x = game.world.width - this.width;
   }
   if (this.x <= 0) {
     this.x = 0;
   }
-  if (this.y > this.game.world.height && (this.status === 'alive')) {
+  if (this.y > game.world.height && (this.status === 'alive')) {
     this.dyingDelay = 0.2;
     this.die();
   }

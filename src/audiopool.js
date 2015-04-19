@@ -1,12 +1,11 @@
 'use strict';
 
-var AudioPool = function(game, keys) {
-  this.game = game;
+var AudioPool = function(keys) {
   this.keys = keys;
   this.sounds = []
 
   for(var i=0; i<this.keys.length; i++) {
-    this.sounds.push(this.game.add.audio(this.keys[i]));
+    this.sounds.push(game.add.audio(this.keys[i]));
   }
 };
 
