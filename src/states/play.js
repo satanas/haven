@@ -66,7 +66,7 @@ var Play = {
       });
       if (add) {
         if (e.properties.type === 'diamond') {
-          var item = new Diamond(e.x, y);
+          var item = new Diamond(e.x, y, true);
         } else if (e.properties.type === 'extralife') {
           var item = new ExtraLife(e.x, y);
         }

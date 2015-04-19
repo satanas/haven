@@ -10,6 +10,7 @@ game.global = {
   causeOfDeath: null,
   maxHeroHealth: 4,
   killedEnemies: 0,
+  diamondsToLife: 100,
   items: []
 }
 var debug = false;

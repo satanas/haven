@@ -225,20 +225,19 @@ Alysa.prototype.pickItem = function(self, object) {
   if (object.itemType === 'diamond') {
     game.global.diamonds += 1;
     self.diamondsSoundPool.randomPlay();
-    game.global.items.push(object);
+    if (object.fixed) {
+      game.global.items.push(object);
+    }
+    if (game.global.diamonds % game.global.diamondsToLife) {
+      // extra life effect in HUD
+      self.gainLife();
+    }
     console.log('picking diamonds', game.global.diamonds);
   } else if (object.itemType === 'extralife') {
-    game.global.lives += 1;
-    self.extralifeSound.play();
+    self.gainLife();
     game.global.items.push(object);
-    console.log('picking extralife', game.global.lives);
   } else if (object.itemType === 'heart') {
-    self.health += 1;
-    if (self.health > game.global.maxHeroHealth) {
-      self.health = game.global.maxHeroHealth;
-    }
-    self.extralifeSound.play();
-    console.log('picking health', self.health);
+    self.heal();
   }
   object.destroy();
 };
@@ -269,4 +268,18 @@ Alysa.prototype.worldBoundCollisions = function() {
     this.dyingDelay = 0.2;
     this.die();
   }
+};
+
+Alysa.prototype.heal = function() {
+  this.health += 1;
+  if (this.health > game.global.maxHeroHealth) {
+    this.health = game.global.maxHeroHealth;
+  }
+  // FIX ME: change sound
+  this.extralifeSound.play();
+};
+
+Alysa.prototype.gainLife = function() {
+  game.global.lives += 1;
+  this.extralifeSound.play();
 };

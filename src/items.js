@@ -1,12 +1,13 @@
 'use strict';
 
-var Diamond = function(x, y) {
+var Diamond = function(x, y, fixed) {
   Phaser.Sprite.call(this, game, x, y, 'diamond', 0);
 
   game.physics.arcade.enable(this);
   this.body.setSize(16, 12, 8, 10);
   this.body.allowGravity = true;
   this.itemType = 'diamond';
+  this.fixed = fixed || false;
   groups.items.add(this);
 };
 
@@ -24,6 +25,7 @@ var ExtraLife = function(x, y) {
   this.body.allowGravity = true;
   this.body.setSize(28, 24, 2, 4);
   this.itemType = 'extralife';
+  this.fixed = true;
   groups.items.add(this);
 };
 
