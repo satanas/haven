@@ -1,33 +1,47 @@
 'use strict';
 
-function Menu() {}
-
-Menu.prototype = {
+var Menu = {
   create: function() {
-    this.startTime = this.game.time.time;
+    this.scrolling = true;
+    this.startTime = game.time.time;
+    game.stage.backgroundColor = '#000';
+    game.world.setBounds(0, 0, 1442, 480);
     console.log('menu', this.startTime);
-    this.game.input.keyboard.clearCaptures();
-    this.game.stage.backgroundColor = '#000';
-    this.currentOption = 'start';
-    this.background = this.game.add.sprite(0, 0, 'menu');
-    this.game.sound.stopAll();
-    this.bgmSound = this.game.add.audio('bgmintro', 1, true);
-    this.bgmSound.onDecoded.add(this.start, this);
-    this.selectSound = this.game.add.audio('select');
-  },
 
-  start: function() {
+    this.currentOption = 'start';
+    this.background = game.add.image(0, 0, 'landscape');
+    this.bgmSound = game.add.audio('bgmintro', 1, true);
+    this.selectSound = game.add.audio('select');
+
+    this.tween = game.add.tween(game.camera);
+    this.tween.to({x: 802}, 20000, Phaser.Easing.Linear.None, true, 700);
+    this.tween.onComplete.add(function() {
+      this.show();
+    }, this);
+
+    var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    enterKey.onDown.add(this.start, this);
+
+    game.sound.stopAll();
     this.bgmSound.play();
   },
 
-  update: function() {
-    if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
-
-    if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
+  start: function() {
+    if (this.scrolling) {
+      this.tween.stop();
+      game.camera.x = 802;
+      this.show();
+    } else {
       this.selectSound.play();
-      this.game.input.keyboard.stop();
-      this.game.state.start('intro');
+      game.input.keyboard.stop();
+      game.state.start('intro');
     }
+  },
+
+  show: function() {
+    this.scrolling = false;
+    bitmapTextCentered(game.height - 70, 'press_start', 'Press ENTER to start', 12);
+    bitmapTextCentered(game.height - 20, 'press_start', 'Created by LudusPactum - @luduspactum', 10);
   }
 };
 

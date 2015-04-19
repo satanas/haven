@@ -14,8 +14,6 @@ game.global = {
 var debug = false;
 var groups = {};
 
-//game.stage.backgroundColor = '#fff';
-
 game.state.add('boot', Boot);
 game.state.add('intro', Intro);
 game.state.add('preload', Preload);
