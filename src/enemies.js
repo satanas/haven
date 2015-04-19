@@ -51,7 +51,6 @@ Enemy.prototype.takeDamage = function() {
     if (this.health <= 0) {
       var exp = new Explosion(this.game, this.x, this.y, this.width, this.height);
       this.game.global.killedEnemies += 1;
-      console.log('killed enemies', this.game.global.killedEnemies);
       this.drop();
       this.destroy();
     }

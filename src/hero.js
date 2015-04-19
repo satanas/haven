@@ -195,13 +195,11 @@ Alysa.prototype.render = function() {
 
 Alysa.prototype.takeDamage = function(self, object) {
   if (self.status === 'alive') {
-    //self.die();
     if (self.invincible) return;
 
     var harm = object.harm || 1;
     //self.damage();
     self.health -= harm;
-    console.log('mierda', self.health);
     if (self.health <= 0) {
       var reason = object.deadType || deadType.BLEEDING;
       self.die(reason);
@@ -232,7 +230,6 @@ Alysa.prototype.pickItem = function(self, object) {
       // extra life effect in HUD
       self.gainLife();
     }
-    console.log('picking diamonds', game.global.diamonds);
   } else if (object.itemType === 'extralife') {
     self.gainLife();
     game.global.items.push(object);
