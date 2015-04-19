@@ -162,7 +162,7 @@ var Play = {
     this.pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
     this.pauseKey.onUp.add(this.togglePause, this);
 
-    this.hud = new HUD(this.game, this.player, this.clock);
+    this.hud = new HUD(this.player, this.clock);
 
     this.game.world.bringToTop(groups.platforms);
     this.game.world.bringToTop(groups.enemies);
@@ -224,7 +224,8 @@ var Play = {
   togglePause: function() {
     this.paused = !this.paused;
     if (this.paused) {
-      this.pauseText = bitmapTextCentered(300, 'titles', 'Paused', 48);
+      console.log(game.camera.x);
+      this.pauseText = bitmapTextCentered(200, 'titles', 'Paused', 56, true);
     } else {
       this.pauseText.destroy();
       this.pauseText = null;
