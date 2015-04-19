@@ -49,9 +49,9 @@ var Play = {
     groups.tiles.resizeWorld();
 
     if (this.game.global.lastCheckpoint) {
-      this.player = new Alysa(this.game, this.game.global.lastCheckpoint.origX, this.game.global.lastCheckpoint.origY);
+      this.player = new Alysa(game.global.lastCheckpoint.origX, game.global.lastCheckpoint.origY);
     } else {
-      this.player = new Alysa(this.game, 280, 370);
+      this.player = new Alysa(280, 370);
     }
 
     var self = this;

@@ -1,9 +1,9 @@
 'use strict';
 
-var Alysa = function(game, x, y) {
+var Alysa = function(x, y) {
   Phaser.Sprite.call(this, game, x, y, 'alysa', 0);
 
-  this.health = this.game.global.maxHeroHealth;
+  this.health = game.global.maxHeroHealth;
   this.death = false;
   this.jumping = false;
   this.facing = 'right';
