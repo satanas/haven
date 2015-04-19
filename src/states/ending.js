@@ -4,10 +4,6 @@ var Ending = function() {};
 
 Ending.prototype = {
   create: function() {
-    this.startTime = game.time.time;
-    console.log('demo ending', this.startTime);
-    game.input.keyboard.clearCaptures();
-    game.input.keyboard.start();
     game.stage.backgroundColor = '#000';
     bitmapTextCentered(100, 'press_start', "That's all folks!", 30);
     bitmapTextCentered(200, 'press_start', 'Thanks for playing this small demo', 16);
@@ -20,7 +16,9 @@ Ending.prototype = {
 
     game.sound.stopAll();
     this.bgmSound = game.add.audio('gameover');
-    this.bgmSound.onDecoded.add(this.start, this);
+
+    var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    enterKey.onDown.addOnce(this.start, this);
 
     // Reset variables
     game.global.diamonds = 0;
@@ -28,17 +26,11 @@ Ending.prototype = {
     game.global.lastCheckpoint = null;
     game.global.causeOfDeath = null;
     game.global.items = [];
-  },
 
-  start: function() {
     this.bgmSound.play();
   },
 
-  update: function() {
-    if (game.time.time < this.startTime + game.global.sceneDelay) return;
-
-    if (game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
-      game.state.start('menu');
-    }
-  }
+  start: function() {
+    game.state.start('menu');
+  },
 };

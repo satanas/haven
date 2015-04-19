@@ -3,10 +3,8 @@
 var Menu = {
   create: function() {
     this.scrolling = true;
-    this.startTime = game.time.time;
     game.stage.backgroundColor = '#000';
     game.world.setBounds(0, 0, 1442, 480);
-    console.log('menu', this.startTime);
 
     this.currentOption = 'start';
     this.background = game.add.image(0, 0, 'landscape');
@@ -20,7 +18,7 @@ var Menu = {
     }, this);
 
     var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    enterKey.onDown.add(this.start, this);
+    enterKey.onDown.addOnce(this.start, this);
 
     game.sound.stopAll();
     this.bgmSound.play();
