@@ -26,6 +26,7 @@ var Preload = {
     game.load.image('menu', 'assets/menu.jpg');
     game.load.image('landscape', 'assets/landscape.jpg');
     game.load.image('diamond', 'assets/diamond.png');
+    game.load.image('diamond-hud', 'assets/diamond-hud.png');
     game.load.image('extralife', 'assets/extra-life.png');
     game.load.image('spikes', 'assets/spikes.png');
     game.load.image('blood', 'assets/blood-red.png');
@@ -60,7 +61,7 @@ var Preload = {
     game.load.spritesheet('skeleton', 'assets/skeleton.png', 23, 46);
     game.load.spritesheet('chandelkier', 'assets/chandelkier.png', 64, 32);
     game.load.spritesheet('boom', 'assets/boom.png', 73, 75);
-    game.load.spritesheet('degradation', 'assets/alysa-degradation.png', 46, 37);
+    game.load.spritesheet('alysa-degradation', 'assets/alysa-degradation.png', 46, 37);
     game.load.spritesheet('planttrap', 'assets/planttrap.png', 96, 32);
     game.load.spritesheet('cuirass', 'assets/cuirass.png', 32, 32);
     game.load.spritesheet('carniplant', 'assets/carniplant.png', 56, 56);

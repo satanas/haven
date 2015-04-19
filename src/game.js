@@ -7,7 +7,7 @@ game.global = {
   lives: 3,
   lastCheckpoint: null,
   causeOfDeath: null,
-  maxHeroHealth: 10,
+  maxHeroHealth: 4,
   killedEnemies: 0,
   items: []
 }
