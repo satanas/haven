@@ -138,7 +138,6 @@ Enemy.prototype.drop = function() {
   if (value <= game.global.drop) {
     var x = this.x + (this.width / 2),
         y = this.y + (this.height / 2);
-    console.log('dropping', x, y, this);
     if (Math.round(Math.random()) === 0) {
       var diamond = new Diamond(x, y);
     } else {
