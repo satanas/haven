@@ -25,7 +25,7 @@ Death.prototype = {
     this.elapsedTime += this.game.time.elapsed;
     if (this.changed) {
       if (this.elapsedTime >= this.finishDelay) {
-        this.game.state.start('game');
+        this.game.state.start('play');
       }
     } else {
       if (this.elapsedTime >= this.changeDelay) {

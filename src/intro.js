@@ -16,7 +16,7 @@ Intro.prototype = {
     if (this.game.time.time < this.startTime + this.game.global.sceneDelay) return;
 
     if (this.game.input.keyboard.justReleased(Phaser.Keyboard.ENTER)) {
-      this.game.state.start('game');
+      this.game.state.start('play');
     }
   }
 };

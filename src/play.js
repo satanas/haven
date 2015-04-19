@@ -1,8 +1,6 @@
 'use strict';
 
-var Game = function() {}
-
-Game.prototype = {
+var Play = {
   create: function() {
     this.map = null;
     this.player = null;
