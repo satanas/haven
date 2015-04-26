@@ -94,6 +94,7 @@ var Preload = {
     game.load.audio('bgm-ingame', 'assets/sounds/bgm-ingame.mp3');
     game.load.audio('bgm-boss', 'assets/sounds/bgm-boss.mp3');
     game.load.audio('bgm-credits', 'assets/sounds/bgm-credits.mp3');
+    game.load.audio('bgm-intro', 'assets/sounds/bgm-intro.mp3');
   },
 
   create: function() {
