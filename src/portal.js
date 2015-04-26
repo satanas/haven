@@ -4,7 +4,7 @@ var Portal = function(x, y) {
   Phaser.Sprite.call(this, game, x, y, 'portal', 0);
 
   game.physics.arcade.enable(this);
-  this.body.setSize(27, 96, 74, 96);
+  this.body.setSize(64, 64, 32, 64);
   this.body.allowGravity = false;
   this.body.sensor = true;
 
