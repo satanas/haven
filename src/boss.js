@@ -22,8 +22,8 @@ var Acerbus = function(game, player, x, y, fight) {
 
   this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
   this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
-  //this.pattern = [2, 0, 2, 0, 3];
-  this.pattern = [3, 3];
+  this.pattern = [2, 0, 2, 0, 3];
+  //this.pattern = [3, 3];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -117,11 +117,16 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
   this.next = function() {
     if (this.currStep === this.steps.idle) {
       this.currStep = this.steps.prep;
+      this.invincible = true;
+      this.parent.invincible = true;
     } else if (this.currStep === this.steps.prep) {
       this.currStep = this.steps.warn;
+      this.parent.invincible = true;
     } else if (this.currStep === this.steps.warn) {
       this.currStep = this.steps.exec;
+      this.parent.invincible = true;
     } else if (this.currStep === this.steps.exec) {
+      this.parent.invincible = false;
       if (this.currCycles > 1) {
         this.currStep = this.steps.idle;
         this.currCycles -= 1;
@@ -330,7 +335,7 @@ var WavePhase = function(parent, game, player) {
       callback: function(self){}
     },
     {
-      duration: 2000,
+      duration: 1000,
       callback: this.preparation
     },
     {
@@ -338,7 +343,7 @@ var WavePhase = function(parent, game, player) {
       callback: this.warning
     },
     {
-      duration: 900,
+      duration: 600,
       callback: this.execution
     }
   );
