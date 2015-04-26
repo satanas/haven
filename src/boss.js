@@ -1,20 +1,25 @@
 'use strict';
 
 var Acerbus = function(game, player, x, y, fight) {
-  Phaser.Sprite.call(this, game, x, y, 'acerbus', 0);
+  //Phaser.Sprite.call(this, game, x, y, 'acerbus', 0);
+  Enemy.call(this, game, x, y, 'acerbus', 'left', 0);
 
   this.player = player;
-  this.facing = 'left';
-  this.health = 100;
-  this.hurt = false;
-  this.hurtTime = 0;
+  //this.facing = 'left';
+  this.health = game.global.maxBossHealth;
   this.dashSpeed = 550;
   this.walkingSpeed = 160;
   this.phase = 0;
-  this.invincibilityTime = 0.100;
+  //this.invincibilityTime = 0.100;
   this.chaseDelay = 250;
   this.chasing = false;
   this.chaseStart = 0;
+
+  // Hurt variables
+  //this.hurt = false;
+  //this.hurtTime = 0;
+  //this.invincible = false;
+  //this.invincibilityTime = 100;
 
   this.phases = [
     new DashPhase(this, game),
@@ -23,57 +28,81 @@ var Acerbus = function(game, player, x, y, fight) {
     new WavePhase(this, game, player)
   ];
 
-  this.pattern = [2, 0, 2, 0, 3];
+  this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
+  this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
+  //this.pattern = [2, 0, 2, 0, 3];
+  this.pattern = [3, 3];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
   groups.enemies.add(this);
-  this.currPhase = this.phases[this.pattern[this.phase % 5]];
-  this.currPhase.start();
+
+  this.nextPhase();
 };
 
-Acerbus.prototype = Object.create(Phaser.Sprite.prototype);
+//Acerbus.prototype = Object.create(Phaser.Sprite.prototype);
+Acerbus.prototype = Object.create(Enemy.prototype);
 Acerbus.prototype.constructor = Acerbus;
 
 Acerbus.prototype.update = function() {
-  this.game.physics.arcade.collide(this, groups.tiles);
+  //this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
+  this.tileCollisions();
+  this.recover();
+  this.render();
   this.currPhase.update();
   if (this.currPhase.ended) {
     this.phase += 1;
-    this.currPhase = this.phases[this.pattern[this.phase % 5]];
-    this.currPhase.start();
+    this.nextPhase();
   }
 };
 
-Acerbus.prototype.takeDamage = function() {
-  console.log('hit');
+Acerbus.prototype.nextPhase = function() {
+  this.currPhase = this.phases[this.pattern[this.phase % this.pattern.length]];
+  this.currPhase.start();
+};
+
+//Acerbus.prototype.takeDamage = function() {
+//  console.log('hit');
+//  this.health -= 1;
+//};
+
+Acerbus.prototype.onCollision = function(self, block) {
+  if (self.body.touching.down === true) {
+    self.body.blocked.down = true;
+  }
 };
 
 Acerbus.prototype.chaseCharacter = function(player) {
   if (this.chasing) {
-    console.log('chasing', player.x);
+    //console.log('chasing', player.x);
     if (this.facing === 'left') {
       this.body.velocity.x = -1 * this.walkingSpeed;
+      this.animations.play('walk-left');
     } else {
       this.body.velocity.x = this.walkingSpeed;
+      this.animations.play('walk-right');
     }
     if (this.game.time.elapsedSince(this.chaseStart) > this.chaseDelay) {
+      this.animations.stop();
       this.chasing = false;
     }
   } else {
     if (this.x > player.x) {
       this.facing = 'left';
+      this.frame = 0;
     } else {
       this.facing = 'right';
+      this.frame = 6;
     }
     this.chasing = true;
     this.chaseStart = this.game.time.time;
-    console.log('recalculating', this.facing);
+    //console.log('recalculating', this.facing);
   }
 };
 
 Acerbus.prototype.stopChasing = function(player) {
   this.body.velocity.x = 0;
+  this.animations.stop();
 };
 
 var Phase = function(game, cycles, idle, preparation, warning, execution) {
@@ -346,8 +375,6 @@ WavePhase.prototype.constructor = WavePhase;
 WavePhase.prototype.preparation = function(self) {
   self.wave = null;
   self.parent.chaseCharacter(self.player);
-  //self.parent.tint = 0xffe09f;
-  //self.next();
 };
 
 WavePhase.prototype.warning = function(self) {

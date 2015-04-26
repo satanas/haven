@@ -9,6 +9,7 @@ game.global = {
   lastCheckpoint: null,
   causeOfDeath: null,
   maxHeroHealth: 4,
+  maxBossHealth: 15,
   killedEnemies: 0,
   diamondsToLife: 100,
   items: []
