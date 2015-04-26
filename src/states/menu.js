@@ -58,11 +58,12 @@ var Menu = {
 
   show: function() {
     this.scrolling = false;
-    //bitmapTextCentered(game.height - 38, 'press_start', 'Press ENTER to start', 12);
+    bitmapTextCentered(game.height - 48, 'press_start', 'Press ENTER to start', 12);
     //bitmapTextCentered(330, 'press_start', 'Press ENTER to start', 12);
-    bitmapTextCentered(130, 'press_start', 'Press ENTER to start', 12);
+    //bitmapTextCentered(130, 'press_start', 'Press ENTER to start', 12);
     bitmapTextCentered(game.height - 14, 'press_start', 'Created by LudusPactum - @luduspactum', 9);
-    bitmapTextCentered(40, 'press_start', 'Haven', 50);
+    bitmapTextCentered(35, 'press_start', 'Haven', 50);
+    bitmapTextCentered(90, 'press_start', 'A story between worlds', 11);
     this.startLightning();
   },
 
