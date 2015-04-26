@@ -8,7 +8,7 @@ var Menu = {
 
     this.currentOption = 'start';
     this.background = game.add.image(0, 0, 'landscape');
-    this.bgmSound = game.add.audio('bgmintro', 1, true);
+    this.bgmSound = game.add.audio('bgm-menu', 1, true);
     this.selectSound = game.add.audio('select');
 
     this.tween = game.add.tween(game.camera);
@@ -37,8 +37,10 @@ var Menu = {
 
   show: function() {
     this.scrolling = false;
-    bitmapTextCentered(game.height - 70, 'titles', 'Press ENTER to start', 12);
+    //bitmapTextCentered(game.height - 70, 'press_start', 'Press ENTER to start', 15);
+    var a = bitmapTextCentered(game.height - 70, 'titles', 'Press ENTER to start', 12);
     bitmapTextCentered(game.height - 20, 'titles', 'Created by LudusPactum - @luduspactum', 10);
+    a.z = 1;
   }
 };
 

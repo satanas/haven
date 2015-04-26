@@ -12,7 +12,7 @@ var GameOver = {
     bitmapTextCentered(440, 'press_start', 'Press Enter to restart', 16); //22
 
     game.sound.stopAll();
-    this.bgmSound = game.add.audio('gameover');
+    this.bgmSound = game.add.audio('bgm-gameover');
     this.selectSound = game.add.audio('select');
 
     var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
