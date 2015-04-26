@@ -12,14 +12,6 @@ var Play = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
 
-    if (this.bgmSound === undefined) {
-      this.game.sound.stopAll();
-      this.bgmSound = this.game.add.audio('ingame', 0.7, true);
-      this.bgmSound.onDecoded.add(this.start, this);
-    }
-
-    this.bg1 = game.add.tileSprite(0, 0, 640, 480, 'bg');
-    this.bg1.fixedToCamera = true;
     groups.bullets = this.game.add.group();
     groups.bullets.enableBody = true;
 
@@ -43,13 +35,25 @@ var Play = {
 
     groups.hud = this.game.add.group();
 
-    this.map = this.game.add.tilemap('map');
+    this.map = this.game.add.tilemap('boss');
     this.map.addTilesetImage('MARIO', 'mario');
     groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
-    this.map.setCollisionBetween(1, 124, true, 'Tiles');
+    this.map.setCollisionBetween(1, 128, true, 'Tiles');
     groups.tiles.resizeWorld();
+
+    var bg = this.map.properties.background;
+    if (bg) {
+      this.bg = game.add.tileSprite(0, 0, 640, 480, bg);
+      this.bg.fixedToCamera = true;
+    }
+
+    if (this.bgmSound === undefined && this.map.properties.bgm) {
+      this.game.sound.stopAll();
+      this.bgmSound = this.game.add.audio(this.map.properties.bgm, 0.7, true);
+      this.bgmSound.play();
+    }
 
     if (this.game.global.lastCheckpoint) {
       this.player = new Alysa(game.global.lastCheckpoint.origX, game.global.lastCheckpoint.origY);
@@ -167,7 +171,7 @@ var Play = {
     this.pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
     this.pauseKey.onUp.add(this.togglePause, this);
 
-    this.hud = new HUD(this.player, this.clock);
+    this.hud = new HUD(this.player, this.clock, this.boss);
 
     this.game.world.bringToTop(groups.platforms);
     this.game.world.bringToTop(groups.enemies);
@@ -176,9 +180,8 @@ var Play = {
     this.game.world.bringToTop(groups.hud);
   },
 
-  start: function() {
-    //this.bgmSound.play();
-  },
+  //start: function() {
+  //},
 
   update: function() {
     if (this.clock !== null) {
@@ -207,7 +210,7 @@ var Play = {
       });
       //return;
     }
-    this.bg1.tilePosition.x -= 0.5;
+    //this.bg1.tilePosition.x -= 0.5;
   },
 
   nextLevel: function() {
