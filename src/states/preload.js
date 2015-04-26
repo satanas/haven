@@ -44,6 +44,14 @@ var Preload = {
     game.load.image('acerbus-hud', 'assets/acerbus-hud.png');
     game.load.image('throne-room', 'assets/throne-room.jpg');
 
+    game.load.image('intro-bg1', 'assets/intro-background-1.png');
+    game.load.image('intro-bg2', 'assets/intro-background-2.png');
+    game.load.image('intro-bg3', 'assets/intro-background-3.png');
+    game.load.image('clouds', 'assets/clouds.png');
+    game.load.image('castle', 'assets/castle.png');
+    game.load.image('mountain', 'assets/mountain.png');
+    game.load.image('chain', 'assets/chain.png');
+
     // These should be spritesheets
     game.load.image('wave', 'assets/wave.png');
 
