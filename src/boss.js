@@ -5,6 +5,7 @@ var Acerbus = function(game, player, x, y, fight) {
 
   this.player = player;
   this.health = game.global.maxBossHealth;
+  this.willDrop = false;
   this.dashSpeed = 550;
   this.walkingSpeed = 160;
   this.phase = 0;
