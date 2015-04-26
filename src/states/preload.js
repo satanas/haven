@@ -9,9 +9,9 @@ var Preload = {
 
     game.load.setPreloadSprite(progressbar);
 
-    game.load.tilemap('map', 'mario.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.tilemap('mario2', 'mario2.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.tilemap('boss', 'boss.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('map', 'maps/mario.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('mario2', 'maps/mario2.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('boss', 'maps/boss.json', null, Phaser.Tilemap.TILED_JSON);
 
     game.load.bitmapFont('arcade', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
     game.load.bitmapFont('titles', 'assets/fonts/titles.png', 'assets/fonts/titles.fnt');
