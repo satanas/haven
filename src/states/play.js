@@ -235,23 +235,28 @@ var Play = {
       //this.game.debug.text(game.time.physicsElapsed, 32, 32);
       //this.game.debug.bodyInfo(this.player, 10, 20);
       this.game.debug.body(this.player);
-      var self = this;
       groups.enemies.forEach(function(e) {
-        self.game.debug.body(e);
-      });
+        this.game.debug.body(e);
+      }, this);
       groups.items.forEach(function(e) {
-        self.game.debug.body(e);
-      });
+        this.game.debug.body(e);
+      }, this);
       groups.platforms.forEach(function(e) {
-        self.game.debug.body(e);
-      });
+        this.game.debug.body(e);
+      }, this);
+      groups.portals.forEach(function(e) {
+        this.game.debug.body(e);
+      }, this);
+      groups.checkpoints.forEach(function(e) {
+        this.game.debug.body(e);
+      }, this);
     }
   },
 
   togglePause: function() {
     this.paused = !this.paused;
     if (this.paused) {
-      this.pauseText = bitmapTextCentered(200, 'titles', 'Paused', 56, true);
+      this.pauseText = bitmapTextCentered(200, 'press_start', 'Paused', 56, true);
     } else {
       this.pauseText.destroy();
       this.pauseText = null;
