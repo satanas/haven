@@ -365,6 +365,6 @@ WavePhase.prototype.execution = function(self) {
   console.log('exec', self.parent.facing);
   self.parent.tint = 0xffffff;
   if (self.wave === null) {
-    self.wave = new Wave(self.game, self.parent.x, self.parent.y + 60, self.parent.facing);
+    self.wave = new Wave(self.game, self.parent.x, self.parent.y, self.parent.facing);
   }
 };
