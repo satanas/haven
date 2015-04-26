@@ -39,7 +39,7 @@ var HUD = function(player, clock, boss) {
   this.diamonds.fixedToCamera = true;
 
   if (this.clock !== null) {
-    this.timer = game.add.sprite(510, 2, 'timer', 0, groups.hud);
+    this.timer = game.add.sprite(514, 12, 'clock', 0, groups.hud);
     this.timer.fixedToCamera = true;
 
     this.time = game.add.bitmapText(560, 18, 'press_start', '300', 20);

@@ -38,7 +38,7 @@ var Preload = {
     game.load.image('box-green', 'assets/box-green.png');
     game.load.image('alysa-face', 'assets/alysa-face.png');
     game.load.image('hud', 'assets/hud.png');
-    game.load.image('timer', 'assets/timer.png');
+    game.load.image('clock', 'assets/clock.png');
     game.load.image('rock', 'assets/rock.png');
     game.load.image('gunner', 'assets/gunner.png');
     game.load.image('acerbus-hud', 'assets/acerbus-hud.png');
