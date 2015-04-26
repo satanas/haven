@@ -575,13 +575,13 @@
  "orientation":"orthogonal",
  "properties":
     {
-
+     "bgm":"bgm-ingame"
     },
  "tileheight":32,
  "tilesets":[
         {
          "firstgid":1,
-         "image":"assets\/mario.png",
+         "image":"..\/assets\/mario.png",
          "imageheight":544,
          "imagewidth":544,
          "margin":0,

@@ -62,7 +62,7 @@
  "properties":
     {
      "background":"throne-room",
-     "bgm":"boss-bgm"
+     "bgm":"bgm-boss"
     },
  "tileheight":32,
  "tilesets":[
