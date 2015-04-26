@@ -16,7 +16,7 @@ var Preload = {
     game.load.bitmapFont('arcade', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
     game.load.bitmapFont('titles', 'assets/fonts/titles.png', 'assets/fonts/titles.fnt');
     game.load.bitmapFont('pixel_art', 'assets/fonts/pixel_art.png', 'assets/fonts/pixel_art.fnt');
-    game.load.bitmapFont('press_start', 'assets/fonts/press_start.png', 'assets/fonts/press_start.fnt');
+    game.load.bitmapFont('press_start', 'assets/fonts/press-start.png', 'assets/fonts/press-start.fnt');
 
     game.load.image('wall', 'assets/box-blue.png');
     game.load.image('mario', 'assets/mario.png');
@@ -41,9 +41,10 @@ var Preload = {
     game.load.image('timer', 'assets/timer.png');
     game.load.image('rock', 'assets/rock.png');
     game.load.image('gunner', 'assets/gunner.png');
+    game.load.image('acerbus-hud', 'assets/acerbus-hud.png');
+    game.load.image('throne-room', 'assets/throne-room.jpg');
 
     // These should be spritesheets
-    game.load.image('acerbus', 'assets/acerbus.png');
     game.load.image('wave', 'assets/wave.png');
 
     game.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
@@ -67,7 +68,8 @@ var Preload = {
     game.load.spritesheet('carniplant', 'assets/carniplant.png', 56, 56);
     game.load.spritesheet('heart', 'assets/heart.png', 16, 16);
     game.load.spritesheet('cannon', 'assets/cannon.png', 83, 41);
-    game.load.spritesheet('portal', 'assets/portal.png', 64, 64);
+    game.load.spritesheet('portal', 'assets/portal.png', 128, 128);
+    game.load.spritesheet('acerbus', 'assets/acerbus.png', 36, 59);
 
     game.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
     game.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');
@@ -90,6 +92,7 @@ var Preload = {
     game.load.audio('bgmintro', 'assets/sounds/bgm01intro.mp3');
     game.load.audio('gameover', 'assets/sounds/gameover.mp3');
     game.load.audio('ingame', 'assets/sounds/ingame1.mp3');
+    game.load.audio('boss-bgm', 'assets/sounds/boss-bgm.mp3');
   },
 
   create: function() {
