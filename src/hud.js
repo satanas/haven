@@ -1,7 +1,8 @@
 'use strict';
 
-var HUD = function(player, clock) {
+var HUD = function(player, clock, boss) {
   this.player = player;
+  this.boss = boss;
   this.clock = clock;
   this.blinkDelay = 150;
   this.blinkTime = 0;
@@ -17,6 +18,17 @@ var HUD = function(player, clock) {
   for (var i=0; i < this.player.health; i++) {
     this.health.push(game.add.sprite(100 + (18 * i), 17, 'heart', 0, groups.hud));
     this.health[i].fixedToCamera = true;
+  }
+
+  if (this.boss) {
+    this.face = game.add.sprite(590, 7, 'acerbus-hud', 0, groups.hud);
+    this.face.fixedToCamera = true;
+
+    this.bossHealth = [];
+    for (var i=0; i < this.boss.health; i++) {
+      this.bossHealth.push(game.add.sprite(560 - (18 * i), 17, 'heart', 0, groups.hud));
+      this.bossHealth[i].fixedToCamera = true;
+    }
   }
 
   this.diamondIcon = game.add.sprite(10, 48, 'diamond-hud', 0, groups.hud);
@@ -61,6 +73,15 @@ HUD.prototype.update = function(clock) {
   }
   for (var i=0; i < this.player.health; i++) {
     this.health[i].frame = 0;
+  }
+
+  if (this.boss) {
+    for (var i=0; i < game.global.maxBossHealth; i++) {
+      this.bossHealth[i].frame = 1;
+    }
+    for (var i=0; i < this.boss.health; i++) {
+      this.bossHealth[i].frame = 0;
+    }
   }
 
   this.diamonds.setText(game.global.diamonds.toString());
