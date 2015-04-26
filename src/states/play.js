@@ -35,7 +35,7 @@ var Play = {
 
     groups.hud = this.game.add.group();
 
-    this.map = this.game.add.tilemap('boss');
+    this.map = this.game.add.tilemap('mario');
     this.map.addTilesetImage('MARIO', 'mario');
     groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
@@ -52,6 +52,8 @@ var Play = {
     if (this.bgmSound === undefined && this.map.properties.bgm) {
       this.game.sound.stopAll();
       this.bgmSound = this.game.add.audio(this.map.properties.bgm, 0.7, true);
+      this.bgmSound.play();
+    } else if (this.bgmSound && this.map.properties.bgm) {
       this.bgmSound.play();
     }
 
