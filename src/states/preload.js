@@ -9,7 +9,7 @@ var Preload = {
 
     game.load.setPreloadSprite(progressbar);
 
-    game.load.tilemap('map', 'maps/mario.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('mario', 'maps/mario.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.tilemap('mario2', 'maps/mario2.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.tilemap('boss', 'maps/boss.json', null, Phaser.Tilemap.TILED_JSON);
 
@@ -89,10 +89,11 @@ var Preload = {
     game.load.audio('mechanichit', 'assets/sounds/mechanichit.mp3');
 
     // BGM
-    game.load.audio('bgmintro', 'assets/sounds/bgm01intro.mp3');
-    game.load.audio('gameover', 'assets/sounds/gameover.mp3');
-    game.load.audio('ingame', 'assets/sounds/ingame1.mp3');
-    game.load.audio('boss-bgm', 'assets/sounds/boss-bgm.mp3');
+    game.load.audio('bgm-menu', 'assets/sounds/bgm-menu.mp3');
+    game.load.audio('bgm-gameover', 'assets/sounds/bgm-gameover.mp3');
+    game.load.audio('bgm-ingame', 'assets/sounds/bgm-ingame.mp3');
+    game.load.audio('bgm-boss', 'assets/sounds/bgm-boss.mp3');
+    game.load.audio('bgm-credits', 'assets/sounds/bgm-credits.mp3');
   },
 
   create: function() {
