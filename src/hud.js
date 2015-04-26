@@ -7,7 +7,7 @@ var HUD = function(player, clock, boss) {
   this.blinkDelay = 150;
   this.blinkTime = 0;
 
-  this.face = game.add.sprite(0, 7, 'alysa-degradation', 0, groups.hud);
+  this.face = game.add.sprite(0, 7, 'alysa-hud', 0, groups.hud);
   this.face.fixedToCamera = true;
   this.livesSeparator = game.add.bitmapText(48, 20, 'press_start', 'x', 12);
   this.livesSeparator.fixedToCamera = true;
