@@ -1,25 +1,16 @@
 'use strict';
 
 var Acerbus = function(game, player, x, y, fight) {
-  //Phaser.Sprite.call(this, game, x, y, 'acerbus', 0);
   Enemy.call(this, game, x, y, 'acerbus', 'left', 0);
 
   this.player = player;
-  //this.facing = 'left';
   this.health = game.global.maxBossHealth;
   this.dashSpeed = 550;
   this.walkingSpeed = 160;
   this.phase = 0;
-  //this.invincibilityTime = 0.100;
   this.chaseDelay = 250;
   this.chasing = false;
   this.chaseStart = 0;
-
-  // Hurt variables
-  //this.hurt = false;
-  //this.hurtTime = 0;
-  //this.invincible = false;
-  //this.invincibilityTime = 100;
 
   this.phases = [
     new DashPhase(this, game),
@@ -40,12 +31,10 @@ var Acerbus = function(game, player, x, y, fight) {
   this.nextPhase();
 };
 
-//Acerbus.prototype = Object.create(Phaser.Sprite.prototype);
 Acerbus.prototype = Object.create(Enemy.prototype);
 Acerbus.prototype.constructor = Acerbus;
 
 Acerbus.prototype.update = function() {
-  //this.game.physics.arcade.collide(this, groups.tiles, this.onCollision);
   this.tileCollisions();
   this.recover();
   this.render();
@@ -59,17 +48,6 @@ Acerbus.prototype.update = function() {
 Acerbus.prototype.nextPhase = function() {
   this.currPhase = this.phases[this.pattern[this.phase % this.pattern.length]];
   this.currPhase.start();
-};
-
-//Acerbus.prototype.takeDamage = function() {
-//  console.log('hit');
-//  this.health -= 1;
-//};
-
-Acerbus.prototype.onCollision = function(self, block) {
-  if (self.body.touching.down === true) {
-    self.body.blocked.down = true;
-  }
 };
 
 Acerbus.prototype.chaseCharacter = function(player) {
