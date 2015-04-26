@@ -12,6 +12,8 @@ game.global = {
   maxBossHealth: 15,
   killedEnemies: 0,
   diamondsToLife: 100,
+  previousLevel: 0,
+  movingToNextLevel: false,
   items: []
 }
 var debug = false;

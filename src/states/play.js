@@ -7,6 +7,7 @@ var Play = {
     this.boss = null;
     this.clock = null;
     this.paused = false;
+    game.global.movingToNextLevel = false;
 
     this.game.stage.backgroundColor = '#3498db';
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -35,8 +36,12 @@ var Play = {
 
     groups.hud = this.game.add.group();
 
-    this.map = this.game.add.tilemap('mario');
-    this.map.addTilesetImage('MARIO', 'mario');
+    if (game.global.level === 1) {
+      this.map = this.game.add.tilemap('mario');
+      this.map.addTilesetImage('MARIO', 'mario');
+    } else if (game.global.level === 2) {
+      this.map = this.game.add.tilemap('boss');
+    }
     groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
@@ -49,12 +54,12 @@ var Play = {
       this.bg.fixedToCamera = true;
     }
 
-    if (this.bgmSound === undefined && this.map.properties.bgm) {
-      this.game.sound.stopAll();
-      this.bgmSound = this.game.add.audio(this.map.properties.bgm, 0.7, true);
-      this.bgmSound.play();
-    } else if (this.bgmSound && this.map.properties.bgm) {
-      this.bgmSound.play();
+    if (game.global.previousLevel !== game.global.level) {
+      if (this.map.properties.bgm) {
+        this.game.sound.stopAll();
+        this.bgmSound = this.game.add.audio(this.map.properties.bgm, 0.7, true);
+        this.bgmSound.play();
+      }
     }
 
     if (this.game.global.lastCheckpoint) {
@@ -196,15 +201,14 @@ var Play = {
 
     this.hud.update();
 
-    game.physics.arcade.overlap(this.player, groups.portals, this.nextLevel);
+    game.physics.arcade.overlap(this.player, groups.portals, this.nextLevel, null, this);
 
     if (this.player.death){
       this.player.body.enable = false;
       var self = this;
       this.game.plugin.fadeOut(0x000, 750, 0, function() {
-        console.log('dead, rest', self.game.global.lives);
+        game.global.previousLevel = game.global.level;
         if (self.game.global.lives < 1) {
-          self.bgmSound = undefined;
           self.game.state.start('gameover');
         } else {
           self.game.state.start('death');
@@ -215,11 +219,15 @@ var Play = {
     //this.bg1.tilePosition.x -= 0.5;
   },
 
-  nextLevel: function() {
+  nextLevel: function(player, portal) {
+    if (player.invincible || player.status === 'dying' || game.global.movingToNextLevel) return;
+
     game.plugin.fadeOut(0x000, 750, 0, function() {
+      game.global.movingToNextLevel = true;
+      game.global.previousLevel = game.global.level;
       game.global.level += 1;
-      game.state.start('ending');
-    }, this);
+      game.state.start('play');
+    });
   },
 
   render: function() {
@@ -243,7 +251,6 @@ var Play = {
   togglePause: function() {
     this.paused = !this.paused;
     if (this.paused) {
-      console.log(game.camera.x);
       this.pauseText = bitmapTextCentered(200, 'titles', 'Paused', 56, true);
     } else {
       this.pauseText.destroy();
