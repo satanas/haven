@@ -23,10 +23,17 @@ var Alysa = function(x, y) {
   this.shotDelay = 155;
   this.cursors = game.input.keyboard.createCursorKeys();
 
-  this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
-  this.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
-  this.animations.add('dying-left', [20, 21, 22, 23], 12, false);
-  this.animations.add('dying-right', [24, 25, 26, 27], 12, false);
+  //this.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
+  //this.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
+  //this.animations.add('dying-left', [20, 21, 22, 23], 12, false);
+  //this.animations.add('dying-right', [24, 25, 26, 27], 12, false);
+
+  this.animations.add('idle-right', [0, 1, 2, 3, 4, 5], 12, true);
+  this.animations.add('idle-left', [31, 30, 29, 28, 27, 26], 12, true);
+  this.animations.add('right', [8, 9, 10, 11, 12, 13, 14, 15], 12, true);
+  this.animations.add('left', [32, 33, 34, 35, 36, 37, 38, 39], 12, true);
+  this.animations.add('dying-right', [17, 18, 19, 20, 21, 22], 12, false);
+  this.animations.add('dying-left', [46, 45, 44, 43, 42, 41], 12, false);
 
   // Sounds
   this.jumpSound = game.add.audio('alysajump');
@@ -173,9 +180,9 @@ Alysa.prototype.render = function() {
 
   if (this.jumping === true) {
     if (this.facing == 'left') {
-      this.frame = 19;
+      this.frame = 25;
     } else {
-      this.frame = 18;
+      this.frame = 6;
     }
   } else if (this.body.velocity.x !== 0 && this.body.onFloor()) {
     if (this.facing == 'left') {
@@ -184,11 +191,10 @@ Alysa.prototype.render = function() {
       this.animations.play('right');
     }
   } else {
-    this.animations.stop();
     if (this.facing == 'left') {
-      this.frame = 17;
+      this.animations.play('idle-left');
     } else {
-      this.frame = 16;
+      this.animations.play('idle-right');
     }
   }
 };
