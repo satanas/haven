@@ -78,8 +78,8 @@ var Preload = {
     game.load.spritesheet('portal', 'assets/portal.png', 128, 128);
     game.load.spritesheet('acerbus', 'assets/acerbus.png', 36, 59);
 
-    game.load.audio('alysajump', 'assets/sounds/alysajump.mp3');
-    game.load.audio('alysadjump', 'assets/sounds/alysajumpairborne.mp3');
+    game.load.audio('alysadjump', 'assets/sounds/alysajump.mp3');
+    game.load.audio('alysajump', 'assets/sounds/alysajumpairborne.mp3');
     game.load.audio('alysashoot', 'assets/sounds/alysashoot.mp3');
     game.load.audio('enemyshoot', 'assets/sounds/enemyshoot.mp3');
     game.load.audio('alysahurt', 'assets/sounds/alysahurtdamage.mp3');
