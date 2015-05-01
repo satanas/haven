@@ -23,3 +23,9 @@ var warningType = {
   ANIMATION: 0,
   RUMBLE: 1
 };
+
+var itemTypes = {
+  DIAMOND: 'diamond',
+  EXTRALIFE: 'extralife',
+  HEART: 'heart'
+};
