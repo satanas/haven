@@ -232,7 +232,7 @@ Alysa.prototype.pickItem = function(self, object) {
     if (object.fixed) {
       game.global.items.push(object);
     }
-    if (game.global.diamonds % game.global.diamondsToLife) {
+    if (game.global.diamonds % game.global.diamondsToLife === 0) {
       // extra life effect in HUD
       self.gainLife();
     }
