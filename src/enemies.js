@@ -138,9 +138,9 @@ Enemy.prototype.drop = function() {
     var x = this.x + (this.width / 2),
         y = this.y + (this.height / 2);
     if (Math.round(Math.random()) === 0) {
-      var diamond = new Diamond(x, y);
+      var diamond = new Diamond(x, y, false, true);
     } else {
-      var heart = new Heart(x, y);
+      var heart = new Heart(x, y, false, true);
     }
   }
 };
