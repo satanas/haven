@@ -1,56 +1,70 @@
 'use strict';
 
-var Diamond = function(x, y, fixed) {
-  Phaser.Sprite.call(this, game, x, y, 'diamond', 0);
+var Item = function(type, x, y, fixed, dissapear) {
+  Phaser.Sprite.call(this, game, x, y, type, 0);
 
   game.physics.arcade.enable(this);
-  this.body.setSize(16, 12, 8, 10);
   this.body.allowGravity = true;
-  this.itemType = 'diamond';
+  this.body.velocity.y = 50;
   this.fixed = fixed || false;
+  this.dissapear = dissapear || false;
+  this.lifeTime = 10000;
+  this.alertTime = 4000;
+  this.blinkDelay = 100;
+  this.blinking = false;
+  this.itemType = type;
   groups.items.add(this);
 };
 
-Diamond.prototype = Object.create(Phaser.Sprite.prototype);
+Item.prototype = Object.create(Phaser.Sprite.prototype);
+Item.prototype.constructor = Item;
+
+Item.prototype.update = function() {
+  game.physics.arcade.collide(this, groups.tiles);
+  this.checkLifetime();
+};
+
+Item.prototype.checkLifetime = function() {
+  if (this.dissapear) {
+    this.lifeTime -= game.time.elapsed;
+    if (this.lifeTime <= this.alertTime && !this.blinking) {
+      this.blinking = true;
+      this.timer = game.time.events.loop(this.blinkDelay, this.blink, this);
+    }
+  }
+};
+
+Item.prototype.blink = function() {
+  this.visible = !this.visible;
+  if (this.lifeTime <= 0) {
+    game.time.events.remove(this.timer);
+    this.destroy();
+  }
+};
+
+var Diamond = function(x, y, fixed, dissapear) {
+  Item.call(this, itemTypes.DIAMOND, x, y, fixed, dissapear);
+  this.body.setSize(16, 12, 8, 10);
+  groups.items.add(this);
+};
+
+Diamond.prototype = Object.create(Item.prototype);
 Diamond.prototype.constructor = Diamond;
 
-Diamond.prototype.update = function() {
-  game.physics.arcade.collide(this, groups.tiles);
-};
-
 var ExtraLife = function(x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'extralife', 0);
-
-  game.physics.arcade.enable(this);
-  this.body.allowGravity = true;
+  Item.call(this, itemTypes.EXTRALIFE, x, y, true, false);
   this.body.setSize(28, 24, 2, 4);
-  this.itemType = 'extralife';
-  this.fixed = true;
   groups.items.add(this);
 };
 
-ExtraLife.prototype = Object.create(Phaser.Sprite.prototype);
+ExtraLife.prototype = Object.create(Item.prototype);
 ExtraLife.prototype.constructor = ExtraLife;
 
-ExtraLife.prototype.update = function() {
-  game.physics.arcade.collide(this, groups.tiles);
-};
-
 var Heart = function(x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'heart', 0);
-
-  game.physics.arcade.enable(this);
+  Item.call(this, itemTypes.HEART, x, y, false, true);
   this.body.setSize(16, 16, 0, 0);
-  this.body.allowGravity = false;
-  this.body.velocity.y = 50;
-  this.itemType = 'heart';
   this.frame = 0;
-  groups.items.add(this);
 };
 
-Heart.prototype = Object.create(Phaser.Sprite.prototype);
+Heart.prototype = Object.create(Item.prototype);
 Heart.prototype.constructor = Heart;
-
-Heart.prototype.update = function() {
-  game.physics.arcade.collide(this, groups.tiles);
-};
