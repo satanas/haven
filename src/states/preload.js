@@ -42,10 +42,9 @@ var Preload = {
     game.load.image('gunner', 'assets/gunner.png');
     game.load.image('acerbus-hud', 'assets/acerbus-hud.png');
     game.load.image('throne-room', 'assets/throne-room.jpg');
-
-    game.load.image('intro-bg1', 'assets/intro-background-1.png');
-    game.load.image('intro-bg2', 'assets/intro-background-2.png');
-    game.load.image('intro-bg3', 'assets/intro-background-3.png');
+    game.load.image('menu-bg1', 'assets/menu-background-1.png');
+    game.load.image('menu-bg2', 'assets/menu-background-2.png');
+    game.load.image('menu-bg3', 'assets/menu-background-3.png');
     game.load.image('clouds', 'assets/clouds.png');
     game.load.image('castle', 'assets/castle.png');
     game.load.image('mountain', 'assets/mountain.png');
@@ -77,6 +76,8 @@ var Preload = {
     game.load.spritesheet('cannon', 'assets/cannon.png', 83, 41);
     game.load.spritesheet('portal', 'assets/portal.png', 128, 128);
     game.load.spritesheet('acerbus', 'assets/acerbus.png', 36, 59);
+    game.load.spritesheet('king', 'assets/king.png', 53, 68);
+    game.load.spritesheet('energy-chain', 'assets/energy-chain.png', 34, 12);
 
     game.load.audio('alysadjump', 'assets/sounds/alysajump.mp3');
     game.load.audio('alysajump', 'assets/sounds/alysajumpairborne.mp3');

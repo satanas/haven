@@ -13,10 +13,10 @@ var Menu = {
     this.bgmSound = game.add.audio('bgm-menu', 1, true);
     this.selectSound = game.add.audio('select');
 
-    this.background1 = game.add.image(0, 0, 'intro-bg1');
-    this.background2 = game.add.image(0, 0, 'intro-bg2');
+    this.background1 = game.add.image(0, 0, 'menu-bg1');
+    this.background2 = game.add.image(0, 0, 'menu-bg2');
     this.background2.visible = false;
-    this.background3 = game.add.image(0, 0, 'intro-bg3');
+    this.background3 = game.add.image(0, 0, 'menu-bg3');
     this.background3.visible = false;
     this.clouds = game.add.tileSprite(0, -100, 640, 480, 'clouds');
     this.castle = game.add.image(600, 0, 'castle');
@@ -40,7 +40,7 @@ var Menu = {
     enterKey.onDown.add(this.start, this);
 
     game.sound.stopAll();
-    this.bgmSound.play();
+    //this.bgmSound.play();
   },
 
   start: function() {
@@ -53,7 +53,7 @@ var Menu = {
       this.alysa.x = 162;
       this.show();
     } else {
-      this.timer.stop();
+      game.time.events.remove(this.timer);
       this.selectSound.play();
       game.state.start('disclaimer');
     }
