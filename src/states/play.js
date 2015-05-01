@@ -70,31 +70,31 @@ var Play = {
 
     var self = this;
     this.map.objects['Objects'].forEach(function(e) {
-      var y = e.y - self.map.tileHeight;
+      var y = e.y - this.map.tileHeight;
       var add = true;
-      self.game.global.items.forEach(function(item) {
-        if (item.x === e.x && item.y === y) add = false;
+      game.global.items.forEach(function(item) {
+        if (item.origX === e.x && item.origY === y) add = false;
       });
       if (add) {
         if (e.properties.type === 'diamond') {
           var item = new Diamond(e.x, y, true);
         } else if (e.properties.type === 'extralife') {
-          var item = new ExtraLife(e.x, y);
+          var item = new ExtraLife(e.x, y, true);
         }
       }
       if (e.properties.type === 'checkpoint') {
         var origX = parseInt(e.properties.orig_x);
         var origY = parseInt(e.properties.orig_y);
-        var item = new Checkpoint(self.game, e.x, y, origX, origY);
+        var item = new Checkpoint(game, e.x, y, origX, origY);
       } else if (e.properties.type === 'clock') {
         var initTime = e.properties.init_time || 300;
         var criticalTime = e.properties.critical_time || 20;
-        self.clock = new Clock(self.game);
-        self.clock.start(initTime, criticalTime);
+        this.clock = new Clock(game);
+        this.clock.start(initTime, criticalTime);
       } else if (e.properties.type === 'portal') {
         var portal = new Portal(e.x, y);
       }
-    });
+    }, this);
 
     this.map.objects['Platforms'].forEach(function(e) {
       var y = e.y - self.map.tileHeight;

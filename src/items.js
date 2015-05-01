@@ -4,6 +4,8 @@ var Item = function(type, x, y, fixed, dissapear) {
   Phaser.Sprite.call(this, game, x, y, type, 0);
 
   game.physics.arcade.enable(this);
+  this.origX = x;
+  this.origY = y;
   this.body.allowGravity = true;
   this.body.velocity.y = 50;
   this.fixed = fixed || false;
