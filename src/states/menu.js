@@ -53,6 +53,7 @@ var Menu = {
       this.alysa.x = 162;
       this.show();
     } else {
+      this.timer.stop();
       this.selectSound.play();
       game.state.start('disclaimer');
     }
@@ -67,6 +68,7 @@ var Menu = {
     bitmapTextCentered(35, 'press_start', 'Haven', 50);
     bitmapTextCentered(90, 'press_start', 'A story between worlds', 11);
     this.startLightning();
+    this.timer = game.time.events.loop(7000, this.startLightning, this);
   },
 
   startLightning: function() {
