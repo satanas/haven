@@ -28,6 +28,8 @@ var Menu = {
 
     this.castleTween = game.add.tween(this.castle);
     this.castleTween.to({x: 180}, 12000, Phaser.Easing.Linear.None, true);
+    this.castleSwayTween = game.add.tween(this.castle);
+    this.castleSwayTween.to({y: 5}, 3000, Phaser.Easing.Bounce.None, true).to({y: -5}, 3000, Phaser.Easing.Bounce.None, true).loop(true);
     this.mountainTween = game.add.tween(this.mountain);
     this.mountainTween.to({x: -275}, 10000, Phaser.Easing.Linear.None, true, 2000);
     this.mountainTween.onComplete.addOnce(this.show, this)
