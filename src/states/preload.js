@@ -49,11 +49,14 @@ var Preload = {
     game.load.image('castle', 'assets/castle.png');
     game.load.image('mountain', 'assets/mountain.png');
     game.load.image('chain', 'assets/chain.png');
+    game.load.image('king-dialog', 'assets/dialog-king.png');
+    game.load.image('alysa-dialog', 'assets/dialog-alysa.png');
+    game.load.image('acerbus-dialog', 'assets/dialog-acerbus.png');
 
     // These should be spritesheets
     game.load.image('wave', 'assets/wave.png');
 
-    game.load.spritesheet('shadow', 'assets/shadow.png', 60, 84);
+    game.load.spritesheet('shadow', 'assets/shadow.png', 36, 59);
     game.load.spritesheet('gumbon', 'assets/gumbon.png', 47, 37);
     game.load.spritesheet('gumbon-zombie', 'assets/gumbon-zombie.png', 47, 37);
     game.load.spritesheet('snailbot', 'assets/snailbot.png', 84, 67);
