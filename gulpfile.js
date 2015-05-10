@@ -2,6 +2,9 @@ var fs = require('fs');
 var gulp = require('gulp');
 var shell = require('shelljs');
 var exec = require('child_process').exec;
+var path = require('path');
+var SSH = require('ssh-kit'),
+    ssh = new SSH();
 
 gulp.task('build:nw', ['clean'], function() {
   shell.exec('zip -r dist/haven.nw package.json src/*');
@@ -81,4 +84,19 @@ gulp.task('clean', function() {
     'dist/Haven.app',
     'dist/haven-linux-x64.zip'
   ]);
+});
+
+gulp.task('deploy', function() {
+  ssh.set('username', 'satanas');
+  ssh.set('host', '45.55.172.242');
+  //ssh.set('sshKey', '~/.ssh/id_rsa');
+
+  ssh.exec('sudo rm -rvf /var/www/haven/');
+  ssh.exec('sudo rm -rvf /tmp/haven/');
+  ssh.exec('sudo git clone https://github.com/satanas/haven.git /tmp/haven/');
+  ssh.exec('sudo mv /tmp/haven/src/ /var/www/haven');
+  ssh.exec('sudo cp -Rv /var/ftp/haven/assets/ /var/www/haven/assets/');
+  ssh.exec('sudo chown -R www-data:www-data /var/www/haven');
+  ssh.exec('sudo chmod -R 755 /var/www/haven');
+  ssh.exec('sudo service nginx reload');
 });
