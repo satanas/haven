@@ -91,7 +91,7 @@ Acerbus.prototype.facePlayer = function() {
     this.frame = 0;
   } else {
     this.facing = 'right';
-    this.frame = 6;
+    this.frame = 25;
   }
 };
 
@@ -304,6 +304,7 @@ TeleportPhase.prototype.preparation = function(self) {
 };
 
 TeleportPhase.prototype.warning = function(self) {
+  self.parent.facePlayer();
 };
 
 TeleportPhase.prototype.execution = function(self) {
