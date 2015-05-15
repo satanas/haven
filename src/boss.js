@@ -23,7 +23,7 @@ var Acerbus = function(game, player, x, y, fight) {
   this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
   this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
   //this.pattern = [2, 0, 2, 0, 3];
-  this.pattern = [0, 0];
+  this.pattern = [2, 2];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -65,13 +65,7 @@ Acerbus.prototype.chaseCharacter = function(player) {
       this.chasing = false;
     }
   } else {
-    if (this.x > player.x) {
-      this.facing = 'left';
-      this.frame = 0;
-    } else {
-      this.facing = 'right';
-      this.frame = 6;
-    }
+    this.facePlayer();
     this.chasing = true;
     this.chaseStart = this.game.time.time;
     //console.log('recalculating', this.facing);
@@ -81,6 +75,24 @@ Acerbus.prototype.chaseCharacter = function(player) {
 Acerbus.prototype.stopChasing = function(player) {
   this.body.velocity.x = 0;
   this.animations.stop();
+};
+
+Acerbus.prototype.renderStand = function() {
+  if (this.facing === 'right') {
+    this.frame = 25;
+  } else {
+    this.frame = 0;
+  }
+};
+
+Acerbus.prototype.facePlayer = function() {
+  if (this.x > this.player.x) {
+    this.facing = 'left';
+    this.frame = 0;
+  } else {
+    this.facing = 'right';
+    this.frame = 6;
+  }
 };
 
 var Phase = function(game, cycles, idle, preparation, warning, execution) {
@@ -172,7 +184,7 @@ DashPhase.prototype.checkRightLimit = function() {
   if (this.parent.x > 544 && this.parent.facing === 'right') {
     this.parent.body.velocity.x = 0;
     this.parent.facing = 'left';
-    this.parent.frame = 0;
+    this.parent.renderStand();
     this.parent.x = 544;
     this.next();
   }
@@ -182,7 +194,7 @@ DashPhase.prototype.checkLeftLimit = function() {
   if (this.parent.x < 32 && this.parent.facing === 'left') {
     this.parent.body.velocity.x = 0;
     this.parent.facing = 'right';
-    this.parent.frame = 25;
+    this.parent.renderStand();
     this.parent.x = 32;
     this.next();
   }
@@ -267,7 +279,7 @@ var TeleportPhase = function(parent, game, player) {
       callback: this.warning
     },
     {
-      duration: 1300,
+      duration: 3000,
       callback: this.execution
     }
   );
@@ -282,8 +294,8 @@ TeleportPhase.prototype = Object.create(Phase.prototype);
 TeleportPhase.prototype.constructor = TeleportPhase;
 
 TeleportPhase.prototype.preparation = function(self) {
+  self.parent.facePlayer();
   self.shoryuken = false;
-  self.parent.tint = 0xffffff;
   self.shadow = self.game.add.sprite(self.player.x, self.parent.y, 'shadow');
   self.shadow.animations.add('main');
   self.shadow.animations.play('main', 17, true);
@@ -295,11 +307,21 @@ TeleportPhase.prototype.warning = function(self) {
 };
 
 TeleportPhase.prototype.execution = function(self) {
-  if (!self.shoryuken) {
+  if (self.shoryuken) {
+    if (self.parent.body.velocity.y === 0) {
+      self.parent.renderStand();
+      self.next();
+    }
+  } else {
     self.parent.x = self.shadow.x;
     self.parent.body.velocity.y = -900;
     self.shadow.destroy();
     self.shoryuken = true;
+    if (self.parent.facing === 'right') {
+      self.parent.frame = 23;
+    } else {
+      self.parent.frame = 48;
+    }
   }
 };
 
