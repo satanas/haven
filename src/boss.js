@@ -22,6 +22,8 @@ var Acerbus = function(game, player, x, y, fight) {
 
   this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
   this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
+  this.animations.add('hurt-left', [21, 22], 20, true);
+  this.animations.add('hurt-right', [46, 47], 20, true);
   //this.pattern = [2, 0, 2, 0, 3];
   this.pattern = [2, 2];
 

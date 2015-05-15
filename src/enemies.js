@@ -41,13 +41,14 @@ Enemy.prototype.takeDamage = function() {
     if (this.bloodType) {
       var blood = new BloodParticles(this.game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
     }
-    this.alpha = 0.5;
-    this.hurt = true;
-    this.hurtTime = this.game.time.time;
-    this.health -= 1;
     if (this.hitSound !== null) {
       this.hitSound.play();
     }
+    //this.alpha = 0.5;
+
+    this.hurt = true;
+    this.hurtTime = this.game.time.time;
+    this.health -= 1;
     if (this.health <= 0) {
       var exp = new Explosion(this.game, this.x, this.y, this.width, this.height);
       this.game.global.killedEnemies += 1;
@@ -59,9 +60,11 @@ Enemy.prototype.takeDamage = function() {
 
 Enemy.prototype.recover = function() {
   if (this.hurt) {
+    this.renderHurt();
     if (this.game.time.elapsedSince(this.hurtTime) >= this.invincibilityTime) {
       this.hurt = false;
-      this.alpha = 1.0;
+      this.animations.stop();
+      //this.alpha = 1.0;
     }
   }
 };
@@ -72,6 +75,16 @@ Enemy.prototype.tileCollisions = function() {
 
 Enemy.prototype.render = function() {
   this.animations.play(this.facing);
+};
+
+Enemy.prototype.renderHurt = function() {
+  if (this.animations.getAnimation('hurt-right')) {
+    if (this.facing === 'right') {
+      this.animations.play('hurt-right');
+    } else {
+      this.animations.play('hurt-left');
+    }
+  }
 };
 
 Enemy.prototype.turn = function() {
