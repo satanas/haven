@@ -22,8 +22,8 @@ var Acerbus = function(game, player, x, y, fight) {
 
   this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
   this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
-  this.pattern = [2, 0, 2, 0, 3];
-  //this.pattern = [3, 3];
+  //this.pattern = [2, 0, 2, 0, 3];
+  this.pattern = [0, 0];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -38,7 +38,6 @@ Acerbus.prototype.constructor = Acerbus;
 Acerbus.prototype.update = function() {
   this.tileCollisions();
   this.recover();
-  this.render();
   this.currPhase.update();
   if (this.currPhase.ended) {
     this.phase += 1;
@@ -173,6 +172,7 @@ DashPhase.prototype.checkRightLimit = function() {
   if (this.parent.x > 544 && this.parent.facing === 'right') {
     this.parent.body.velocity.x = 0;
     this.parent.facing = 'left';
+    this.parent.frame = 0;
     this.parent.x = 544;
     this.next();
   }
@@ -182,6 +182,7 @@ DashPhase.prototype.checkLeftLimit = function() {
   if (this.parent.x < 32 && this.parent.facing === 'left') {
     this.parent.body.velocity.x = 0;
     this.parent.facing = 'right';
+    this.parent.frame = 25;
     this.parent.x = 32;
     this.next();
   }
@@ -205,15 +206,15 @@ DashPhase.prototype.preparation = function(self) {
 
 DashPhase.prototype.warning = function(self) {
   self.moving = null;
-  self.parent.tint = 0xff0000;
 };
 
 DashPhase.prototype.execution = function(self) {
-  self.parent.tint = 0xffffff;
   if (self.parent.facing === 'right') {
     self.parent.body.velocity.x = self.parent.dashSpeed;
+    self.parent.frame = 49;
   } else {
     self.parent.body.velocity.x = -1 * self.parent.dashSpeed;
+    self.parent.frame = 24;
   }
 
   self.checkRightLimit();
