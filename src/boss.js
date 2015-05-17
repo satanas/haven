@@ -21,11 +21,11 @@ var Acerbus = function(game, player, x, y, fight) {
   ];
 
   this.animations.add('walk-left', [0, 1, 2, 3, 4, 5], 20, true);
-  this.animations.add('walk-right', [6, 7, 8, 9, 10, 11], 20, true);
+  this.animations.add('walk-right', [25, 26, 27, 28, 29, 30], 20, true);
   this.animations.add('hurt-left', [21, 22], 20, true);
   this.animations.add('hurt-right', [46, 47], 20, true);
   //this.pattern = [2, 0, 2, 0, 3];
-  this.pattern = [2, 2];
+  this.pattern = [3, 3];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -52,9 +52,10 @@ Acerbus.prototype.nextPhase = function() {
   this.currPhase.start();
 };
 
-Acerbus.prototype.chaseCharacter = function(player) {
+Acerbus.prototype.chasePlayer = function() {
+  this.facePlayer();
+
   if (this.chasing) {
-    //console.log('chasing', player.x);
     if (this.facing === 'left') {
       this.body.velocity.x = -1 * this.walkingSpeed;
       this.animations.play('walk-left');
@@ -62,21 +63,17 @@ Acerbus.prototype.chaseCharacter = function(player) {
       this.body.velocity.x = this.walkingSpeed;
       this.animations.play('walk-right');
     }
-    if (this.game.time.elapsedSince(this.chaseStart) > this.chaseDelay) {
-      this.animations.stop();
-      this.chasing = false;
-    }
   } else {
-    this.facePlayer();
     this.chasing = true;
     this.chaseStart = this.game.time.time;
-    //console.log('recalculating', this.facing);
   }
 };
 
 Acerbus.prototype.stopChasing = function(player) {
   this.body.velocity.x = 0;
   this.animations.stop();
+  this.renderStand();
+  this.chasing = false;
 };
 
 Acerbus.prototype.renderStand = function() {
@@ -90,10 +87,8 @@ Acerbus.prototype.renderStand = function() {
 Acerbus.prototype.facePlayer = function() {
   if (this.x > this.player.x) {
     this.facing = 'left';
-    this.frame = 0;
   } else {
     this.facing = 'right';
-    this.frame = 25;
   }
 };
 
@@ -297,6 +292,7 @@ TeleportPhase.prototype.constructor = TeleportPhase;
 
 TeleportPhase.prototype.preparation = function(self) {
   self.parent.facePlayer();
+  self.parent.renderStand();
   self.shoryuken = false;
   self.shadow = self.game.add.sprite(self.player.x, self.parent.y, 'shadow');
   self.shadow.animations.add('main');
@@ -307,6 +303,7 @@ TeleportPhase.prototype.preparation = function(self) {
 
 TeleportPhase.prototype.warning = function(self) {
   self.parent.facePlayer();
+  self.parent.renderStand();
 };
 
 TeleportPhase.prototype.execution = function(self) {
@@ -384,7 +381,7 @@ WavePhase.prototype.constructor = WavePhase;
 
 WavePhase.prototype.preparation = function(self) {
   self.wave = null;
-  self.parent.chaseCharacter(self.player);
+  self.parent.chasePlayer();
 };
 
 WavePhase.prototype.warning = function(self) {
