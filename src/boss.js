@@ -25,8 +25,7 @@ var Acerbus = function(game, player, x, y, fight) {
   this.animations.add('walk-right', [25, 26, 27, 28, 29, 30], 20, true);
   this.animations.add('hurt-left', [21, 22], 20, true);
   this.animations.add('hurt-right', [46, 47], 20, true);
-  //this.pattern = [2, 0, 2, 1, 0, 3];
-  this.pattern = [3, 1];
+  this.pattern = [1, 2, 0, 2, 3, 1, 0, 3, 2];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -158,7 +157,7 @@ var Phase = function(game, cycles, idle, preparation, warning, execution, ending
 var DashPhase = function(parent, game) {
   Phase.call(this, game, 2,
     {
-      duration: 2500,
+      duration: 500,
       callback: this.idle
     },
     {
@@ -365,7 +364,7 @@ var Wave = function(game, x, y, direction) {
     this.body.velocity.x = this.speed;
   }
   groups.enemies.add(this);
-  this.game.add.existing(this);
+  //this.game.add.existing(this);
   //self.wave.animations.add('main');
   //self.wave.animations.play('main', 17, true);
 };
@@ -445,7 +444,7 @@ var Shuriken = function(game, x, y, direction) {
     this.body.velocity.x = this.speed;
   }
   groups.enemies.add(this);
-  this.game.add.existing(this);
+  //this.game.add.existing(this);
 };
 
 Shuriken.prototype = Object.create(Phaser.Sprite.prototype);
