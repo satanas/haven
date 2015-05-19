@@ -52,6 +52,7 @@ var Preload = {
     game.load.image('king-dialog', 'assets/dialog-king.png');
     game.load.image('alysa-dialog', 'assets/dialog-alysa.png');
     game.load.image('acerbus-dialog', 'assets/dialog-acerbus.png');
+    game.load.image('shuriken', 'assets/shuriken.png');
 
     // These should be spritesheets
     game.load.image('wave', 'assets/wave.png');
@@ -81,6 +82,7 @@ var Preload = {
     game.load.spritesheet('acerbus', 'assets/acerbus.png', 36, 59);
     game.load.spritesheet('king', 'assets/king.png', 53, 68);
     game.load.spritesheet('energy-chain', 'assets/energy-chain.png', 34, 12);
+    game.load.spritesheet('smoke', 'assets/smoke.png', 53, 68);
 
     game.load.audio('alysadjump', 'assets/sounds/alysajump.mp3');
     game.load.audio('alysajump', 'assets/sounds/alysajumpairborne.mp3');
