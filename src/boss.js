@@ -6,9 +6,10 @@ var Acerbus = function(game, player, x, y, fight) {
   this.player = player;
   this.health = game.global.maxBossHealth;
   this.willDrop = false;
-  this.dashSpeed = 550;
+  this.dashSpeed = 700;
   this.walkingSpeed = 160;
   this.phase = 0;
+  this.invincibilityTime = 150;
   this.chaseDelay = 250;
   this.chasing = false;
   this.chaseStart = 0;
@@ -24,8 +25,8 @@ var Acerbus = function(game, player, x, y, fight) {
   this.animations.add('walk-right', [25, 26, 27, 28, 29, 30], 20, true);
   this.animations.add('hurt-left', [21, 22], 20, true);
   this.animations.add('hurt-right', [46, 47], 20, true);
-  //this.pattern = [2, 0, 2, 0, 3];
-  this.pattern = [3, 3];
+  //this.pattern = [2, 0, 2, 1, 0, 3];
+  this.pattern = [3, 1];
 
   this.game.physics.arcade.enableBody(this);
   this.body.gravity.y = 1000;
@@ -39,12 +40,12 @@ Acerbus.prototype.constructor = Acerbus;
 
 Acerbus.prototype.update = function() {
   this.tileCollisions();
-  this.recover();
   this.currPhase.update();
   if (this.currPhase.ended) {
     this.phase += 1;
     this.nextPhase();
   }
+  this.recover();
 };
 
 Acerbus.prototype.nextPhase = function() {
@@ -84,6 +85,14 @@ Acerbus.prototype.renderStand = function() {
   }
 };
 
+Acerbus.prototype.renderShoryuken = function() {
+  if (this.facing === 'right') {
+    this.frame = 23;
+  } else {
+    this.frame = 48;
+  }
+};
+
 Acerbus.prototype.facePlayer = function() {
   if (this.x > this.player.x) {
     this.facing = 'left';
@@ -92,7 +101,7 @@ Acerbus.prototype.facePlayer = function() {
   }
 };
 
-var Phase = function(game, cycles, idle, preparation, warning, execution) {
+var Phase = function(game, cycles, idle, preparation, warning, execution, ending) {
   this.game = game;
   this.totalCycles = cycles;
   this.currCycles = 0;
@@ -111,6 +120,7 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
     this.currCycles = this.totalCycles;
     this.currStep = this.steps.idle;
     this.stepStart = this.game.time.time;
+    this.parent.invincible = false;
   };
 
   this.update = function() {
@@ -125,16 +135,11 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
   this.next = function() {
     if (this.currStep === this.steps.idle) {
       this.currStep = this.steps.prep;
-      this.invincible = true;
-      this.parent.invincible = true;
     } else if (this.currStep === this.steps.prep) {
       this.currStep = this.steps.warn;
-      this.parent.invincible = true;
     } else if (this.currStep === this.steps.warn) {
       this.currStep = this.steps.exec;
-      this.parent.invincible = true;
     } else if (this.currStep === this.steps.exec) {
-      this.parent.invincible = false;
       if (this.currCycles > 1) {
         this.currStep = this.steps.idle;
         this.currCycles -= 1;
@@ -153,8 +158,8 @@ var Phase = function(game, cycles, idle, preparation, warning, execution) {
 var DashPhase = function(parent, game) {
   Phase.call(this, game, 2,
     {
-      duration: 500,
-      callback: function(self){}
+      duration: 2500,
+      callback: this.idle
     },
     {
       duration: -1,
@@ -177,27 +182,15 @@ var DashPhase = function(parent, game) {
 DashPhase.prototype = Object.create(Phase.prototype);
 DashPhase.prototype.constructor = DashPhase;
 
-DashPhase.prototype.checkRightLimit = function() {
-  if (this.parent.x > 544 && this.parent.facing === 'right') {
-    this.parent.body.velocity.x = 0;
-    this.parent.facing = 'left';
-    this.parent.renderStand();
-    this.parent.x = 544;
-    this.next();
-  }
-};
-
-DashPhase.prototype.checkLeftLimit = function() {
-  if (this.parent.x < 32 && this.parent.facing === 'left') {
-    this.parent.body.velocity.x = 0;
-    this.parent.facing = 'right';
-    this.parent.renderStand();
-    this.parent.x = 32;
-    this.next();
-  }
+DashPhase.prototype.idle = function(self) {
+  self.parent.invincible = false;
+  self.parent.animations.stop();
+  self.parent.facePlayer();
+  self.parent.renderStand();
 };
 
 DashPhase.prototype.preparation = function(self) {
+  self.parent.invincible = false;
   if (self.moving === null) {
     if (self.parent.x >= self.game.world.centerX) {
       self.parent.facing = 'right';
@@ -208,6 +201,8 @@ DashPhase.prototype.preparation = function(self) {
       self.parent.body.velocity.x = -150;
       self.moving = 'left';
     }
+  } else {
+    self.parent.animations.play('walk-' + self.parent.facing);
   }
   self.checkRightLimit();
   self.checkLeftLimit();
@@ -215,9 +210,14 @@ DashPhase.prototype.preparation = function(self) {
 
 DashPhase.prototype.warning = function(self) {
   self.moving = null;
+  self.parent.invincible = true;
+  self.parent.animations.stop();
+  self.parent.facePlayer();
+  self.parent.renderStand();
 };
 
 DashPhase.prototype.execution = function(self) {
+  self.parent.invincible = true;
   if (self.parent.facing === 'right') {
     self.parent.body.velocity.x = self.parent.dashSpeed;
     self.parent.frame = 49;
@@ -228,6 +228,24 @@ DashPhase.prototype.execution = function(self) {
 
   self.checkRightLimit();
   self.checkLeftLimit();
+};
+
+DashPhase.prototype.checkRightLimit = function() {
+  if (this.parent.x > 572 && this.parent.facing === 'right') {
+    this.parent.body.velocity.x = 0;
+    this.parent.facing = 'left';
+    this.parent.animations.stop();
+    this.parent.facePlayer();
+    this.next();
+  }
+};
+
+DashPhase.prototype.checkLeftLimit = function() {
+  if (this.parent.x < 32 && this.parent.facing === 'left') {
+    this.parent.body.velocity.x = 0;
+    this.parent.facing = 'right';
+    this.next();
+  }
 };
 
 var LaughPhase = function(parent, game) {
@@ -257,15 +275,20 @@ LaughPhase.prototype = Object.create(Phase.prototype);
 LaughPhase.prototype.constructor = LaughPhase;
 
 LaughPhase.prototype.execution = function(self) {
-  console.log('laughing');
-  self.parent.tint = 0xfab000;
+  console.log('laughing', self.parent.invincible);
+  //self.parent.tint = 0xfab000;
+};
+
+LaughPhase.prototype.end = function() {
+  console.log('end laughing');
+  this.ended = true;
 };
 
 var TeleportPhase = function(parent, game, player) {
   Phase.call(this, game, 3,
     {
       duration: 500,
-      callback: function(self){}
+      callback: this.idle
     },
     {
       duration: -1,
@@ -276,7 +299,7 @@ var TeleportPhase = function(parent, game, player) {
       callback: this.warning
     },
     {
-      duration: 3000,
+      duration: -1,
       callback: this.execution
     }
   );
@@ -290,6 +313,13 @@ var TeleportPhase = function(parent, game, player) {
 TeleportPhase.prototype = Object.create(Phase.prototype);
 TeleportPhase.prototype.constructor = TeleportPhase;
 
+TeleportPhase.prototype.idle = function(self) {
+  self.parent.invincible = false;
+  self.parent.animations.stop();
+  self.parent.facePlayer();
+  self.parent.renderStand();
+};
+
 TeleportPhase.prototype.preparation = function(self) {
   self.parent.facePlayer();
   self.parent.renderStand();
@@ -297,31 +327,29 @@ TeleportPhase.prototype.preparation = function(self) {
   self.shadow = self.game.add.sprite(self.player.x, self.parent.y, 'shadow');
   self.shadow.animations.add('main');
   self.shadow.animations.play('main', 17, true);
-  self.alpha = 0;
   self.next();
 };
 
 TeleportPhase.prototype.warning = function(self) {
+  self.invincible = true;
   self.parent.facePlayer();
   self.parent.renderStand();
 };
 
 TeleportPhase.prototype.execution = function(self) {
+  self.parent.invincible = true;
   if (self.shoryuken) {
     if (self.parent.body.velocity.y === 0) {
       self.parent.renderStand();
       self.next();
+    } else {
+      self.parent.renderShoryuken();
     }
   } else {
     self.parent.x = self.shadow.x;
     self.parent.body.velocity.y = -900;
     self.shadow.destroy();
     self.shoryuken = true;
-    if (self.parent.facing === 'right') {
-      self.parent.frame = 23;
-    } else {
-      self.parent.frame = 48;
-    }
   }
 };
 
@@ -355,7 +383,7 @@ var WavePhase = function(parent, game, player) {
   Phase.call(this, game, 3,
     {
       duration: 500,
-      callback: function(self){}
+      callback: this.idle
     },
     {
       duration: 1000,
@@ -379,20 +407,53 @@ var WavePhase = function(parent, game, player) {
 WavePhase.prototype = Object.create(Phase.prototype);
 WavePhase.prototype.constructor = WavePhase;
 
+WavePhase.prototype.idle = function(self) {
+  self.parent.invincible = false;
+};
+
 WavePhase.prototype.preparation = function(self) {
   self.wave = null;
+  self.parent.invincible = true;
   self.parent.chasePlayer();
 };
 
 WavePhase.prototype.warning = function(self) {
+  self.parent.invincible = true;
   self.parent.tint = 0x000000;
   self.parent.stopChasing();
 };
 
 WavePhase.prototype.execution = function(self) {
-  console.log('exec', self.parent.facing);
+  self.parent.invincible = true;
   self.parent.tint = 0xffffff;
   if (self.wave === null) {
-    self.wave = new Wave(self.game, self.parent.x, self.parent.y, self.parent.facing);
+    //self.wave = new Wave(self.game, self.parent.x, self.parent.y, self.parent.facing);
+    self.wave = new Shuriken(self.game, self.parent.x, self.parent.y + 12, self.parent.facing);
+  }
+};
+
+var Shuriken = function(game, x, y, direction) {
+  Phaser.Sprite.call(this, game, x, y, 'shuriken', 0);
+
+  this.speed = 560;
+  this.game.physics.arcade.enable(this);
+  this.anchor.setTo(0.5, 0.5);
+  this.body.allowGravity = false;
+  if (direction === 'left') {
+    this.body.velocity.x = -1 * this.speed;
+  } else {
+    this.body.velocity.x = this.speed;
+  }
+  groups.enemies.add(this);
+  this.game.add.existing(this);
+};
+
+Shuriken.prototype = Object.create(Phaser.Sprite.prototype);
+Shuriken.prototype.constructor = Shuriken;
+
+Shuriken.prototype.update = function() {
+  this.angle += 15;
+  if ((this.x + this.width < 0) || (this.x > this.game.world.width)) {
+    this.destroy();
   }
 };
