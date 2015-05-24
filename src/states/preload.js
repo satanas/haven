@@ -82,7 +82,7 @@ var Preload = {
     game.load.spritesheet('acerbus', 'assets/acerbus.png', 36, 59);
     game.load.spritesheet('king', 'assets/king.png', 53, 68);
     game.load.spritesheet('energy-chain', 'assets/energy-chain.png', 34, 12);
-    game.load.spritesheet('smoke', 'assets/smoke.png', 53, 68);
+    game.load.spritesheet('smoke', 'assets/smoke.png', 69, 60);
 
     game.load.audio('alysadjump', 'assets/sounds/alysajump.mp3');
     game.load.audio('alysajump', 'assets/sounds/alysajumpairborne.mp3');

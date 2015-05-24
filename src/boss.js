@@ -345,6 +345,7 @@ TeleportPhase.prototype.execution = function(self) {
       self.parent.renderShoryuken();
     }
   } else {
+    var smoke = new Smoke(self.parent.x, self.parent.y)
     self.parent.x = self.shadow.x;
     self.parent.body.velocity.y = -900;
     self.shadow.destroy();
