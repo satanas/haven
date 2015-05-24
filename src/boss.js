@@ -378,11 +378,11 @@ var WavePhase = function(parent, player) {
       callback: this.idle
     },
     {
-      duration: 1000,
+      duration: 800,
       callback: this.preparation
     },
     {
-      duration: 500,
+      duration: 700,
       callback: this.warning
     },
     {
