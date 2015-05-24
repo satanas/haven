@@ -209,7 +209,6 @@ DashPhase.prototype.preparation = function(self) {
 
 DashPhase.prototype.warning = function(self) {
   self.moving = null;
-  self.parent.invincible = true;
   self.parent.animations.stop();
   self.parent.facePlayer();
   self.parent.renderStand();
@@ -330,7 +329,7 @@ TeleportPhase.prototype.preparation = function(self) {
 };
 
 TeleportPhase.prototype.warning = function(self) {
-  self.invincible = true;
+  self.parent.invincible = true;
   self.parent.facePlayer();
   self.parent.renderStand();
 };
@@ -350,32 +349,6 @@ TeleportPhase.prototype.execution = function(self) {
     self.parent.body.velocity.y = -900;
     self.shadow.destroy();
     self.shoryuken = true;
-  }
-};
-
-var Wave = function(game, x, y, direction) {
-  Phaser.Sprite.call(this, game, x, y, 'wave', 0);
-
-  this.speed = 560;
-  this.game.physics.arcade.enable(this);
-  this.body.allowGravity = false;
-  if (direction === 'left') {
-    this.body.velocity.x = -1 * this.speed;
-  } else {
-    this.body.velocity.x = this.speed;
-  }
-  groups.enemies.add(this);
-  //this.game.add.existing(this);
-  //self.wave.animations.add('main');
-  //self.wave.animations.play('main', 17, true);
-};
-
-Wave.prototype = Object.create(Phaser.Sprite.prototype);
-Wave.prototype.constructor = Wave;
-
-Wave.prototype.update = function() {
-  if ((this.x + this.width < 0) || (this.x > this.game.world.width)) {
-    this.destroy();
   }
 };
 
@@ -413,7 +386,6 @@ WavePhase.prototype.idle = function(self) {
 
 WavePhase.prototype.preparation = function(self) {
   self.wave = null;
-  self.parent.invincible = true;
   self.parent.chasePlayer();
 };
 
@@ -435,7 +407,7 @@ WavePhase.prototype.execution = function(self) {
 var Shuriken = function(game, x, y, direction) {
   Phaser.Sprite.call(this, game, x, y, 'shuriken', 0);
 
-  this.speed = 560;
+  this.speed = 540;
   this.game.physics.arcade.enable(this);
   this.anchor.setTo(0.5, 0.5);
   this.body.allowGravity = false;
@@ -445,7 +417,6 @@ var Shuriken = function(game, x, y, direction) {
     this.body.velocity.x = this.speed;
   }
   groups.enemies.add(this);
-  //this.game.add.existing(this);
 };
 
 Shuriken.prototype = Object.create(Phaser.Sprite.prototype);
@@ -453,6 +424,31 @@ Shuriken.prototype.constructor = Shuriken;
 
 Shuriken.prototype.update = function() {
   this.angle += 15;
+  if ((this.x + this.width < 0) || (this.x > this.game.world.width)) {
+    this.destroy();
+  }
+};
+
+var Wave = function(game, x, y, direction) {
+  Phaser.Sprite.call(this, game, x, y, 'wave', 0);
+
+  this.speed = 560;
+  this.game.physics.arcade.enable(this);
+  this.body.allowGravity = false;
+  if (direction === 'left') {
+    this.body.velocity.x = -1 * this.speed;
+  } else {
+    this.body.velocity.x = this.speed;
+  }
+  groups.enemies.add(this);
+  //self.wave.animations.add('main');
+  //self.wave.animations.play('main', 17, true);
+};
+
+Wave.prototype = Object.create(Phaser.Sprite.prototype);
+Wave.prototype.constructor = Wave;
+
+Wave.prototype.update = function() {
   if ((this.x + this.width < 0) || (this.x > this.game.world.width)) {
     this.destroy();
   }
