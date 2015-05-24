@@ -11,7 +11,8 @@ var bloodType = {
   OIL: 'oil',
   BLOOD: 'blood',
   PIECES: 'pieces',
-  ACID: 'acid'
+  ACID: 'acid',
+  CRYSTAL: 'crystal'
 };
 
 var repetitionType = {

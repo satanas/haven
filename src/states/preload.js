@@ -32,6 +32,7 @@ var Preload = {
     game.load.image('blood', 'assets/blood-red.png');
     game.load.image('acid', 'assets/blood-acid.png');
     game.load.image('oil', 'assets/blood-oil.png');
+    game.load.image('crystal', 'assets/blood-crystal.png');
     game.load.image('pieces', 'assets/blood-pieces.png');
     game.load.image('moving-platform', 'assets/moving-platform.png');
     game.load.image('box-blue', 'assets/box-blue.png');

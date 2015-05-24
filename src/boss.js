@@ -13,6 +13,8 @@ var Acerbus = function(game, player, x, y, fight) {
   this.chaseDelay = 250;
   this.chasing = false;
   this.chaseStart = 0;
+  this.bloodType = bloodType.CRYSTAL;
+  this.shadow = null;
 
   this.phases = [
     new DashPhase(this),
@@ -25,6 +27,8 @@ var Acerbus = function(game, player, x, y, fight) {
   this.animations.add('walk-right', [25, 26, 27, 28, 29, 30], 20, true);
   this.animations.add('hurt-left', [21, 22], 20, true);
   this.animations.add('hurt-right', [46, 47], 20, true);
+  this.hitSound = game.add.audio('organichit');
+
   this.pattern = [1, 2, 0, 2, 3, 1, 0, 3, 2];
 
   game.physics.arcade.enableBody(this);
@@ -39,10 +43,12 @@ Acerbus.prototype.constructor = Acerbus;
 
 Acerbus.prototype.update = function() {
   this.tileCollisions();
-  this.currPhase.update();
-  if (this.currPhase.ended) {
-    this.phase += 1;
-    this.nextPhase();
+  if (this.alive) {
+    this.currPhase.update();
+    if (this.currPhase.ended) {
+      this.phase += 1;
+      this.nextPhase();
+    }
   }
   this.recover();
 };
@@ -100,6 +106,24 @@ Acerbus.prototype.facePlayer = function() {
   }
 };
 
+Acerbus.prototype.takeDamage = function() {
+  if (!this.hurt && !this.invincible) {
+    var blood = new BloodParticles(game, this.x + (this.body.width / 2), this.y + (this.body.height / 2), this.bloodType);
+    this.hitSound.play();
+
+    this.hurt = true;
+    this.hurtTime = this.game.time.time;
+    this.health -= 1;
+    if (this.health <= 0) {
+      if (this.shadow) {
+        this.shadow.animations.stop();
+        this.shadow.destroy();
+      }
+      this.kill();
+    }
+  }
+};
+
 var Phase = function(cycles, idle, preparation, warning, execution, ending) {
   this.totalCycles = cycles;
   this.currCycles = 0;
@@ -154,7 +178,7 @@ var Phase = function(cycles, idle, preparation, warning, execution, ending) {
 };
 
 var DashPhase = function(parent) {
-  Phase.call(this, game, 2,
+  Phase.call(this, 2,
     {
       duration: 500,
       callback: this.idle
@@ -189,11 +213,11 @@ DashPhase.prototype.idle = function(self) {
 DashPhase.prototype.preparation = function(self) {
   self.parent.invincible = false;
   if (self.moving === null) {
-    if (self.parent.x >= self.game.world.centerX) {
+    if (self.parent.x >= game.world.centerX) {
       self.parent.facing = 'right';
       self.parent.body.velocity.x = 150;
       self.moving = 'right';
-    } else if (self.parent.x < self.game.world.centerX) {
+    } else if (self.parent.x < game.world.centerX) {
       self.parent.facing = 'left';
       self.parent.body.velocity.x = -150;
       self.moving = 'left';
@@ -245,7 +269,7 @@ DashPhase.prototype.checkLeftLimit = function() {
 };
 
 var LaughPhase = function(parent) {
-  Phase.call(this, game, 1,
+  Phase.call(this, 1,
     {
       duration: 500,
       callback: function(self){}
@@ -280,7 +304,7 @@ LaughPhase.prototype.end = function() {
 };
 
 var TeleportPhase = function(parent, player) {
-  Phase.call(this, game, 3,
+  Phase.call(this, 3,
     {
       duration: 500,
       callback: this.idle
@@ -300,7 +324,6 @@ var TeleportPhase = function(parent, player) {
   );
   this.player = player;
   this.parent = parent;
-  this.shadow = null;
   this.shoryuken = false;
 };
 
@@ -318,9 +341,9 @@ TeleportPhase.prototype.preparation = function(self) {
   self.parent.facePlayer();
   self.parent.renderStand();
   self.shoryuken = false;
-  self.shadow = self.game.add.sprite(self.player.x, self.parent.y, 'shadow');
-  self.shadow.animations.add('main');
-  self.shadow.animations.play('main', 17, true);
+  self.parent.shadow = game.add.sprite(self.player.x, self.parent.y, 'shadow');
+  self.parent.shadow.animations.add('main');
+  self.parent.shadow.animations.play('main', 17, true);
   self.next();
 };
 
@@ -341,15 +364,15 @@ TeleportPhase.prototype.execution = function(self) {
     }
   } else {
     var smoke = new Smoke(self.parent.x, self.parent.y)
-    self.parent.x = self.shadow.x;
+    self.parent.x = self.parent.shadow.x;
     self.parent.body.velocity.y = -900;
-    self.shadow.destroy();
+    self.parent.shadow.destroy();
     self.shoryuken = true;
   }
 };
 
 var WavePhase = function(parent, player) {
-  Phase.call(this, game, 3,
+  Phase.call(this, 3,
     {
       duration: 500,
       callback: this.idle

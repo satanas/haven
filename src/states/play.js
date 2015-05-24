@@ -7,6 +7,7 @@ var Play = {
     this.boss = null;
     this.clock = null;
     this.paused = false;
+    this.ended = false;
     game.global.movingToNextLevel = false;
 
     this.game.stage.backgroundColor = '#3498db';
@@ -214,7 +215,15 @@ var Play = {
           self.game.state.start('death');
         }
       });
-      //return;
+    }
+
+    if (game.global.level === 2 && this.boss) {
+      if (!this.boss.alive && !this.ended) {
+        this.ended = true;
+        this.game.plugin.fadeOut(0x000, 750, 0, function() {
+          game.state.start('ending');
+        });
+      }
     }
     //this.bg1.tilePosition.x -= 0.5;
   },
