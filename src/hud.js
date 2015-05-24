@@ -78,7 +78,7 @@ HUD.prototype.update = function(clock) {
 
   if (this.boss) {
     var currPhase = Math.ceil(this.boss.health / this.maxBossHearts) - 1;
-    var nextPhase = currPhase === 0 ? 4 : currPhase - 1;
+    var nextPhase = (currPhase <= 0) ? 4 : currPhase - 1;
     var hearts = this.boss.health % this.maxBossHearts;
     hearts = hearts === 0 ? 15: hearts;
 
@@ -86,7 +86,7 @@ HUD.prototype.update = function(clock) {
     for (var i=0; i < this.maxBossHearts; i++) {
       this.bossHealth[i].frame = nextPhase;
     }
-    if (this.boss.health <= 0) {
+    if (this.boss.health > 0) {
       for (var i=0; i < hearts; i++) {
         this.bossHealth[i].frame = currPhase;
       }
