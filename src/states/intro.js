@@ -118,7 +118,8 @@ Intro.prototype = {
   },
 
   doKidnaping: function() {
-    var exp = new Explosion(game, this.acerbus.x, this.acerbus.y, this.acerbus.width, this.acerbus.height);
+    //var exp = new Explosion(game, this.acerbus.x, this.acerbus.y, this.acerbus.width, this.acerbus.height);
+    var exp = new Smoke(this.acerbus.x - 15, this.acerbus.y);
     this.chain.visible = false;
     this.shadow.visible = false;
     this.acerbus.x = 480;
@@ -129,7 +130,8 @@ Intro.prototype = {
   },
 
   startRunaway: function() {
-    var exp = new Explosion(game, this.acerbus.x, this.acerbus.y, this.acerbus.width, this.acerbus.height);
+    //var exp = new Explosion(game, this.acerbus.x, this.acerbus.y, this.acerbus.width, this.acerbus.height);
+    var exp = new Smoke(this.acerbus.x - 15, this.acerbus.y);
     this.acerbus.visible = false;
     this.king.visible = false;
     this.portal.visible = true;
