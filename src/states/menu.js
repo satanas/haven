@@ -55,7 +55,7 @@ var Menu = {
     } else {
       game.time.events.remove(this.timer);
       this.selectSound.play();
-      game.state.start('disclaimer');
+      game.state.start('play');
     }
   },
 

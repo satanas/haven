@@ -38,15 +38,28 @@ var Play = {
     groups.hud = this.game.add.group();
 
     if (game.global.level === 1) {
-      this.map = this.game.add.tilemap('mario');
-      this.map.addTilesetImage('MARIO', 'mario');
+      //this.map = this.game.add.tilemap('mario');
+      //this.map.addTilesetImage('MARIO', 'mario');
+      this.map = this.game.add.tilemap('demo');
+      this.map.addTilesetImage('contra-tile', 'contra-tile');
     } else if (game.global.level === 2) {
       this.map = this.game.add.tilemap('boss');
     }
     groups.tiles = this.map.createLayer('Tiles');
     this.back_deco = this.map.createLayer('Back Decorations');
     this.front_deco = this.map.createLayer('Front Decorations');
-    this.map.setCollisionBetween(1, 128, true, 'Tiles');
+    //this.map.setCollisionBetween(1, 128, true, 'Tiles');
+    this.map.setCollisionBetween(1, 4, true, 'Tiles');
+    this.map.setCollisionBetween(8, 11, true, 'Tiles');
+    this.map.setCollisionBetween(15, 18, true, 'Tiles');
+    this.map.setCollisionBetween(22, 25, true, 'Tiles');
+    this.map.setCollisionBetween(29, 32, true, 'Tiles');
+    this.map.setCollisionBetween(36, 39, true, 'Tiles');
+    this.map.setCollisionBetween(43, 46, true, 'Tiles');
+    this.map.setCollisionBetween(50, 53, true, 'Tiles');
+    this.map.setCollisionBetween(57, 60, true, 'Tiles');
+    this.map.setCollisionBetween(64, 67, true, 'Tiles');
+    this.map.setCollisionBetween(64, 67, true, 'Tiles');
     groups.tiles.resizeWorld();
 
     var bg = this.map.properties.background;
@@ -66,7 +79,8 @@ var Play = {
     if (this.game.global.lastCheckpoint) {
       this.player = new Alysa(game.global.lastCheckpoint.origX, game.global.lastCheckpoint.origY);
     } else {
-      this.player = new Alysa(280, 370);
+      //this.player = new Alysa(280, 370);
+      this.player = new Alysa(64, 8480);
     }
 
     var self = this;

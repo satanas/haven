@@ -10,6 +10,7 @@ var Preload = {
     game.load.setPreloadSprite(progressbar);
 
     game.load.tilemap('mario', 'maps/mario.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('demo', 'maps/demo.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.tilemap('mario2', 'maps/mario2.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.tilemap('boss', 'maps/boss.json', null, Phaser.Tilemap.TILED_JSON);
 
@@ -19,6 +20,7 @@ var Preload = {
     game.load.bitmapFont('press_start', 'assets/fonts/press-start.png', 'assets/fonts/press-start.fnt');
 
     game.load.image('wall', 'assets/box-blue.png');
+    game.load.image('contra-tile', 'assets/contra-tile.png');
     game.load.image('mario', 'assets/mario.png');
     game.load.image('bullet', 'assets/bullet.png');
     game.load.image('enemy-bullet', 'assets/enemy-bullet.png');
